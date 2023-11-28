@@ -1,7 +1,7 @@
 
 var numeros = [];
 
-function gerarCPF() {
+export default function gerarCPF() {
 
     gerarNumeros();
 
@@ -61,5 +61,3 @@ function segundoDV() {
         return 11 - r;
     }
 }
-
-export default gerarCPF();

@@ -1,7 +1,7 @@
 var numeros = [];
 var resto = 0;
 
-function gerarCNS() {
+export default function gerarCNS() {
     numeros[0] = escolherPrimeiroDigito();
 
     gerarNumeros();
@@ -44,4 +44,3 @@ function calcularUltimosDigitosDV() {
         return '000' + dv;
     }
 }
-export default gerarCNS();
