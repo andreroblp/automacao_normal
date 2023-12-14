@@ -1,3 +1,5 @@
+import cpf from '../geradores/geradorCpf.js'
+import cns from '../geradores/geradorCNS.js'
 
 function gerarNumero(num){
     return Math.floor(Math.random()*(num+1))
@@ -5,12 +7,16 @@ function gerarNumero(num){
 
 export function gerarNomeMasculino(){
     return {"nome" : nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)]+ " " + sobrenome[gerarNumero(99)][gerarNumero(9)],
-            "sexo" : "Masculino"};
+            "sexo" : "Masculino",
+            "cpf" : cpf(),
+            "cns" : cns()};
 }
 
 export function gerarNomeFerminino(){
     return {"nome" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)],
-            "sexo" : "Feminino"};
+            "sexo" : "Feminino",
+            "cpf" : cpf(),
+            "cns" : cns()};
 }
 
 export default function gerarPessoaAleatorio(){

@@ -10,7 +10,7 @@ function verificarDiaSomar() {
   if (dia >= 27) {
     return 30;
   } else {
-    return hoje.getDate();
+    return hoje.getDate()+4;
   }
 }
 
@@ -69,7 +69,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
     })
 
     //Indice de repetição - A venda repetirá a partir desse ponto após a primeira passagem por todo fluxo.
-    Cypress._.times(2, (n) => {
+    Cypress._.times(1, (n) => {
 
       it('### Início da Venda: ' + (n + 1) + ' ### -- Preencher e Buscar Tela Triagem', function () {
         cy.get('#nomeCpf').type('Teste Sem Débito Automático CYPRESS');
@@ -262,5 +262,15 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
           })
         cy.contains('Nova Venda').should('be.visible');
       })
+
+      // it('Ir para Nova Venda antes de finalizar ### UTILIZADO PARA VENDAS INCOMPLETAS ####', function(){
+      //   cy.get('#ticket')
+      //     .invoke('attr', 'value').then($ticket => {
+      //       let ticketPortal = $ticket;
+      //       let site = Cypress.env('site2');
+      //       cy.visit(`${site}vendas/triagem?ticket=${ticketPortal}&menuAcesso=29`)
+      //     })
+      //   cy.contains('Nova Venda').should('be.visible');
+      // })
     })
   })

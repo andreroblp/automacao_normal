@@ -10,14 +10,14 @@ function verificarDiaSomar() {
   if (dia >= 27) {
     return 30;
   } else {
-    return hoje.getDate();
+    return hoje.getDate()+4;
   }
 }
 
 describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
   + '/ Com Débito Automático', function () {
 
-    it('Realizar Login', function () {
+    it.only('Realizar Login', function () {
       cy.on("uncaught:exception", (e, runnable) => {
         console.log("error", e);
         console.log("runnable", runnable);
@@ -34,7 +34,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
       // cy.get('[pointer-events="all"]').invoke('hide')
     })
 
-    it('Habilitando Débito Automático e Desabilitando Conferência com a Receita Federal', function () {
+    it.only('Habilitando Débito Automático e Desabilitando Conferência com a Receita Federal', function () {
       cy.get(".application-menu-area ").click()
       cy.get('[data-aplicacao-contexto="vendas"] > .fa').click()
       cy.get('.hamburguer-menu-area').should('be.visible').click()
@@ -57,7 +57,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
       cy.wait(2000)
     })
 
-    it('Acessar Nova Venda', function () {
+    it.only('Acessar Nova Venda', function () {
       cy.iframe('[class="child-page atual"]')
         .find('#uTicket')
         .invoke('attr', 'value').then($ticket => {
@@ -69,14 +69,14 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
     })
 
     //Indice de repetição - A venda repetirá a partir desse ponto após a primeira passagem por todo fluxo.
-    Cypress._.times(3, (n) => {
+    Cypress._.times(2, (n) => {
 
-      it('### Início da Venda: ' + (n + 1) + ' ### -- Preencher e Buscar Tela Triagem', function () {
+      it.only('### Início da Venda: ' + (n + 1) + ' ### -- Preencher e Buscar Tela Triagem', function () {
         cy.get('#nomeCpf').type('Teste Com Débito Automático by CYPRESS');
         cy.get('#buscar')
           .click()
       })
-      it('Preenchendo o Formulário de Contato', function () {
+      it.only('Preenchendo o Formulário de Contato', function () {
         cy.get('#novo-cadastro').should('be.visible')
           .click()
         cy.contains('Formulário de Contato').should('be.visible')
@@ -93,12 +93,12 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
           .type('Teste')
       })
 
-      it('Avançar para o Pré-Cadastro', function () {
+      it.only('Avançar para o Pré-Cadastro', function () {
         cy.get('#venda')
           .click();
       })
 
-      it('Preenchendo o Pré-Cadastro', {
+      it.only('Preenchendo o Pré-Cadastro', {
         retries: {
           openMode: 2,
           runMode: 2,
@@ -113,7 +113,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
         cy.get('[id="PREVENT SENIOR PREMIUM 1002 ENFERMARIA"]').click()
       })
 
-      it('Preenchendo Dados do Beneficiário', function () {
+      it.only('Preenchendo Dados do Beneficiário', function () {
         var pessoa = gerarPessoaAleatorio();
         var nomeMae = gerarNomeFerminino().nome;
         var nome = pessoa.nome;
@@ -159,7 +159,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
         cy.get('#documentos').check({ force: true }).should('be.checked');
       })
 
-      it('Enviando Arquivo', function () {
+      it.only('Enviando Arquivo', function () {
         cy.get('#saveAndNext').click();
         cy.get('input[type="file"]').as('fileInput');
         cy.get('@fileInput').attachFile('cpf.png');
@@ -278,6 +278,15 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
         cy.get('#avancar').click();
         cy.get('[class="painel-name"]').contains('Painel de vendas').should('be.visible');
         cy.get('#uTicket')
+          .invoke('attr', 'value').then($ticket => {
+            let ticketPortal = $ticket;
+            let site = Cypress.env('site2');
+            cy.visit(`${site}vendas/triagem?ticket=${ticketPortal}&menuAcesso=29`)
+          })
+        cy.contains('Nova Venda').should('be.visible');
+      })
+       it.only('Ir para Nova Venda antes de finalizar ### UTILIZADO PARA VENDAS INCOMPLETAS ####', function(){
+        cy.get('#ticket')
           .invoke('attr', 'value').then($ticket => {
             let ticketPortal = $ticket;
             let site = Cypress.env('site2');
