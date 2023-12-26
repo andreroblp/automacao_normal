@@ -1,13 +1,15 @@
 import login from '../pages/login/';
 import parametrosVenda from "../pages/parametrosVenda";
-import excecao from "../pages/excecao/";
 import novaVenda from '../pages/novaVenda/';
 import formulario from '../pages/formularioContato/';
-import preCadastro from '../pages/preCadastro/'
+import preCadastro from '../pages/preCadastro/';
 import dadosBeneficiario from '../pages/dadosBeneficiario'
+import envioArquivo from '../pages/envioArquivo';
+import declaracao from '../pages/declaracaoSaude';
+import agendamento from '../pages/agendamentoAssinatura';
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
-    + '/ Com Débito Automático',
+    + '/ Com Débito Automático / Com Nome Social / Sem Receita Federal',
     () => {
 
         context('Cenário: Logar no Sistema da Prevent Senior. Teste ', () => {
@@ -110,11 +112,9 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             })
             context('Cenário: Preencher os Dados do Beneficiario', () => {
                 it('DADO \n o acesso a tela "Dados do Beneficiario" com o Nome, CPF e data de nascimento já preenchidos', () => {
-
                     dadosBeneficiario.validarAcessoNaPaginaEDadosBeneficiario();
                 })
                 it('E \n  Nome e Gênero Sociais já preenchidos', () => {
-
                     dadosBeneficiario.validarNomeGeneroSocial();
                 })
 
@@ -136,6 +136,56 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
 
                 it('AND \n não exibirá o alerta de obrigatoriedade de preenchimento', () => {
                     dadosBeneficiario.naoExibirAlertaObrigatoriedade();
+                })
+            })
+            context('Cenário: Selecionar Arquivo', () => {
+                it('DADO \n o acesso a tela "Envio Arquivo"', () => {
+                    envioArquivo.validarAcessoPagina();
+                })
+                it('QUANDO \n  selecionar Arquivo', () => {
+                    envioArquivo.selecionarArquivo();
+                })
+
+                it('ENTÃO \n exibirá mensagem de sucesso', () => {
+                    envioArquivo.verificarMensagemSucesso();
+                })
+
+                it('E \n permitirá o avanço para a tela "Declaração de Saúde"', () => {
+                    envioArquivo.avancarParaDeclaracaoSaude();
+                })
+            })
+            context('Cenário: Acessar e Responder uma pergunta na tela "Declaração de Saúde"', () => {
+                it('DADO \n o acesso a tela "Declaração de Saúde"', () => {
+                    declaracao.validarAcesso();
+                })
+                it('QUANDO \n  marcar "Sim" para uma pergunta', () => {
+                    declaracao.marcarUmaPerguntaComoSim();
+                })
+
+                it('E \n responder a justificativa da Pergunta marcada como "Sim"', () => {
+                    declaracao.responderJustificativa();
+                })
+
+                it('ENTÃO \n permitirá o avanço para a tela "Agendamento de Assinatura"', () => {
+                    declaracao.avancarParaAgendamento();
+                })
+            })
+            context('Cenário: Acessar o Agendamento de Assinatura e selecionar o dia do Vencimento', () => {
+                it('DADO \n o acesso a tela "Agendamento de Assinatura"', () => {
+                    agendamento.validarAcesso();
+                })
+
+                it('QUANDO \n E validar a opção "Assinatura no Local da Venda" selecionada', () => {
+                    agendamento.validarOpcaoSelecionada();
+                })
+
+                it('E \n  selecionar um dia para o vencimento', () => {
+                    agendamento.selecionarDiaVencimento();
+                    
+                })
+
+                it('ENTÃO \n permitirá o avanço para a tela "Conferência"', () => {
+                    agendamento.salvarAvancar();
                 })
             })
         })

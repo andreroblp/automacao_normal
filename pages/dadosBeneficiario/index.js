@@ -1,4 +1,4 @@
-const elem = require('./element').ELEMENTS;
+const elem = require('./elements.js').ELEMENTS;
 import preCadastro from '../preCadastro/';
 import gerarNomeFerminino from '../../geradores/geradorPessoas.js';
 

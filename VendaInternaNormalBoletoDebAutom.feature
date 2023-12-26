@@ -45,3 +45,31 @@ Scenario: Preencher os Dados do Beneficiario
     And a tela permitirá avançar para o "Envio do documento" 
     And não exibirá o alerta de obrigatoriedade de preenchimento
 
+@EnvioArquivo
+Scenario: Selecionar Arquivo 
+    Given o acesso a tela "Envio Arquivo"
+    When selecionar Arquivo
+    Then exibirá mensagem de sucesso
+    And permitirá o avanço para a tela "Declaração de Saúde"
+
+@DeclaracaoSaude
+Scenario: Acessar e Responder uma pergunta na tela "Declaração de Saúde"
+    Given o acesso a tela "Declaração de Saúde"
+    When marcar "Sim" para uma pergunta
+    And responder a justificativa da Pergunta marcada como "Sim"
+    Then permitirá o avanço para a tela "Agendamento de Assinatura"
+
+@AgendamentoAssinatura
+Scenario: Acessar o Agendamento de Assinatura e selecionar o dia do Vencimento
+    Given o acesso a tela "Agendamento de Assinatura"
+    When validar a opção "Assinatura no Local da Venda" selecionada
+    E selecionar um dia para o vencimento
+    Then permitirá o avanço para a tela "Conferência"
+
+@Conferencia
+Scenario: 
+
+
+
+
+
