@@ -19,12 +19,39 @@ export function gerarNomeFerminino(){
             "cns" : cns()};
 }
 
-export default function gerarPessoaAleatorio(){
+export function gerarNomeMasculinoComNomeSocial(){
+    return {"nome" : nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)]+ " " + sobrenome[gerarNumero(99)][gerarNumero(9)],
+            "sexo" : "Masculino",
+            "cpf" : cpf(),
+            "cns" : cns(),
+            "nomeSocial" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)],
+            "generoSocial" : "Feminino" };
+}
+
+export function gerarNomeFermininoComNomeSocial(){
+    return {"nome" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)],
+            "sexo" : "Feminino",
+            "cpf" : cpf(),
+            "cns" : cns(),
+            "nomeSocial" : nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)],
+            "generoSocial" : "Masculino" };
+}
+
+export default function gerarPessoaAleatorio(nomeSocial){
     let sexo = Math.floor(Math.random()*(2 - 1 + 1) + 1)
-    if(sexo ==1){
-        return gerarNomeMasculino()
+    if(sexo === 1){
+        if (nomeSocial % 2 === 0){
+            return gerarNomeMasculino()
+        } else{
+            return gerarNomeMasculinoComNomeSocial()
+        }
     } else{
-        return gerarNomeFerminino()
+        if (nomeSocial % 2 === 0){
+            return gerarNomeFerminino()
+        } else{
+            return gerarNomeFermininoComNomeSocial()
+        }
+        
     }
 };
 
@@ -55,9 +82,9 @@ var nomeMeio =       [['da Silva', 'dos Santos', 'Pereira', 'Ferreira', 'de Oliv
                       ['Lima', 'Costa', 'Batista', 'Dias', 'Moreira', 'de Lima', 'de Sousa', 'Nunes', 'da Costa', 'de Almeida'], 
                       ['Mendes', 'Carvalho', 'Araujo', 'Cardoso', 'Teixeira', 'Marques', 'do Nascimento', 'Almeida', 'Ramos', 'Machado'], 
                       ['Rocha', 'Nascimento', 'de Araujo', 'da Conceiçao', 'Bezerra', 'Sousa', 'Borges', 'Santana', 'de Carvalho', 'Aparecido'], 
-                      ['Pinto', 'Pinheiro', 'Monteiro', 'Andrade', 'Leite', 'Correa', 'Nogueira', 'Garcia', 'deFreitas', 'Henrique'], 
+                      ['Pinto', 'Pinheiro', 'Monteiro', 'Andrade', 'Leite', 'Correa', 'Nogueira', 'Garcia', 'de Freitas', 'Henrique'], 
                       ['Tavares', 'Coelho', 'Pires', 'de Paula', 'Correia', 'Miranda', 'de Jesus', 'Duarte', 'Freitas', 'Barros'], 
-                      ['de Andrade', 'Campos', 'Sántos', 'de Melo', 'da Cruz', 'Reis', 'Guimaraes', 'Moraes', 'do Carmo', 'dos Reis'], 
+                      ['de Andrade', 'Campos', 'Santos', 'de Melo', 'da Cruz', 'Reis', 'Guimaraes', 'Moraes', 'do Carmo', 'dos Reis'], 
                       ['Viana', 'de Castro', 'Silveira', 'Moura', 'Brito', 'Neves', 'Carneiro', 'Melo', 'Medeiros', 'Cordeiro'], 
                       ['Conceição', 'Farias', 'Dantas', 'Cavalcante', 'da Rocha', 'de Assis', 'Braga', 'Cruz', 'Siqueira', 'Alves']];
 
@@ -161,3 +188,6 @@ var sobrenome =     [['Abadia', 'Abrahao', 'Abrantes', 'Abreu', 'Acosta', 'Adria
                      ['Vilela', 'Vilhena', 'Villela', 'Vital', 'Vitor', 'Vitoriano', 'Vitorino', 'Vitorio', 'Wagner', 'Watanabe'], 
                      ['Weber', 'Xavier', 'Zimmermann', 'Borba', 'Cândido', 'Calazans', 'Bressan', 'Nicola', 'Mingazzini', 'Moscardelli'],
                      ['Ximenes', 'Yamamoto', 'Zacarias', 'Zago', 'Zanatta', 'Zanella', 'Zanetti', 'Zanin', 'Zanini', 'Zanon']];
+
+
+                   

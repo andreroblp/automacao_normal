@@ -1,6 +1,6 @@
-import gerarPessoaAleatorio, { gerarNomeFerminino, gerarNomeMasculino } from './geradorPessoas.js';
-import gerarCNS from './geradorCNS.js';
-import gerarCPF from './geradorCpf.js';
+import gerarPessoaAleatorio, { gerarNomeFerminino, gerarNomeMasculino } from './geradores/geradorPessoas.js';
+import gerarCNS from './geradores/geradorCNS.js';
+import gerarCPF from './geradores/geradorCpf.js';
 
 var dataParaSomar = verificarDiaSomar();
 
@@ -17,7 +17,7 @@ function verificarDiaSomar() {
 describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
   + '/ Com Débito Automático', function () {
 
-    it.only('Realizar Login', function () {
+    it('Realizar Login', function () {
       cy.on("uncaught:exception", (e, runnable) => {
         console.log("error", e);
         console.log("runnable", runnable);
@@ -34,7 +34,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
       // cy.get('[pointer-events="all"]').invoke('hide')
     })
 
-    it.only('Habilitando Débito Automático e Desabilitando Conferência com a Receita Federal', function () {
+    it('Habilitando Débito Automático e Desabilitando Conferência com a Receita Federal', function () {
       cy.get(".application-menu-area ").click()
       cy.get('[data-aplicacao-contexto="vendas"] > .fa').click()
       cy.get('.hamburguer-menu-area').should('be.visible').click()
@@ -57,7 +57,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
       cy.wait(2000)
     })
 
-    it.only('Acessar Nova Venda', function () {
+    it('Acessar Nova Venda', function () {
       cy.iframe('[class="child-page atual"]')
         .find('#uTicket')
         .invoke('attr', 'value').then($ticket => {
@@ -69,14 +69,14 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
     })
 
     //Indice de repetição - A venda repetirá a partir desse ponto após a primeira passagem por todo fluxo.
-    Cypress._.times(2, (n) => {
+    Cypress._.times(1, (n) => {
 
-      it.only('### Início da Venda: ' + (n + 1) + ' ### -- Preencher e Buscar Tela Triagem', function () {
+      it('### Início da Venda: ' + (n + 1) + ' ### -- Preencher e Buscar Tela Triagem', function () {
         cy.get('#nomeCpf').type('Teste Com Débito Automático by CYPRESS');
         cy.get('#buscar')
           .click()
       })
-      it.only('Preenchendo o Formulário de Contato', function () {
+      it('Preenchendo o Formulário de Contato', function () {
         cy.get('#novo-cadastro').should('be.visible')
           .click()
         cy.contains('Formulário de Contato').should('be.visible')
@@ -93,18 +93,18 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
           .type('Teste')
       })
 
-      it.only('Avançar para o Pré-Cadastro', function () {
+      it('Avançar para o Pré-Cadastro', function () {
         cy.get('#venda')
           .click();
       })
 
-      it.only('Preenchendo o Pré-Cadastro', {
+      it('Preenchendo o Pré-Cadastro', {
         retries: {
           openMode: 2,
           runMode: 2,
         },
       }, function () {
-        cy.get('#prebeneficiario-cpf').type(gerarCPF());
+        cy.get('#prebeneficiario-cpf').type(gerarCPF().semMascara);
         cy.get('#data-nascimento').type('16/09/1951');
         cy.get('#parceriaVenda').select("Nenhuma");
         cy.get('#planos-area').find('label').should('have.class', 'planos').and('be.visible');
@@ -113,7 +113,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
         cy.get('[id="PREVENT SENIOR PREMIUM 1002 ENFERMARIA"]').click()
       })
 
-      it.only('Preenchendo Dados do Beneficiário', function () {
+      it('Preenchendo Dados do Beneficiário', function () {
         var pessoa = gerarPessoaAleatorio();
         var nomeMae = gerarNomeFerminino().nome;
         var nome = pessoa.nome;
@@ -159,7 +159,7 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
         cy.get('#documentos').check({ force: true }).should('be.checked');
       })
 
-      it.only('Enviando Arquivo', function () {
+      it('Enviando Arquivo', function () {
         cy.get('#saveAndNext').click();
         cy.get('input[type="file"]').as('fileInput');
         cy.get('@fileInput').attachFile('cpf.png');
@@ -285,14 +285,14 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
           })
         cy.contains('Nova Venda').should('be.visible');
       })
-       it.only('Ir para Nova Venda antes de finalizar ### UTILIZADO PARA VENDAS INCOMPLETAS ####', function(){
-        cy.get('#ticket')
-          .invoke('attr', 'value').then($ticket => {
-            let ticketPortal = $ticket;
-            let site = Cypress.env('site2');
-            cy.visit(`${site}vendas/triagem?ticket=${ticketPortal}&menuAcesso=29`)
-          })
-        cy.contains('Nova Venda').should('be.visible');
-      })
+      //  it('Ir para Nova Venda antes de finalizar ### UTILIZADO PARA VENDAS INCOMPLETAS ####', function(){
+      //   cy.get('#ticket')
+      //     .invoke('attr', 'value').then($ticket => {
+      //       let ticketPortal = $ticket;
+      //       let site = Cypress.env('site2');
+      //       cy.visit(`${site}vendas/triagem?ticket=${ticketPortal}&menuAcesso=29`)
+      //     })
+      //   cy.contains('Nova Venda').should('be.visible');
+      // })
     })
   })

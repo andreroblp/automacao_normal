@@ -3,8 +3,10 @@ const elem = require('./elements').ELEMENTS;
 class Login {
 
   acessarValidarTelaLogin() {
+    localStorage.clear();
     cy.visit(Cypress.env('site'));
-    cy.get(elem.username).should('be.visible');
+    cy.get(elem.username).should('be.visible')
+    
   }
 
   realizarLogin() {

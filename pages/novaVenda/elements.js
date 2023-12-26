@@ -1,6 +1,5 @@
 export const ELEMENTS = {
     iframe : '[class="child-page atual"]',
-    ticket : '#uTicket',
     campoNome : '#nomeCpf',
     botaoBuscar : '#buscar',
     botaoNovoCadastro : '#novo-cadastro',

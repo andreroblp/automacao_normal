@@ -3,14 +3,12 @@ const elem = require('./elements').ELEMENTS;
 class NovaVenda{
 
     acessarNovaVenda(){
-        cy.iframe(elem.iframe)
-        .find(elem.ticket)
-        .invoke('attr', 'value').then($ticket => {
-          let ticketPortal = $ticket;
-          let site = Cypress.env('site2');
-          cy.visit(`${site}vendas/triagem?ticket=${ticketPortal}&menuAcesso=29`)
-        })
+      var jsonBenef = window.localStorage.getItem('ticket')
+      var ticketPortal = JSON.parse(jsonBenef); 
+      let site = Cypress.env('urlNovaVenda');
+      cy.visit(`${site}${ticketPortal}&menuAcesso=29`);
       cy.contains(elem.nomeCabecalho).should('be.visible');
+     
     }
 
     escreverNome(){
@@ -27,6 +25,7 @@ class NovaVenda{
     }
     novoCadastro(){
         cy.get(elem.botaoNovoCadastro).should('be.visible')
+        // cy.screenshot('../../../screenshots/nomeSocial',{capture: 'fullPage'})
           .click();
     }
 

@@ -27,3 +27,21 @@ Scenario: Preencher as informações do Formulario de Contato
     Given o acesso a tela do Formulario de Contato com o nome do contato já preenchido no campo "Nome"
     When o usuário preencher todos os demais campos
     Then a tela permitirá avançar para o "Pré-Cadastro"
+
+@PreCadastro
+Scenario: Preencher as informações da Tela Pré Cadastro
+    Given o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"
+    When o usuário vai trocar o nome gerado pela automação
+    And preencher os demais campos da tela
+    Then a tela permitirá avançar para a tela "Dados do Beneficiário"
+
+@DadosBeneficiario
+Scenario: Preencher os Dados do Beneficiario
+    Given o acesso a tela "Dados do Beneficiario" com o Nome, CPF e data de nascimento já preenchidos
+    And Nome e Gênero Sociais já preenchidos
+    When preencher os dados do beneficiário
+    And preencher os dados do débito automático
+    Then validar regras do Débito Automático
+    And a tela permitirá avançar para o "Envio do documento" 
+    And não exibirá o alerta de obrigatoriedade de preenchimento
+

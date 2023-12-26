@@ -4,49 +4,56 @@ import excecao from "../pages/excecao/";
 import novaVenda from '../pages/novaVenda/';
 import formulario from '../pages/formularioContato/';
 import preCadastro from '../pages/preCadastro/'
+import dadosBeneficiario from '../pages/dadosBeneficiario'
 
-describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
-    + '/ Com Débito Automático', function () {
+describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
+    + '/ Com Débito Automático',
+    () => {
 
-        Cypress._.times(2, (n) => {
+        context('Cenário: Logar no Sistema da Prevent Senior. Teste ', () => {
 
-            context('Cenário: Logar no Sistema da Prevent Senior. Teste ' + (n + 1), () => {
-
-                it('DADO \n o acesso para a tela principal do Portal Web em Homologação', () => {
-                    login.acessarValidarTelaLogin();
-                })
-
-                it('QUANDO \n o usuário insere o usuário e a senha do Vendedor', () => {
-                    login.realizarLogin();
-                })
-
-                it('ENTÃO \n o acesso é concedido para a tela principal', () => {
-                    excecao.tratarExcecao();
-                    login.validarAcessoRealizado();
-                })
+            it('DADO \n o acesso para a tela principal do Portal Web em Homologação', () => {
+                login.acessarValidarTelaLogin();
             })
 
-            context('Cenário: Checar os parâmetros de Venda', () => {
-
-                it('DADO \n o acesso para a tela "Parâmetros de Venda', () => {
-                    excecao.tratarExcecao();
-                    parametrosVenda.acessarTela();
-                })
-
-                it('QUANDO \n o usuário checar para "Sim" o item "Habilitar débito automático como forma de pagamento das mensalidades?"', () => {
-                    excecao.tratarExcecao();
-                    parametrosVenda.checarDebito();
-                })
-
-                it('E \n o usuário checar para "Não" o item "Pode consultar pessoa fisica receita federal?"', () => {
-                    parametrosVenda.checarReceita();
-                })
-
-                it('ENTÃO \ndeve salvar as configurações estabelecidas', () => {
-                    parametrosVenda.salvarMudancas();
-                })
+            it('QUANDO \n o usuário insere o usuário e a senha do Vendedor', () => {
+                login.realizarLogin();
             })
 
+            it('ENTÃO \n o acesso é concedido para a tela principal', () => {
+                login.validarAcessoRealizado();
+                parametrosVenda.obterTicketArmazenar();
+            })
+        })
+
+        context('Cenário: Checar os parâmetros de Venda', () => {
+
+            it('DADO \n o acesso para a tela "Parâmetros de Venda', {
+                retries: {
+                    runMode: 3,
+                    openMode: 3,
+                },
+            },() => {
+                parametrosVenda.acessarTelaViaEnderecoComTicket();
+            })
+
+            it('QUANDO \n o usuário checar para "Sim" o item "Habilitar débito automático como forma de pagamento das mensalidades?"', () => {
+                parametrosVenda.checarDebitoSemIframe();
+            })
+
+            it('E \n o usuário checar para "Não" o item "Pode consultar pessoa fisica receita federal?"', () => {
+                parametrosVenda.checarReceitaSemIframe();
+            })
+
+            it('ENTÃO \ndeve salvar as configurações estabelecidas', () => {
+                parametrosVenda.salvarMudancasSemIframe();
+            })
+
+            it('E exibir a mensagem de Sucesso "Parâmetro(s) alterado(s) com sucesso."', () => {
+                parametrosVenda.exibirMensagemSucesso();
+            })
+        })
+        Cypress._.times(1, () => {
             context('Cenário: Tela Nova Venda', () => {
                 it('DADO \n o início do fluxo pela tela Nova Venda', () => {
                     novaVenda.acessarNovaVenda();
@@ -82,16 +89,53 @@ describe('Venda Normal / Boleto / Assinatura Digital (s/ assinatura com Unico) /
             })
 
             context('Cenário: Preencher a tela Pré Cadastro', () => {
-                it('teste', () => {
-                    preCadastro.armazenarLocalStorage();
+                it('DADO \n o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"', () => {
+
+                    preCadastro.validarNomeEntrada();
+                })
+
+                it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
+                    preCadastro.armazenarLocalStorage(1);
+                    preCadastro.reescreverNome();
+                })
+
+                it('E \n preencher os demais campos da tela', () => {
                     preCadastro.preencherDados();
-                    localStorage.clear();
-                    cy.get('#ticket')
-                        .invoke('attr', 'value').then($ticket => {
-                            let ticketPortal = $ticket;
-                            let site = Cypress.env('site2');
-                            cy.visit(`${site}vendas/triagem?ticket=${ticketPortal}&menuAcesso=29`)
-                        })
+                    preCadastro.preencherNomeGeneroSocial();
+                })
+
+                it('ENTÃO \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
+                    preCadastro.avancarParaDadosBeneficiario();
+                })
+            })
+            context('Cenário: Preencher os Dados do Beneficiario', () => {
+                it('DADO \n o acesso a tela "Dados do Beneficiario" com o Nome, CPF e data de nascimento já preenchidos', () => {
+
+                    dadosBeneficiario.validarAcessoNaPaginaEDadosBeneficiario();
+                })
+                it('E \n  Nome e Gênero Sociais já preenchidos', () => {
+
+                    dadosBeneficiario.validarNomeGeneroSocial();
+                })
+
+                it('QUANDO \n preencher os dados do beneficiário', () => {
+                    dadosBeneficiario.preencherDadosBeneficiario();
+                })
+
+                it('E \n preencher os dados do débito automático', () => {
+                    dadosBeneficiario.preencherDebitoAutomatico();
+                })
+
+                it('ENTÃO \n validar regras do Débito Automático', () => {
+                    dadosBeneficiario.validarRegrasDebitoAutomatico();
+                })
+                
+                it('AND \n a tela permitirá avançar para o "Envio do documento"', () => {
+                    dadosBeneficiario.avancarParaEnvioArquivo();
+                })
+
+                it('AND \n não exibirá o alerta de obrigatoriedade de preenchimento', () => {
+                    dadosBeneficiario.naoExibirAlertaObrigatoriedade();
                 })
             })
         })

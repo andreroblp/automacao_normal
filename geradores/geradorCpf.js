@@ -12,13 +12,8 @@ export default function gerarCPF() {
     numeros[9] = primeiroDV();
     numeros[10] = segundoDV();
 
-    var cpfString = "";
-
-    for (var x = 0; x < 11; x++) {
-        cpfString += (numeros[x]).toString();
-    }
-
-    return cpfString;
+   return {"semMascara" : gerarCPFSemMascara(),
+            "comMascara" : gerarCPFComMascara()}
 }
 
 function gerarNumeros() {
@@ -60,4 +55,43 @@ function segundoDV() {
     } else {
         return 11 - r;
     }
+}
+
+function gerarCPFSemMascara(){
+    var cpfString = "";
+
+    for (var x = 0; x < 11; x++) {
+        cpfString += (numeros[x]).toString();
+    }
+    return cpfString;
+}
+
+function gerarCPFComMascara(){
+    var cpf = gerarCPFSemMascara();
+    
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+}
+
+function gerarCPFComMascaraMinha(){
+    var cpfComMascara = "";
+    var cpfMascaraArray = [];
+    cpfMascaraArray[3] = '.';
+    cpfMascaraArray[7] = '.';
+    cpfMascaraArray[11] = '-';
+
+    for(var x=0; x<11; x++){
+        if(x>8){
+            cpfMascaraArray[x+3] = numeros[x]
+        } else if(x>5){
+            cpfMascaraArray[x+2] = numeros[x]
+        } else if(x>2){
+            cpfMascaraArray[x+1] = numeros[x]
+    } else{
+            cpfMascaraArray[x] = numeros[x]
+    }   
+}
+    for (var x = 0; x < 14; x++) {
+        cpfComMascara += (cpfMascaraArray[x]).toString();
+    }
+    return cpfComMascara;
 }
