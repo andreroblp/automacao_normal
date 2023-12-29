@@ -22,7 +22,8 @@ class Login {
     });
     cy.get(elem.botaoAcessar)
       .click();
-    cy.get(elem.validarAcesso).should('be.visible')
+    cy.get(elem.validarAcesso).should('be.visible');
+    cy.wait(4000);
   }
 
 }

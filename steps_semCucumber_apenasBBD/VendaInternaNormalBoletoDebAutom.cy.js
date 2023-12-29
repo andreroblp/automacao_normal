@@ -1,12 +1,19 @@
 import login from '../pages/login/';
-import parametrosVenda from "../pages/parametrosVenda";
+import parametrosVenda from '../pages/parametrosVenda/';
 import novaVenda from '../pages/novaVenda/';
 import formulario from '../pages/formularioContato/';
 import preCadastro from '../pages/preCadastro/';
-import dadosBeneficiario from '../pages/dadosBeneficiario'
-import envioArquivo from '../pages/envioArquivo';
-import declaracao from '../pages/declaracaoSaude';
-import agendamento from '../pages/agendamentoAssinatura';
+import dadosBeneficiario from '../pages/dadosBeneficiario/'
+import envioArquivo from '../pages/envioArquivo/';
+import declaracao from '../pages/declaracaoSaude/';
+import agendamento from '../pages/agendamentoAssinatura/';
+import conferencia from '../pages/conferencia/';
+import revisao from '../pages/revisao/';
+import impressaoContrato from '../pages/impressaoContrato/';
+import assinatura from '../pages/assinaturaDigital/';
+import carteirinha from '../pages/impressaoCarteirinha/';
+import pagamento from '../pages/pagamento/';
+import printDaTela from '../pages/parametrosPrints/';
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
     + '/ Com Débito Automático / Com Nome Social / Sem Receita Federal',
@@ -35,7 +42,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     runMode: 3,
                     openMode: 3,
                 },
-            },() => {
+            }, () => {
                 parametrosVenda.acessarTelaViaEnderecoComTicket();
             })
 
@@ -107,6 +114,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('ENTÃO \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
+                    printDaTela.internaNormalBoletoDebAutmNomeSocial();
                     preCadastro.avancarParaDadosBeneficiario();
                 })
             })
@@ -129,8 +137,9 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 it('ENTÃO \n validar regras do Débito Automático', () => {
                     dadosBeneficiario.validarRegrasDebitoAutomatico();
                 })
-                
+
                 it('AND \n a tela permitirá avançar para o "Envio do documento"', () => {
+                    printDaTela.internaNormalBoletoDebAutmNomeSocial();
                     dadosBeneficiario.avancarParaEnvioArquivo();
                 })
 
@@ -181,11 +190,184 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
 
                 it('E \n  selecionar um dia para o vencimento', () => {
                     agendamento.selecionarDiaVencimento();
-                    
                 })
 
                 it('ENTÃO \n permitirá o avanço para a tela "Conferência"', () => {
                     agendamento.salvarAvancar();
+                })
+            })
+            context('Cenário: Validar as Informações preenchidas nas telas Anteriores', () => {
+                it('DADO \n o acesso a tela "Conferência de Arquivos"', () => {
+                    conferencia.validarAcesso();
+                })
+
+                it('QUANDO \n preencher a "Parceria da Venda" e Assinatura Digital como "sim"', () => {
+                    conferencia.preencherParceriaVenda();
+                    conferencia.preencherAssinaturaDigital();
+                })
+
+                it('E \n preencher a forma de pagamento da Adesão como Boleto', () => {
+                    conferencia.preencherPagamentoAdesao();
+                })
+
+                it('E \n preencher a forma de pagamento da Mensalidade como Débito Automático', () => {
+                    conferencia.preencherPagamentoMensalidade();
+                })
+
+                it('ENTÃO \n as informações do Beneficiário preenchida em telas anteriores deverão ser validadas', () => {
+                    conferencia.validarDadosBeneficiario();
+                    conferencia.validarNomeGeneroSocial();
+                })
+
+                it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
+                    conferencia.validarDadosDebitoAutomatico();
+                })
+
+                it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
+                    conferencia.validarJustificativaDeclaracaoSaude();
+                })
+
+                it('E \n permitirá o avanço para a tela "Revisão"', () => {
+                    printDaTela.internaNormalBoletoDebAutmNomeSocial();
+                    conferencia.botaoSalvar();
+                })
+            })
+            context('Cenário: Validar as Informações preenchidas nas telas Anteriores, incluindo Conferência', () => {
+                it('DADO \n o acesso a tela "Revisão do beneficiário"', () => {
+                    revisao.validarAcesso();
+                })
+
+                it('QUANDO \n os dados do Proponente deverão ser validados', () => {
+                    revisao.validarDadosBeneficiario();
+                    revisao.validarNomeGeneroSocial();
+                })
+
+                it('E \n o Termo Aditivo deverá ser validado', () => {
+                    revisao.validarTermoAditivo();
+                })
+
+                it('E \n a Assinatuta Digital deverá ser validada', () => {
+                    revisao.validarAssinaturaDigital();
+                })
+                it('E \n a Forma de Pagamento da Adesão e Mensalidade deverão ser validadas', () => {
+                    revisao.validarPagamentoAdesao();
+                    revisao.validarPagamentoMensalidade();
+                })
+                it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
+                    revisao.validarDadosDebitoAutomatico();
+                })
+                it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
+                    revisao.validarJustificativaDeclaracaoSaude();
+                })
+
+                it('ENTÃO \n permitirá o avanço para a tela "Impressão do Contrato"', () => {
+                    printDaTela.internaNormalBoletoDebAutmNomeSocial();
+                    revisao.botaoSalvar();
+                })
+            })
+            context('Cenário: Validar as Informações exibidas na Tela e gerar Contrato', () => {
+                it('DADO \n o acesso a tela "Impressão do Contrato"', () => {
+                    printDaTela.internaNormalBoletoDebAutmNomeSocial();
+                    impressaoContrato.validarAcesso();
+                })
+                it('E \n as informações do beneficiário exibidas em tela', () => {
+                    impressaoContrato.validarDadosBeneficiario();
+                    impressaoContrato.validarNomeSocial();
+                })
+                it('E \n a impossibilidade de Avançar sem gerar o contrato', () => {
+                    impressaoContrato.validarExibirMensagemErro();
+                })
+
+                it('QUANDO \n clicar no botão para Gerar Contrato', () => {
+                    impressaoContrato.clicarBotaoContrato();
+                })
+
+                it('ENTÃO \n o Contrato deverá ser exibido', () => {
+                    impressaoContrato.exibirContrato();
+                })
+                it('E \n o botão Avançar liberado para Assinatura Digital', () => {
+                    impressaoContrato.clicarAvancar();
+                })
+            })
+            context('Cenário: Validar as Informações exibidas na Tela e gerar Boleto após a conclusão da Assinatura Digital', () => {
+                it('DADO \n o acesso a tela "Assinatura Digital"', () => {
+                    printDaTela.internaNormalBoletoDebAutmNomeSocial();
+                    assinatura.validarAcesso();
+                })
+                it('E \n as informações do beneficiário exibidas em tela', () => {
+                    assinatura.validarDadosBeneficiario();
+                    assinatura.validarNomeSocial();
+                })
+                it('E \n o status da Assinatura Digital em "Pendente de Envio"', () => {
+                    assinatura.validarStatusPendnete();
+                })
+                it('E \n exibir a Mensagem de Erro ao tentar Avançar sem realizar Assinatura Digital', () => {
+                    assinatura.mensagemErroPendenteEnvio();
+                })
+
+                it('QUANDO \n solicitar Assinatura Digital', () => {
+                    assinatura.solicitarAssinaturaDigital();
+                })
+
+                it('ENTÃO \n exibir Mensagem de Erro ao tentar Avançar com Status "Enviado"', () => {
+                    assinatura.mensagemErroStatusEnviado();
+                })
+
+                it('E \n o status deverá ser trocado de "ENVIADO" para "CONCLUIDO"', () => {
+                    assinatura.trocarStatus();
+                })
+
+                it('E \n exibir Mensagem de Erro ao tentar Avançar sem gerar o Boleto', () => {
+                    assinatura.mensagemErroBoleto();
+                })
+
+                it('E \n o botão de Gerar Boleto deverá ser exibido gerando um boleto', () => {
+                    assinatura.gerarBoleto();
+                })
+                it('E \n permitirá avançar para a tela "Impressão da Carteirinha" sem exibir mensagem de erro', () => {
+                    assinatura.botaoAvancar();
+                    assinatura.mensagemErroOculta();
+                })
+            })
+            context('Cenário: Realizar o Envio do Kit de Boas Vindas e Impressao da Carteirinha', () => {
+                it('DADO \n o acesso a tela "Impressão da Carteirinha"', () => {
+                    carteirinha.validarAcesso();
+                })
+                it('QUANDO \n cliclar em "Avançar" deverá exibir mensagem de erro referente a Impressão', () => {
+                    carteirinha.exibirMensagemErroImpressao();
+                })
+                it('E \n clicar em "Gerar PDF"', () => {
+                    carteirinha.clicarGerarPDF();
+                })
+                it('E \n cliclar em "Avançar" deverá exibir mensagem de erro referente ao Kit.', () => {
+                    carteirinha.exibirMensagemErroKit();
+                 })
+                it('E \n clicar em "ENVIAR KIT"', () => {
+                   carteirinha.clicarGerarKit();
+                })
+                it('ENTÃO \n exibirá Mensagem de Sucesso no Envio do Kit ', () => {
+                    carteirinha.validarMensagemSucesso();
+                })
+
+                it('E \n permitirá avançar para a tela "Pagamento"', () => {
+                   carteirinha.avancarTela();
+                })
+            })
+            context('Cenário: Validar e Finalizar a Venda', () => {
+                it('DADO \n  o acesso a tela "Pagamento"', () => {
+                    printDaTela.internaNormalBoletoDebAutmNomeSocial();
+                    pagamento.validarAcesso();
+                })
+                it('QUANDO \n validar as informações', () => {
+                    pagamento.validarDadosBeneficiario();
+                    pagamento.validarDadosNomeSocial();
+                })
+                it('E \n clicar em "Finalizar Pagamento"', () => {
+                   pagamento.finalizarVenda();
+                })
+               
+                it('ENTÃO \n a venda será concluída', () => {
+                    pagamento.validarSucessoEncerramento();
                 })
             })
         })

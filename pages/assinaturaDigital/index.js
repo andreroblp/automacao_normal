@@ -1,0 +1,124 @@
+const elem = require('./elements').ELEMENTS;
+const print = require('../parametrosPrints/elements').ADRESS_PRINT;
+import preCadastro from "../preCadastro/";
+
+class AssinaturaDigital {
+
+    validarAcesso() {
+        cy.contains(elem.titulo).should('be.visible');
+    }
+
+    validarNomeSocial(){
+        cy.xpath(elem.xpathNomeSocial).invoke('text')
+            .should('eq', preCadastro.obterObjetoLocalStorage().nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+    }
+
+    validarDadosBeneficiario() {
+        cy.xpath(elem.xpathNomeBenef).invoke('text')
+            .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem.xpathNomeMae).invoke('text')
+            .should('eq', preCadastro.obterObjetoLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem.xpathDataNasc).invoke('text')
+            .should('eq', Cypress.env('dtNasc'));
+        cy.xpath(elem.xpathRG).invoke('text')
+            .should('eq', Cypress.env('rg'));
+        cy.xpath(elem.xpathCPF).invoke('text')
+            .should('eq', preCadastro.obterObjetoLocalStorage().cpf.comMascara);
+        cy.xpath(elem.xpathEmail).invoke('text')
+            .should('eq', Cypress.env('emailAndre'));
+        cy.xpath(elem.xpathCelular).invoke('text')
+            .should('eq', preCadastro.obterObjetoLocalStorage().cel);
+        cy.xpath(elem.xpathAdesao).invoke('text')
+            .should('eq', 'Boleto - (deve ser encaminhado junto com o contrato)');
+        cy.xpath(elem.xpathMensal).invoke('text')
+            .should('eq', 'Débito automático');
+    }
+
+    validarStatusPendnete() {
+        cy.xpath(elem.xpathStatusAssinatura).invoke('text')
+            .should('eq', 'Pendente de envio');
+    }
+
+    solicitarAssinaturaDigital() {
+        let idPreBenef = this.obterObjetoLocalStorage();
+        let siteAssinaturaDigital = Cypress.env('siteAssinaturaDigital');
+        cy.get(elem.botaoAssinaturaDigital).click();
+        cy.get(elem.elementoPainel).contains(elem.tituloPainel).should('be.visible');
+        cy.visit(`${siteAssinaturaDigital}${idPreBenef}`)
+    }
+
+    obterObjetoLocalStorage(){
+        var jsonBenef = window.localStorage.getItem('id');
+        var idUsuario = JSON.parse(jsonBenef);
+        return idUsuario;
+    }
+
+    trocarStatus() {
+        let idPreBenef = this.obterObjetoLocalStorage();
+        let status = "CONCLUIDO";
+        let statusEnviado = "ENVIADO";
+        cy.task('executeDbStatement', {
+            statement: `update vendas.info_documento_venda_envelope set STATUS = '` + status + `' where ID_PRE_BENEFICIARIO=${idPreBenef} AND STATUS='` + `${statusEnviado}'`,
+        })
+        cy.reload();
+        cy.xpath(elem.xpathStatusAssinatura).invoke('text')
+            .should('eq', status);
+    }
+
+    gerarBoleto() {
+        cy.get(elem.botaoPrint).click();
+        cy.get(elem.iframeBoleto).then(($iframe) => {
+
+            const iframe = $iframe.contents();
+            cy.stub(iframe[0].defaultView, 'print').as('printStub');
+        });
+
+        cy.get('@printStub').should('not.be.called');
+
+        cy.wait(5000)
+        cy.screenshot(print.internaNormalDebAutomNomeSocial, { capture: 'fullPage' });
+        cy.get(elem.elementoIframe)
+            .within(() => {
+                return cy.get(elem.subElementoIframe).should('have.class', elem.botaoFecharIframe)
+                    .last()
+                    .click();
+            })
+    }
+
+    botaoAvancar() {
+        cy.get(elem.botaoAvancar).click();
+    }
+
+    mensagemErroOculta(){
+        cy.get(elem.mensagemErro).should('not.exist');
+    }
+
+    mensagemErroPendenteEnvio(){
+        this.botaoAvancar();
+        cy.get(elem.mensagemErro).should('be.visible');
+        cy.get(elem.mensagemErro).invoke('text')
+        .should('eq', elem.textoErroSemAssinatura);
+        cy.get(elem.mensagemErroBotaoFechar).click();
+    }
+
+    mensagemErroStatusEnviado(){
+        cy.xpath(elem.xpathStatusAssinatura).invoke('text')
+            .should('eq', 'ENVIADO');
+        this.botaoAvancar();
+        cy.get(elem.mensagemErro).should('be.visible');
+        cy.get(elem.mensagemErro).invoke('text')
+        .should('eq', elem.textoErroSemAssinatura);
+        cy.get(elem.mensagemErroBotaoFechar).click();
+    }
+
+    mensagemErroBoleto(){
+        this.botaoAvancar();
+        cy.get(elem.mensagemErro).should('be.visible');
+        cy.get(elem.mensagemErro).invoke('text')
+        .should('eq', elem.textoErroBoleto);
+        cy.get(elem.mensagemErroBotaoFechar).click();
+    }
+
+}
+
+export default new AssinaturaDigital();

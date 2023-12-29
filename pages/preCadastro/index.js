@@ -1,5 +1,6 @@
 const elem = require('../preCadastro/elements').ELEMENTS;
 const elemNovaVenda = require('../novaVenda/elements.js').ELEMENTS;
+const print = require('../parametrosPrints/elements').ADRESS_PRINT
 import gerarPessoaAleatorio from '../../geradores/geradorPessoas.js';
 
 class PreCadastro {
@@ -27,8 +28,6 @@ class PreCadastro {
     }
 
     preencherDados() {
-        var jsonBenef = window.localStorage.getItem('pre_benef')
-        var benef = JSON.parse(jsonBenef);
         cy.get(elem.cpf).type(this.obterObjetoLocalStorage().cpf.semMascara)
         .should('have.value', this.obterObjetoLocalStorage().cpf.comMascara)
         cy.get(elem.parceriaVenda).select(elem.opcaoParceria)
@@ -42,11 +41,13 @@ class PreCadastro {
         cy.get(elem.prestadorServico).select(elem.opcaoPrestadorServico)
         cy.get(elem.prestadorServico + ' option:selected').invoke('text')
         .should('eq', elem.opcaoPrestadorServico);
+        cy.get(elem.celular).clear().type(this.obterObjetoLocalStorage().cel)
+        .should('have.value', this.obterObjetoLocalStorage().cel)
+
     }
 
     preencherNomeGeneroSocial(){
         cy.get(elem.nomeSocial).type(this.obterObjetoLocalStorage().nomeSocial);
-        cy.get(elem.generoSocial).select(this.obterObjetoLocalStorage().generoSocial);
     }
 
     validarNaoExibicaoAlertaCamposObrigatorios(){

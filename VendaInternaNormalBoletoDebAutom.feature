@@ -67,8 +67,65 @@ Scenario: Acessar o Agendamento de Assinatura e selecionar o dia do Vencimento
     Then permitirá o avanço para a tela "Conferência"
 
 @Conferencia
-Scenario: 
+Scenario: Validar as Informações preenchidas nas telas Anteriores
+    Given o acesso a tela "Conferência de Arquivos"
+    When preencher a "Parceria da Venda"  e Assinatura Digital como "sim"
+    AND preencher a forma de pagamento da Adesão como Boleto
+    AND preencher a forma de pagamento da Mensalidade como Débito Automático
+    Then as informações do Beneficiário preenchida em telas anteriores deverão ser validadas
+    AND as informações referente ao Débito Automático deverão ser validadas
+    AND a justificativa da declaração de Saúde deverá ser validada
+    AND permitirá o avanço para a tela "Revisão"
 
+@Revisão
+Scenario: Validar as Informações preenchidas nas telas Anteriores, incluindo Conferência
+    Given o acesso a tela "Revisão do beneficiário"
+    When os dados do Proponente deverão ser validados
+    AND o Termo Aditivo deverá ser validado
+    AND a Assinatuta Digital deverá ser validada
+    AND a Forma de Pagamento da Adesão e Mensalidade deverão ser validadas
+    AND as informações referente ao Débito Automático deverão ser validadas
+    AND a justificativa da declaração de Saúde deverá ser validada
+    THEN permitirá o avanço para a tela "Impressão do Contrato"
+
+@ImpressaoContrato
+Scenario: Validar as Informações exibidas na Tela e gerar Contrato
+    Given o acesso a tela "Impressão do Contrato"
+    And as informações do beneficiário exibidas em tela
+    And a impossibilidade de Avançar sem gerar o contrato
+    When clicar no botão para Gerar Contrato
+    Then o Contrato deverá ser exibido
+    And o botão Avançar liberado para Assinatura Digital
+
+@AssinaturaDigital
+Scenario: Validar as Informações exibidas na Tela e gerar Boleto após a conclusão da Assinatura Digital
+    Given o acesso a tela "Assinatura Digital"
+    And as informações do beneficiário exibidas em tela
+    And o status da Assinatura Digital em "Pendente de Envio"
+    And exibir a Mensagem de Erro ao tentar Avançar sem realizar Assinatura Digital
+    When solicitar Assinatura Digital
+    Then exibir Mensagem de Erro ao tentar Avançar com Status "Enviado"
+    And o status deverá ser trocado de "ENVIADO" para "CONCLUIDO"
+    And exibir Mensagem de Erro ao tentar Avançar sem gerar o Boleto
+    And o botão de Gerar Boleto deverá ser exibido gerando um boleto
+    And permitirá avançar para a tela "Impressão da Carteirinha" sem exibir mensagem de erro
+
+@ImpressaoCarteirinha
+Scenario: Realizar o Envio do Kit de Boas Vindas e Impressao da Carteirinha
+    Given o acesso a tela "Impressão da Carteirinha"
+    When cliclar em "Avançar" deverá exibir mensagem de erro referente a Impressão
+    And clicar em "Gerar PDF"
+    And cliclar em "Avançar" deverá exibir mensagem de erro referente ao Kit.
+    And clicar em "ENVIAR KIT"
+    Then exibirá Mensagem de Sucesso no Envio do Kit 
+    And permitirá avnaçar para a tela "Pagamento"
+
+@Pagamento
+Scenario: Validar e Finalizar a Venda
+    Given o acesso a tela "Pagamento"
+    When validar as informações
+    And clicar em "Finalizar Pagamento"
+    Then a venda será concluída
 
 
 

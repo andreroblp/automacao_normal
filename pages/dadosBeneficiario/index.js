@@ -1,6 +1,5 @@
 const elem = require('./elements.js').ELEMENTS;
 import preCadastro from '../preCadastro/';
-import gerarNomeFerminino from '../../geradores/geradorPessoas.js';
 
 class DadosBeneficiario{
 
@@ -9,22 +8,20 @@ class DadosBeneficiario{
         cy.get(elem.nome).should('have.value', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
         cy.get(elem.dataNascimento).should('have.value', elem.dtNasc);
         cy.get(elem.cpf).should('have.value', preCadastro.obterObjetoLocalStorage().cpf.comMascara)
+        cy.get(elem.numeroCel).should('have.value', preCadastro.obterObjetoLocalStorage().cel);
     }
 
     validarNomeGeneroSocial(){
         cy.get(elem.nomeSocial).should('have.value', preCadastro.obterObjetoLocalStorage().nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.get(elem.generoSocial + ' option:selected').invoke('text')
-        .should('eq', preCadastro.obterObjetoLocalStorage().generoSocial);
+        cy.get(elem.generoSocial).select(preCadastro.obterObjetoLocalStorage().generoSocial);
     }
 
     preencherDadosBeneficiario(){
-        localStorage.setItem('nomeMae', gerarNomeFerminino().nome)
-        var nomeDaMae = localStorage.getItem('nomeMae');
-        cy.get(elem.nomeMae).type(nomeDaMae).should('have.value', nomeDaMae);
-        cy.get(elem.estadoCivil).select(1);
+        cy.get(elem.nomeMae).type(preCadastro.obterObjetoLocalStorage().nomeMae).should('have.value', preCadastro.obterObjetoLocalStorage().nomeMae);
+        cy.get(elem.estadoCivil).select(preCadastro.obterObjetoLocalStorage().estadoCivil);
         cy.get(elem.estadoCivil + ' option:selected').invoke('text')
-        .should('eq', elem.estadoCivilText);
-        cy.get(elem.rg).type(elem.rgValue).should('have.value', elem.rgValue);
+        .should('eq', preCadastro.obterObjetoLocalStorage().estadoCivil);
+        cy.get(elem.rg).type(Cypress.env('rg')).should('have.value', Cypress.env('rg'));
         cy.get(elem.cns).type(preCadastro.obterObjetoLocalStorage().cns).should('have.value', preCadastro.obterObjetoLocalStorage().cns);
         cy.get(elem.sexo).select(preCadastro.obterObjetoLocalStorage().sexo);
         cy.get(elem.sexo + ' option:selected').invoke('text')
@@ -64,6 +61,10 @@ class DadosBeneficiario{
         cy.get(elem.checkboxDocumentos).uncheck({ force: true }).should('not.be.checked');
         cy.get(elem.botaoAvancar).click();
         cy.get(elem.janelaDeAviso).should('be.visible')
+        cy.get(elem.janelaDeAviso).invoke('text')
+        .should('eq', elem.mensagemErroDocumentos);
+        cy.get(elem.botaoFecharJanelErro).click();
+        cy.get(elem.janelaDeAviso).should('not.exist')
         cy.get(elem.checkboxDocumentos).check({ force: true }).should('be.checked');
     }
 

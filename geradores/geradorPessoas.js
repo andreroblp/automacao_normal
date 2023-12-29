@@ -1,5 +1,6 @@
-import cpf from '../geradores/geradorCpf.js'
-import cns from '../geradores/geradorCNS.js'
+import cpf from './geradorCpf.js'
+import cns from './geradorCNS.js'
+import cel from './geradorCelular.js'
 
 function gerarNumero(num){
     return Math.floor(Math.random()*(num+1))
@@ -9,14 +10,20 @@ export function gerarNomeMasculino(){
     return {"nome" : nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)]+ " " + sobrenome[gerarNumero(99)][gerarNumero(9)],
             "sexo" : "Masculino",
             "cpf" : cpf(),
-            "cns" : cns()};
+            "cns" : cns(),
+            "cel" : cel(),
+            "estadoCivil" : estadoCivil[gerarNumero(8)],
+            "nomeMae" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)]};
 }
 
 export function gerarNomeFerminino(){
     return {"nome" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)],
             "sexo" : "Feminino",
             "cpf" : cpf(),
-            "cns" : cns()};
+            "cns" : cns(),
+            "cel" : cel(),
+            "estadoCivil" : estadoCivil[gerarNumero(8)],
+            "nomeMae" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)]};
 }
 
 export function gerarNomeMasculinoComNomeSocial(){
@@ -24,8 +31,11 @@ export function gerarNomeMasculinoComNomeSocial(){
             "sexo" : "Masculino",
             "cpf" : cpf(),
             "cns" : cns(),
+            "cel" : cel(),
             "nomeSocial" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)],
-            "generoSocial" : "Feminino" };
+            "generoSocial" : "Feminino",
+            "estadoCivil" : estadoCivil[gerarNumero(8)],
+            "nomeMae" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)] };
 }
 
 export function gerarNomeFermininoComNomeSocial(){
@@ -33,8 +43,11 @@ export function gerarNomeFermininoComNomeSocial(){
             "sexo" : "Feminino",
             "cpf" : cpf(),
             "cns" : cns(),
+            "cel" : cel(),
             "nomeSocial" : nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)],
-            "generoSocial" : "Masculino" };
+            "generoSocial" : "Masculino",
+            "estadoCivil" : estadoCivil[gerarNumero(8)],
+            "nomeMae" : nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)] };
 }
 
 export default function gerarPessoaAleatorio(nomeSocial){
@@ -189,5 +202,4 @@ var sobrenome =     [['Abadia', 'Abrahao', 'Abrantes', 'Abreu', 'Acosta', 'Adria
                      ['Weber', 'Xavier', 'Zimmermann', 'Borba', 'Cândido', 'Calazans', 'Bressan', 'Nicola', 'Mingazzini', 'Moscardelli'],
                      ['Ximenes', 'Yamamoto', 'Zacarias', 'Zago', 'Zanatta', 'Zanella', 'Zanetti', 'Zanin', 'Zanini', 'Zanon']];
 
-
-                   
+var estadoCivil = ['Solteiro(a)', 'Casado(a)', 'Separado(a)', 'Divorciado(a)', 'Viuvo(a)', 'Marital', 'Desquitado', 'Não informado', 'União estável'];

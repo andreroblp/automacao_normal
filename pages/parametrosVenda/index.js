@@ -12,10 +12,8 @@ class ParamsVenda {
   }
 
   acessarTelaViaEnderecoComTicket() {
-    cy.intercept('https://portalweb-hom.preventsenior.com.br/portalweb/resources/js/utils.js', { forceNetworkError: true })
     var jsonBenef = window.localStorage.getItem('ticket');
     var ticketPortal = JSON.parse(jsonBenef);
-    console.log(ticketPortal)
     let site = Cypress.env('urlParametrosVenda')
     cy.visit(`${site}${ticketPortal}&menuAcesso=35`);
     
@@ -47,9 +45,7 @@ class ParamsVenda {
     cy.iframe(elem.iframe)
       .find(elem.ticket)
       .invoke('attr', 'value').then($ticket => {
-        let ticketPortalWeb = $ticket;
-        let myObj = ticketPortalWeb;
-        var jsonAux = JSON.stringify(myObj);
+        var jsonAux = JSON.stringify($ticket);
         localStorage.setItem('ticket', jsonAux);
       })
   }

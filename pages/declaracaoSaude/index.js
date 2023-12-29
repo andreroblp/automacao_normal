@@ -11,8 +11,8 @@ class DeclaracaoSaude{
     }
 
     responderJustificativa(){
-        cy.get(elem.caixaJustificativaPrimeiraPergunta).type("Teste Justificariva Automação")
-        .should('have.value', "Teste Justificariva Automação");
+        cy.get(elem.caixaJustificativaPrimeiraPergunta).type("Teste Justificativa Automação")
+        .should('have.value', "Teste Justificativa Automação");
     }
 
     avancarParaAgendamento(){
