@@ -17,7 +17,8 @@ export const ELEMENTS = {
     prestadorServico : '#tipo-prestador-servico',
     opcaoPrestadorServico : 'Nenhum',
     dtNasc : Cypress.env('dtNasc'),
-    celular : '[name="preBeneficiario.telefoneCelular.numero"]'
+    celular : '[name="preBeneficiario.telefoneCelular.numero"]',
+    recemNascidoMenu: '#recem-nascido',
 }
 
 //Opções Parceria:

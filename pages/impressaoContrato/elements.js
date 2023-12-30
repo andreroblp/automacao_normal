@@ -19,4 +19,13 @@ export const ELEMENTS = {
     mensagemErro : '.noty_text',
     mensagemErroContrato : 'É necessário imprimir o contrato para avançar!',
     mensagemErroBotaoFechar : '.noty_exit',
+    xpathNomeBenefSemNomeSocial : '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[2]/span',
+    xpathNomeMaeSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[3]/span',
+    xpathDataNascSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[4]/span',
+    xpathRGSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[5]/span',
+    xpathCPFSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[6]/span',
+    xpathEmailSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[7]/span',
+    xpathCelularSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[9]/span',
+    xpathAdesaoSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[11]/span',
+    xpathMensalSemNomeSocial: '//*[@id="form"]/div[1]/section/div/div[2]/div/ul/li[13]/span',
 }

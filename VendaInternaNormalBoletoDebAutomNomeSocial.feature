@@ -38,8 +38,9 @@ Scenario: Preencher as informações da Tela Pré Cadastro
 @DadosBeneficiario
 Scenario: Preencher os Dados do Beneficiario
     Given o acesso a tela "Dados do Beneficiario" com o Nome, CPF e data de nascimento já preenchidos
+    And Nome Social já preenchido
     When preencher os dados do beneficiário
-    And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
+    And o Gênero Social
     And preencher os dados do débito automático
     Then validar regras do Débito Automático
     And a tela permitirá avançar para o "Envio do documento" 
@@ -73,7 +74,6 @@ Scenario: Validar as Informações preenchidas nas telas Anteriores
     AND preencher a forma de pagamento da Adesão como Boleto
     AND preencher a forma de pagamento da Mensalidade como Débito Automático
     Then as informações do Beneficiário preenchida em telas anteriores deverão ser validadas
-    And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
     AND as informações referente ao Débito Automático deverão ser validadas
     AND a justificativa da declaração de Saúde deverá ser validada
     AND permitirá o avanço para a tela "Revisão"
@@ -82,7 +82,6 @@ Scenario: Validar as Informações preenchidas nas telas Anteriores
 Scenario: Validar as Informações preenchidas nas telas Anteriores, incluindo Conferência
     Given o acesso a tela "Revisão do beneficiário"
     When os dados do Proponente deverão ser validados
-    And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
     AND o Termo Aditivo deverá ser validado
     AND a Assinatuta Digital deverá ser validada
     AND a Forma de Pagamento da Adesão e Mensalidade deverão ser validadas

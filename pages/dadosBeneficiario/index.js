@@ -5,27 +5,49 @@ class DadosBeneficiario{
 
     validarAcessoNaPaginaEDadosBeneficiario(){
         cy.contains(elem.titulo).should('be.visible');
-        cy.get(elem.nome).should('have.value', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.get(elem.dataNascimento).should('have.value', elem.dtNasc);
-        cy.get(elem.cpf).should('have.value', preCadastro.obterObjetoLocalStorage().cpf.comMascara)
         cy.get(elem.numeroCel).should('have.value', preCadastro.obterObjetoLocalStorage().cel);
     }
 
     validarNomeGeneroSocial(){
         cy.get(elem.nomeSocial).should('have.value', preCadastro.obterObjetoLocalStorage().nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+    }
+
+    preencherGeneroSocial(){
         cy.get(elem.generoSocial).select(preCadastro.obterObjetoLocalStorage().generoSocial);
     }
 
-    preencherDadosBeneficiario(){
+    validarDadosNotRF(){
+        cy.get(elem.nome).should('have.value', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.get(elem.dataNascimento).should('have.value', elem.dtNasc);
+        cy.get(elem.cpf).should('have.value', preCadastro.obterObjetoLocalStorage().cpf.comMascara)
+    }
+
+    validarDadosReceita(){
+        cy.get(elem.nome).should('have.value', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.get(elem.dataNascimento).should('have.value', preCadastro.obterReceitaLocalStorage().dataNascimento);
+        cy.get(elem.cpf).should('have.value', preCadastro.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"))
+        cy.get(elem.nomeMae).should('have.value', preCadastro.obterReceitaLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+    }
+
+    preencherSexoReceita(){
+        cy.get(elem.sexo).select(preCadastro.obterReceitaLocalStorage().sexo);
+        cy.get(elem.sexo + ' option:selected').invoke('text')
+        .should('eq', preCadastro.obterReceitaLocalStorage().sexo);
+    }
+
+    preencherSexoMaeNotRF(){
         cy.get(elem.nomeMae).type(preCadastro.obterObjetoLocalStorage().nomeMae).should('have.value', preCadastro.obterObjetoLocalStorage().nomeMae);
+        cy.get(elem.sexo).select(preCadastro.obterObjetoLocalStorage().sexo);
+        cy.get(elem.sexo + ' option:selected').invoke('text')
+        .should('eq', preCadastro.obterObjetoLocalStorage().sexo);
+    }
+
+    preencherDadosBeneficiarioGeral(){
         cy.get(elem.estadoCivil).select(preCadastro.obterObjetoLocalStorage().estadoCivil);
         cy.get(elem.estadoCivil + ' option:selected').invoke('text')
         .should('eq', preCadastro.obterObjetoLocalStorage().estadoCivil);
         cy.get(elem.rg).type(Cypress.env('rg')).should('have.value', Cypress.env('rg'));
         cy.get(elem.cns).type(preCadastro.obterObjetoLocalStorage().cns).should('have.value', preCadastro.obterObjetoLocalStorage().cns);
-        cy.get(elem.sexo).select(preCadastro.obterObjetoLocalStorage().sexo);
-        cy.get(elem.sexo + ' option:selected').invoke('text')
-        .should('eq', preCadastro.obterObjetoLocalStorage().sexo);
         cy.get(elem.orgaoEmissor).select(elem.orgaoEmissorText).should('have.value', elem.orgaoEmissorValue)
         cy.get(elem.elementoProfissao).invoke("show");
         cy.get(elem.classeProfissao)
@@ -35,7 +57,6 @@ class DadosBeneficiario{
               .click().type("ACESSOR {enter}")
           })
         cy.get(elem.ufOrgaoEmissor).select(elem.ufOrgaoEmissorValueText);
-
         cy.get(elem.email).type(Cypress.env('emailAndre')).should('have.value', Cypress.env('emailAndre'));
         cy.get(elem.cep).type(Cypress.env('cep')).should('have.value', Cypress.env('cep'));
         cy.get(elem.logradouro).invoke('val').should('not.be.empty')
@@ -66,6 +87,12 @@ class DadosBeneficiario{
         cy.get(elem.botaoFecharJanelErro).click();
         cy.get(elem.janelaDeAviso).should('not.exist')
         cy.get(elem.checkboxDocumentos).check({ force: true }).should('be.checked');
+    }
+
+    nomeGeneroSocialVazio(){
+        cy.get(elem.nomeSocial).should('have.value', '');
+        cy.get(elem.generoSocial + ' option:selected').invoke('text')
+        .should('eq', 'Nenhum');
     }
 
     naoExibirAlertaObrigatoriedade(){

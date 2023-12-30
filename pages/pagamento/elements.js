@@ -15,6 +15,8 @@ export const ELEMENTS = {
     elemPainel : '[class="painel-name"]',
     tituloPainel : 'Painel de vendas',
     mensagemSucesso : '.noty_text',
-    mensagemSucessoTexto : 'Processo finalizado com sucesso.'
-    
+    mensagemSucessoTexto : 'Processo finalizado com sucesso.',
+    xpathNomeBenefSemNomeSocial : '//*[@id="form"]/div[1]/div[2]/div[2]/div/ul[2]/li[1]/span',
+    xpathAdesaoSemNomeSocial: '//*[@id="form"]/div[1]/div[2]/div[2]/div/ul[2]/li[5]/span',
+    xpathMensalSemNomeSocial: '//*[@id="form"]/div[1]/div[2]/div[2]/div/ul[2]/li[4]/span',
 }

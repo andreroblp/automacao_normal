@@ -53,6 +53,10 @@ class ParamsVenda {
     cy.get(elem.naoReceitaSemIframe,).check({ force: true }).should('be.checked');
   }
 
+  checarReceitaSemIframeSim() {
+    cy.get(elem.SimReceitaSemIframe,).check({ force: true }).should('be.checked');
+  }
+
   checarDebitoSemIframe() {
     cy.get(elem.simDebitoSemIframe).check({ force: true }).should('be.checked');
   }

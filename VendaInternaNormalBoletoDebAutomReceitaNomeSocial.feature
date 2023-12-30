@@ -11,7 +11,7 @@ Scenario: Logar no Sistema
 Scenario: Checar os parâmetros de Venda
     Given o acesso para a tela "Parâmetros de Venda"
     When o usuário checar para "Sim" o item "Habilitar débito automático como forma de pagamento das mensalidades?"
-    And o usuário checar para "Não" o item "Pode consultar pessoa fisica receita federal?"
+    And o usuário checar para "Sim" o item "Pode consultar pessoa fisica receita federal?"
     Then deve salvar as confiugurações estabelecidas
 
 @NovaVenda
@@ -31,15 +31,17 @@ Scenario: Preencher as informações do Formulario de Contato
 @PreCadastro
 Scenario: Preencher as informações da Tela Pré Cadastro
     Given o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"
-    When o usuário vai trocar o nome gerado pela automação
+    When inserir o CPF do Beneficiário, Nome e Data de Nascimento deverão ser preenchidos automaticamente
     And preencher os demais campos da tela
-    Then a tela permitirá avançar para a tela "Dados do Beneficiário"
+    Then Nome e Data de Nascimento deverão ter sido preenchidos automaticamente'
+    And a tela permitirá avançar para a tela "Dados do Beneficiário"
 
 @DadosBeneficiario
 Scenario: Preencher os Dados do Beneficiario
-    Given o acesso a tela "Dados do Beneficiario" com o Nome, CPF e data de nascimento já preenchidos
+    Given o acesso a tela "Dados do Beneficiario" com o Nome, CPF, data de nascimento E Nome da Mãe já preenchidos da RF
+    And Nome Social já preenchido
     When preencher os dados do beneficiário
-    And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
+    And o Gênero Social
     And preencher os dados do débito automático
     Then validar regras do Débito Automático
     And a tela permitirá avançar para o "Envio do documento" 
@@ -73,7 +75,6 @@ Scenario: Validar as Informações preenchidas nas telas Anteriores
     AND preencher a forma de pagamento da Adesão como Boleto
     AND preencher a forma de pagamento da Mensalidade como Débito Automático
     Then as informações do Beneficiário preenchida em telas anteriores deverão ser validadas
-    And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
     AND as informações referente ao Débito Automático deverão ser validadas
     AND a justificativa da declaração de Saúde deverá ser validada
     AND permitirá o avanço para a tela "Revisão"
@@ -82,7 +83,6 @@ Scenario: Validar as Informações preenchidas nas telas Anteriores
 Scenario: Validar as Informações preenchidas nas telas Anteriores, incluindo Conferência
     Given o acesso a tela "Revisão do beneficiário"
     When os dados do Proponente deverão ser validados
-    And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
     AND o Termo Aditivo deverá ser validado
     AND a Assinatuta Digital deverá ser validada
     AND a Forma de Pagamento da Adesão e Mensalidade deverão ser validadas
