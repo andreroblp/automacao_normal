@@ -99,7 +99,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             context('Cenário: Preencher a tela Pré Cadastro', () => {
                 it('DADO \n o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"', () => {
                     preCadastro.validarNomeEntrada();
-                    const CPF = '02950569595';
+                    const CPF =  //## Inserir CPF ##;
                     preCadastro.consultarReceitaFederal(CPF);
                 })
 
