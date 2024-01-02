@@ -1,5 +1,6 @@
 const elem = require('./elements').ELEMENTS;
 const print = require('../parametrosPrints/elements').ADRESS_PRINT;
+import printDaTela from '../parametrosPrints/';
 import preCadastro from '../preCadastro';
 
 class ImpressaoContrato {
@@ -88,11 +89,22 @@ class ImpressaoContrato {
         cy.get(elem.mensagemErroBotaoFechar).click();
     }
 
-    clicarBotaoContrato() {
+    clicarBotaoContratoNormal(n) {
         cy.get(elem.botaoContrato).should('be.visible').click();
         cy.get(elem.classeModal).should('be.visible');
         cy.wait(5000)
-        cy.screenshot(print.internaNormalDebAutomNomeSocial, { capture: 'fullPage' });
+        printDaTela.docNormal(n);
+        cy.get(elem.idPreBenef).invoke('attr', 'value').then($id => {
+            var jsonAux = JSON.stringify($id);
+            window.localStorage.setItem('id', jsonAux);
+        })
+    }
+
+    clicarBotaoContratoReceita() {
+        cy.get(elem.botaoContrato).should('be.visible').click();
+        cy.get(elem.classeModal).should('be.visible');
+        cy.wait(5000)
+        printDaTela.docReceita();
         cy.get(elem.idPreBenef).invoke('attr', 'value').then($id => {
             var jsonAux = JSON.stringify($id);
             window.localStorage.setItem('id', jsonAux);

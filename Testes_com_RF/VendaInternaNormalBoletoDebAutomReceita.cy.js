@@ -16,7 +16,7 @@ import pagamento from '../pages/pagamento';
 import printDaTela from '../pages/parametrosPrints';
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
-    + '/ Com Débito Automático / Com Nome Social / Sem Receita Federal',
+    + '/ Com Débito Automático / Sem Nome Social / Com Receita Federal',
     () => {
 
         context('Cenário: Logar no Sistema da Prevent Senior.', () => {
@@ -99,12 +99,12 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             context('Cenário: Preencher a tela Pré Cadastro', () => {
                 it('DADO \n o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"', () => {
                     preCadastro.validarNomeEntrada();
-                    const CPF = //INSERIR O CPF // ;
+                    const CPF = 'zero';
                     preCadastro.consultarReceitaFederal(CPF);
                 })
 
                 it('QUANDO \n inserir o CPF do Beneficiário', () => {
-                    preCadastro.armazenarLocalStorage(0,0);
+                    preCadastro.armazenarLocalStorage(0,false,false);
                     preCadastro.preencherCPFReceita();
                 }), 
 
@@ -293,7 +293,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n clicar no botão para Gerar Contrato', () => {
-                    impressaoContrato.clicarBotaoContrato();
+                    impressaoContrato.clicarBotaoContratoReceita();
                 })
 
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
@@ -335,7 +335,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n o botão de Gerar Boleto deverá ser exibido gerando um boleto', () => {
-                    assinatura.gerarBoleto();
+                    assinatura.gerarBoletoReceita();
                 })
                 it('E \n permitirá avançar para a tela "Impressão da Carteirinha" sem exibir mensagem de erro', () => {
                     printDaTela.internaNormalDebAutomReceita();
@@ -364,7 +364,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n permitirá avançar para a tela "Pagamento"', () => {
-                   carteirinha.avancarTela();
+                   carteirinha.avancarTelaReceita();
                 })
             })
             context('Cenário: Validar e Finalizar a Venda', () => {

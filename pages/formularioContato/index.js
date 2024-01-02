@@ -22,6 +22,11 @@ class Formulario {
         cy.get(elem.historico).type('Teste');
     }
 
+    preencherDadosCorretora(){
+            cy.get(elem.celular).clear().type('11111111111').should('have.value', '(11) 11111-1111');
+            cy.get(elem.idade).clear().type('33').should('have.value', '33');
+        }
+
     iniciarVenda(){
         cy.get(elem.botaoIniciarVenda).click();
     }

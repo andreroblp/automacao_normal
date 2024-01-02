@@ -1,6 +1,4 @@
 var numero = [];
-let numeroString = "";
-
 
 export default function gerarCelular(){
     gerarDDD();
@@ -19,14 +17,17 @@ function gerarDDD(){
 }
 
 function gerarNumeroCelular(){
+    let numeroString = "";
     for(var x=3; x<11; x++){
       numero[x] =  gerarNumero(0);
     }
     for(var y=0; y<11; y++){
         numeroString += numero[y]
     }
+
+    return numeroString;
 }
 
 function criarMascaraCelular(){
-   return numeroString.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+   return gerarNumeroCelular().replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
 }

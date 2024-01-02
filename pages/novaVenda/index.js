@@ -3,6 +3,7 @@ const elem = require('./elements').ELEMENTS;
 class NovaVenda{
 
     acessarNovaVenda(){
+      localStorage.removeItem('pre_benef');
       var jsonBenef = window.localStorage.getItem('ticket')
       var ticketPortal = JSON.parse(jsonBenef); 
       let site = Cypress.env('urlNovaVenda');

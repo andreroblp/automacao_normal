@@ -3,10 +3,15 @@ const elem = require('./elements').ELEMENTS;
 class Login {
 
   acessarValidarTelaLogin() {
-    // localStorage.clear();
+    localStorage.clear();
     cy.visit(Cypress.env('site'));
     cy.get(elem.username).should('be.visible')
     
+  }
+
+  acessarLoginNovamenteAnalista(){
+    cy.visit(Cypress.env('site'));
+    cy.get(elem.username).should('be.visible')
   }
 
   realizarLogin() {
@@ -24,6 +29,17 @@ class Login {
       .click();
     cy.get(elem.validarAcesso).should('be.visible');
     cy.wait(4000);
+  }
+
+  realizarLogout(){
+    cy.get(elem.botaoAcoesUser).should('be.visible').click();
+    cy.get(elem.logout).should('be.visible').click();
+    cy.get(elem.nomeLogin).should('be.visible');
+  }
+
+  realizarLoginCorretora(){
+    cy.get(elem.username).type(Cypress.env('corretora_name'));
+    cy.get(elem.password).type(Cypress.env('corretora_senha'));
   }
 
 }

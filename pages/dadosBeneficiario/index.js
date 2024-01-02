@@ -77,6 +77,10 @@ class DadosBeneficiario{
         cy.get(elem.cc).type(Cypress.env('cc')).should('have.value', Cypress.env('cc'))
     }
 
+    validarAvisoDebitoAutomaticoCorretora(){
+        cy.get(elem.avisoDebitoAutomatico).should('be.visible');
+    }
+
     validarRegrasDebitoAutomatico(){
         cy.get(elem.avisoDebitoAutomatico).should('be.visible');
         cy.get(elem.checkboxDocumentos).uncheck({ force: true }).should('not.be.checked');

@@ -16,7 +16,7 @@ import pagamento from '../pages/pagamento/';
 import printDaTela from '../pages/parametrosPrints/';
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
-    + '/ Com Débito Automático / Com Nome Social / Sem Receita Federal',
+    + '/ Com Débito Automático / Sem Nome Social / Sem Receita Federal',
     () => {
 
         context('Cenário: Logar no Sistema da Prevent Senior.', () => {
@@ -62,8 +62,9 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 parametrosVenda.exibirMensagemSucesso();
             })
         })
-        Cypress._.times(1, (n) => {
-            context('Cenário: Tela Nova Venda  ## Venda '+ (n+1), () => {
+        Cypress._.times(2, (n) => {
+            let contagem = (n+1)
+            context('Cenário: Tela Nova Venda  ## Venda '+ (contagem), () => {
                 it('DADO \n o início do fluxo pela tela Nova Venda', () => {
                     novaVenda.acessarNovaVenda();
                 })
@@ -103,7 +104,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
-                    preCadastro.armazenarLocalStorage(0,0);
+                    preCadastro.armazenarLocalStorage(0,false, false);
                     preCadastro.reescreverNome();
                 })
 
@@ -113,7 +114,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('ENTÃO \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
-                    printDaTela.internaNormalDebAutom();
+                    printDaTela.internaNormalDebAutom(contagem);
                     preCadastro.avancarParaDadosBeneficiario();
                 })
             })
@@ -140,7 +141,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('AND \n a tela permitirá avançar para o "Envio do documento"', () => {
-                    printDaTela.internaNormalDebAutom();
+                    printDaTela.internaNormalDebAutom(contagem);
                     dadosBeneficiario.avancarParaEnvioArquivo();
                 })
 
@@ -234,7 +235,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
-                    printDaTela.internaNormalDebAutom();
+                    printDaTela.internaNormalDebAutom(contagem);
                     conferencia.botaoSalvar();
                 })
             })
@@ -272,13 +273,13 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('ENTÃO \n permitirá o avanço para a tela "Impressão do Contrato"', () => {
-                    printDaTela.internaNormalDebAutom();
+                    printDaTela.internaNormalDebAutom(contagem);
                     revisao.botaoSalvar();
                 })
             })
             context('Cenário: Validar as Informações exibidas na Tela e gerar Contrato', () => {
                 it('DADO \n o acesso a tela "Impressão do Contrato"', () => {
-                    printDaTela.internaNormalDebAutom();
+                    printDaTela.internaNormalDebAutom(contagem);
                     impressaoContrato.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
@@ -290,7 +291,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n clicar no botão para Gerar Contrato', () => {
-                    impressaoContrato.clicarBotaoContrato();
+                    impressaoContrato.clicarBotaoContratoNormal(contagem);
                 })
 
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
@@ -332,10 +333,10 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n o botão de Gerar Boleto deverá ser exibido gerando um boleto', () => {
-                    assinatura.gerarBoleto();
+                    assinatura.gerarBoletoNormal(contagem);
                 })
                 it('E \n permitirá avançar para a tela "Impressão da Carteirinha" sem exibir mensagem de erro', () => {
-                    printDaTela.internaNormalDebAutom();
+                    printDaTela.internaNormalDebAutom(contagem);
                     assinatura.botaoAvancar();
                     assinatura.mensagemErroOculta();
                 })
@@ -361,12 +362,12 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n permitirá avançar para a tela "Pagamento"', () => {
-                   carteirinha.avancarTela();
+                   carteirinha.avancarTelaNormal(contagem);
                 })
             })
             context('Cenário: Validar e Finalizar a Venda', () => {
                 it('DADO \n  o acesso a tela "Pagamento"', () => {
-                    printDaTela.internaNormalDebAutom();
+                    printDaTela.internaNormalDebAutom(contagem);
                     pagamento.validarAcesso();
                 })
                 it('QUANDO \n validar as informações', () => {

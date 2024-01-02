@@ -18,6 +18,13 @@ class DeclaracaoSaude{
     avancarParaAgendamento(){
         cy.get(elem.botaoAvancar).click();
     }
+
+    obterIdBeneficiarioCorretora(){
+        cy.get(elem.idBenef).invoke('attr', 'value').then($id =>{
+            var jsonAux = JSON.stringify($id);
+            window.localStorage.setItem('id', jsonAux);
+        })
+    }
 }
 
 export default new DeclaracaoSaude();

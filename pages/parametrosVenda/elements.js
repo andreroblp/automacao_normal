@@ -15,6 +15,6 @@ export const ELEMENTS = {
     SimReceitaSemIframe : 'input[id="193-true"]',
     botaoSalvar : '#save',
     iconePreventSenior : '.icon-logo-prevent-senior',
-    mensagemSucesso : '#noty_topCenter_layout_container'
-
+    mensagemSucesso : '#noty_topCenter_layout_container',
+    mensagemSucessoIframe : '[class="noty_text"]',
 }

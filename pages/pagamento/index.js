@@ -10,16 +10,19 @@ class Pagamento {
     validarDadosNotRF() {
         cy.xpath(elem.xpathNomeBenef).invoke('text')
             .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.get(elem.datNasc).should('have.value', Cypress.env('dtNasc'));
     }
 
     validarDadosNotRFSemNomeSocial() {
         cy.xpath(elem.xpathNomeBenefSemNomeSocial).invoke('text')
             .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.get(elem.datNasc).should('have.value', Cypress.env('dtNasc'));
     }
 
     validarDadosReceita() {
         cy.xpath(elem.xpathNomeBenef).invoke('text')
             .should('eq', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.get(elem.datNasc).should('have.value', preCadastro.obterReceitaLocalStorage().dataNascimento);
     }
 
     validarDadosReceitaSemNomeSocial() {
@@ -35,7 +38,6 @@ class Pagamento {
             .should('eq', 'Boleto - (deve ser encaminhado junto com o contrato)');
         cy.xpath(elem.xpathMensal).invoke('text')
             .should('eq', 'Débito automático');
-        cy.get(elem.datNasc).should('have.value', Cypress.env('dtNasc'));
     }
 
     validarDadosBeneficiarioSemNomeSocial() {

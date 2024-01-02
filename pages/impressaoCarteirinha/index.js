@@ -24,7 +24,6 @@ class ImpressaoCarteirinha {
     clicarGerarPDF() {
         cy.get(elem.radio).check(elem.valuePDF).should('be.checked');
         cy.wait(4000)
-        cy.get('#carteirinhaPdf').screenshot(print.internaNormalDebAutomNomeSocial, { capture: 'fullPage' })
     }
 
     clicarGerarKit() {
@@ -37,7 +36,17 @@ class ImpressaoCarteirinha {
             .should('eq', elem.MensagemSucesso)
     }
 
-    avancarTela() {
+    avancarTelaNormal(n) {
+        cy.get('#carteirinhaPdf').screenshot(print.docNormal+n+print.arquivo, { capture: 'fullPage' })
+        cy.on('window:confirm', (str) => {
+            expect(str).to.eq('Confirma a impressão da carteirinha?')
+        })
+
+        cy.get('#avancar').click();
+    }
+
+    avancarTelaReceita() {
+        cy.get('#carteirinhaPdf').screenshot(print.docReceita+print.arquivo, { capture: 'fullPage' })
         cy.on('window:confirm', (str) => {
             expect(str).to.eq('Confirma a impressão da carteirinha?')
         })

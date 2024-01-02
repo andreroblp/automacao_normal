@@ -36,9 +36,6 @@ class ParamsVenda {
   salvarMudancas() {
     cy.iframe(elem.iframe)
       .find(elem.botaoSalvar).click();
-    cy.wait(5000)
-    cy.get(elem.iconePreventSenior).click();
-    cy.wait(2000)
   }
 
   obterTicketArmazenar() {
@@ -67,6 +64,10 @@ class ParamsVenda {
 
   exibirMensagemSucesso() {
     cy.get(elem.mensagemSucesso).should('be.visible');
+  }
+
+  exibirMensagemSucessoComIframe(){
+    cy.get(elem.iframe).find(elem.mensagemSucessoIframe).should('be.visible');
   }
 }
 export default new ParamsVenda();

@@ -1,5 +1,6 @@
 const elem = require('./elements').ELEMENTS;
 const print = require('../parametrosPrints/elements').ADRESS_PRINT;
+import printDaTela from '../parametrosPrints/';
 import preCadastro from "../preCadastro/";
 
 class AssinaturaDigital {
@@ -127,7 +128,28 @@ class AssinaturaDigital {
             .should('eq', status);
     }
 
-    gerarBoleto() {
+    gerarBoletoNormal(n) {
+        cy.get(elem.botaoPrint).click();
+        cy.get(elem.iframeBoleto).then(($iframe) => {
+
+            const iframe = $iframe.contents();
+            cy.stub(iframe[0].defaultView, 'print').as('printStub');
+        });
+
+        cy.get('@printStub').should('not.be.called');
+
+        cy.wait(4000);
+        printDaTela.docNormal(n);
+        cy.get(elem.elementoIframe)
+            .within(() => {
+                return cy.get(elem.subElementoIframe).should('have.class', elem.botaoFecharIframe)
+                    .last()
+                    .click();
+            })
+        cy.wait(2000);
+    }
+
+    gerarBoletoReceita() {
         cy.get(elem.botaoPrint).click();
         cy.get(elem.iframeBoleto).then(($iframe) => {
 
@@ -138,7 +160,7 @@ class AssinaturaDigital {
         cy.get('@printStub').should('not.be.called');
 
         cy.wait(4000)
-        cy.screenshot(print.internaNormalDebAutomNomeSocial, { capture: 'fullPage' });
+        printDaTela.docReceita();
         cy.get(elem.elementoIframe)
             .within(() => {
                 return cy.get(elem.subElementoIframe).should('have.class', elem.botaoFecharIframe)
