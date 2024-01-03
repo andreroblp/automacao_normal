@@ -4,5 +4,6 @@ export const ELEMENTS = {
     alias : '@fileInput',
     arquivo : 'cpf.png',
     notificacao : '.noty_title',
-    botaoAvancar : '#avancar'
+    botaoAvancar : '#avancar',
+    arquivoCarregado : '[class="item-documento"]',
 }

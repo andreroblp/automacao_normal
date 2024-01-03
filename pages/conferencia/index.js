@@ -7,6 +7,16 @@ class Conferencia {
         cy.contains(elem.titulo).should('be.visible');
     }
 
+    validarAcessoCorretora() {
+        cy.contains(elem.tituloCorretora).should('be.visible');
+    }
+
+    comoConheceuCorretora(){
+        cy.get(elem.comoConheceu).select(elem.opcaoConheceu);
+        cy.get(elem.comoConheceu + ' option:selected').invoke('text')
+        .should('eq', elem.opcaoConheceu)
+    }
+
     preencherParceriaVenda() {
         cy.get(elem.parceriaVenda).select("Nenhuma");
         cy.get(elem.parceriaVenda + ' option:selected').invoke('text')
@@ -98,6 +108,31 @@ class Conferencia {
         cy.xpath(elem.xpathContaCDebAutom).invoke('text')
             .should('eq', Cypress.env('cc'))
     }
+
+    validarDebAutomNomeCPFNotRFCorretora() {
+        cy.xpath(elem.xpathNomeDebAutomCorretora).invoke('text')
+            .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem.xpathCPFDebAutomCorretora).invoke('text')
+            .should('eq', preCadastro.obterObjetoLocalStorage().cpf.comMascara);
+    }
+
+    validarDebAutomNomeCPFReceitaCorretora() {
+        cy.xpath(elem.xpathNomeDebAutomCorretora).invoke('text')
+            .should('eq', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem.xpathCPFDebAutomCorretora).invoke('text')
+            .should('eq', preCadastro.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
+    }
+
+    validarDadosDebitoAutomaticoCorretora() {
+        cy.xpath(elem.xpathBancoDebAutomCorretora).invoke('text')
+            .should('eq', elem.bancoDebito);
+        cy.xpath(elem.xpathAgenciaDebAutomCorretora).invoke('text')
+            .should('eq', Cypress.env('agencia'))
+        cy.xpath(elem.xpathContaCDebAutomCorretora).invoke('text')
+            .should('eq', Cypress.env('cc'))
+    }
+
+
 
     validarJustificativaDeclaracaoSaude() {
         cy.get(elem.justificativa3).should('have.value', "Teste Justificativa Automação");

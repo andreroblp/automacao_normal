@@ -1,8 +1,6 @@
 export const ELEMENTS = {
     titulo : 'Envelope - Assinatura digital',
     botaoAssinaturaDigital : '#assinatura-digital',
-    tituloPainel  :'Painel de vendas',
-    elementoPainel : '[class="painel-name"]',
     botaoPrint : '#printBoleto',
     iframeBoleto : '[class="fancybox-iframe"]',
     elementoIframe : '[class="fancybox-skin"]',

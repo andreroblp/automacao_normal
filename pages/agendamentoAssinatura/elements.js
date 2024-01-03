@@ -14,5 +14,6 @@ export const ELEMENTS = {
     titulo : 'Agendamento de assinatura',
     diaCheckbox : `#dia-${dataParaSomar}`,
     contratoDropMenu : '#fluxoVenda',
-    botaoSalvar : '#saveAndNext'
+    botaoSalvar : '#saveAndNext',
+    tituloCorretora : 'Data de adesão e vencimento da mensalidade',
 }

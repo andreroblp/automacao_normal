@@ -1,13 +1,13 @@
 const elem = require('./elements').ELEMENTS;
+import lStorage from '../localStorage';
 
 class NovaVenda{
 
     acessarNovaVenda(){
       localStorage.removeItem('pre_benef');
-      var jsonBenef = window.localStorage.getItem('ticket')
-      var ticketPortal = JSON.parse(jsonBenef); 
+      let ticket = lStorage.obterTicket();
       let site = Cypress.env('urlNovaVenda');
-      cy.visit(`${site}${ticketPortal}&menuAcesso=29`);
+      cy.visit(`${site}${ticket}&menuAcesso=29`);
       cy.contains(elem.nomeCabecalho).should('be.visible');
      
     }

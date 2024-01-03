@@ -1,5 +1,6 @@
 const elem = require('./elements').ELEMENTS;
 import preCadastro from '../preCadastro';
+import homePortal from '../homePortal/';
 
 class Pagamento {
 
@@ -76,11 +77,8 @@ class Pagamento {
     }
 
     validarSucessoEncerramento() {
-
-        cy.get(elem.elemPainel).contains(elem.tituloPainel).should('be.visible');
-        cy.get(elem.mensagemSucesso).should('be.visible')
-        cy.get(elem.mensagemSucesso).invoke('text')
-            .should('eq', elem.mensagemSucessoTexto)
+        homePortal.validarAcesso();
+        homePortal.validarMensagemFinalizacaoVenda();
     }
 }
 

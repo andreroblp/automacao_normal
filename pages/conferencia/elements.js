@@ -1,5 +1,8 @@
 export const ELEMENTS = {
     titulo : 'Conferência de informações',
+    tituloCorretora : 'Conferência Corretor Credenciado',
+    comoConheceu : '#comoConheceu',
+    opcaoConheceu : 'Shopping Pátio Paulista',
     parceriaVenda : '#parceriaVenda',
     assinaturaDigital : '#selectAssinaturaDigital',
     pagamentoAdesao : '#selectFormaPagamento',
@@ -42,5 +45,10 @@ export const ELEMENTS = {
     xpathCPFDebAutom : '//*[@id="form"]/fieldset[7]/div/div/div[2]/label[2]',
     xpathBancoDebAutom : '//*[@id="form"]/fieldset[7]/div/div/div[3]/label[2]',
     xpathAgenciaDebAutom : '//*[@id="form"]/fieldset[7]/div/div/div[4]/label[2]',
-    xpathContaCDebAutom : '//*[@id="form"]/fieldset[7]/div/div/div[5]/label[2]'
+    xpathContaCDebAutom : '//*[@id="form"]/fieldset[7]/div/div/div[5]/label[2]',
+    xpathNomeDebAutomCorretora : '//*[@id="form"]/fieldset[8]/div/div/div[1]/label[2]',
+    xpathCPFDebAutomCorretora : '//*[@id="form"]/fieldset[8]/div/div/div[2]/label[2]',
+    xpathBancoDebAutomCorretora : '//*[@id="form"]/fieldset[8]/div/div/div[3]/label[2]',
+    xpathAgenciaDebAutomCorretora : '//*[@id="form"]/fieldset[8]/div/div/div[4]/label[2]',
+    xpathContaCDebAutomCorretora : '//*[@id="form"]/fieldset[8]/div/div/div[5]/label[2]',
 }

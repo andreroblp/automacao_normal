@@ -7,5 +7,6 @@ export const ELEMENTS = {
     mensagemErro : '.noty_text',
     MensagemErroImpressao : 'O campo "Tipo de Impressão" deve ser informado.',
     mensagemErroKit : 'É necessário enviar kit para avançar!',
-    MensagemSucesso : 'Email enviado com sucesso.'
+    MensagemSucesso : 'Email enviado com sucesso.',
+    divCarteirinha : '#carteirinhaPdf',
 }

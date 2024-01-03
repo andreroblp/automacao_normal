@@ -1,7 +1,8 @@
 const elem = require('./elements').ELEMENTS;
-const print = require('../parametrosPrints/elements').ADRESS_PRINT;
 import printDaTela from '../parametrosPrints/';
 import preCadastro from "../preCadastro/";
+import lStorage from '../localStorage';
+import homePortal from '../homePortal';
 
 class AssinaturaDigital {
 
@@ -91,21 +92,15 @@ class AssinaturaDigital {
 
 
     solicitarAssinaturaDigital() {
-        let idPreBenef = this.obterObjetoLocalStorage();
+        let idPreBenef = lStorage.ObterIdPreBenef();
         let siteAssinaturaDigital = Cypress.env('siteAssinaturaDigital');
         cy.get(elem.botaoAssinaturaDigital).click();
-        cy.get(elem.elementoPainel).contains(elem.tituloPainel).should('be.visible');
+        homePortal.validarAcesso();
         cy.visit(`${siteAssinaturaDigital}${idPreBenef}`)
     }
 
-    obterObjetoLocalStorage() {
-        var jsonBenef = window.localStorage.getItem('id');
-        var idUsuario = JSON.parse(jsonBenef);
-        return idUsuario;
-    }
-
     trocarStatus() {
-        let idPreBenef = this.obterObjetoLocalStorage();
+        let idPreBenef = lStorage.ObterIdPreBenef();
         let status = "CONCLUIDO";
         let statusEnviado = "ENVIADO";
         cy.task('executeDbStatement', {
@@ -117,7 +112,7 @@ class AssinaturaDigital {
     }
 
     trocarStatusSemNomeSocial() {
-        let idPreBenef = this.obterObjetoLocalStorage();
+        let idPreBenef = lStorage.ObterIdPreBenef();
         let status = "CONCLUIDO";
         let statusEnviado = "ENVIADO";
         cy.task('executeDbStatement', {

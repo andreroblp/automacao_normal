@@ -78,20 +78,13 @@ Scenario: Logar no Sistema Como Analista
     When o usuário insere o usuário e a senha do Analista
     Then o acesso é concedido para a tela principal
 
+@MinhasAtividades
+Scenario: Acessar a tela "Minhas Atividades" para reabrir a atividade
+    Given o acesso para a tela Minhas Atividades
+    When Validar a existência da venda realizada pela Corretora
+    Then deverá acessá-la
 
-
-
-
-    
-
-@AgendamentoAssinatura
-Scenario: Acessar o Agendamento de Assinatura e selecionar o dia do Vencimento
-    Given o acesso a tela "Agendamento de Assinatura"
-    When validar a opção "Assinatura no Local da Venda" selecionada
-    E selecionar um dia para o vencimento
-    Then permitirá o avanço para a tela "Conferência"
-
-@Conferencia
+@ConferenciaCorretora
 Scenario: Validar as Informações preenchidas nas telas Anteriores
     Given o acesso a tela "Conferência de Arquivos"
     When preencher a "Parceria da Venda"  e Assinatura Digital como "sim"
@@ -103,17 +96,20 @@ Scenario: Validar as Informações preenchidas nas telas Anteriores
     AND a justificativa da declaração de Saúde deverá ser validada
     AND permitirá o avanço para a tela "Revisão"
 
-@Revisão
-Scenario: Validar as Informações preenchidas nas telas Anteriores, incluindo Conferência
-    Given o acesso a tela "Revisão do beneficiário"
-    When os dados do Proponente deverão ser validados
-    And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
-    AND o Termo Aditivo deverá ser validado
-    AND a Assinatuta Digital deverá ser validada
-    AND a Forma de Pagamento da Adesão e Mensalidade deverão ser validadas
-    AND as informações referente ao Débito Automático deverão ser validadas
-    AND a justificativa da declaração de Saúde deverá ser validada
-    THEN permitirá o avanço para a tela "Impressão do Contrato"
+@EndereçoItinerário
+Scenario: Acessar a tela Endereço Itinerário para preenchimento da Data e Confirmação do Endereço
+    Given o acesso a tela "Endereço do Itinerário"
+    When inserir a data Itinerário
+    AND clicar no checkbox para preenchimento automático do endereço
+    AND selecionar a Zona do Endereço
+    Then permitirá o avanço para a tela "Agendamento da Assinatura"
+
+@AgendamentoAssinatura
+Scenario: Acessar o Agendamento de Assinatura e selecionar o dia do Vencimento
+    Given o acesso a tela "Agendamento de Assinatura"
+    When selecionar a data da assinatura
+    E selecionar um dia para o vencimento
+    Then permitirá o avanço para a tela "Conferência"
 
 @ImpressaoContrato
 Scenario: Validar as Informações exibidas na Tela e gerar Contrato

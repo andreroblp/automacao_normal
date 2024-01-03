@@ -9,6 +9,7 @@ class EnvioArquivo {
     selecionarArquivo(){
     cy.get(elem.botaoSelecaoArquivo).as('fileInput');
     cy.get(elem.alias).attachFile(elem.arquivo);
+    cy.get(elem.arquivoCarregado).should('be.visible');
     }
 
     verificarMensagemSucesso(){

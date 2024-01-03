@@ -27,7 +27,7 @@ class ImpressaoCarteirinha {
     }
 
     clicarGerarKit() {
-        cy.get('#enviar-kit').click();
+        cy.get(elem.botaoKit).click();
     }
 
     validarMensagemSucesso() {
@@ -37,21 +37,21 @@ class ImpressaoCarteirinha {
     }
 
     avancarTelaNormal(n) {
-        cy.get('#carteirinhaPdf').screenshot(print.docNormal+n+print.arquivo, { capture: 'fullPage' })
+        cy.get(elem.divCarteirinha).screenshot(print.docNormal+n+print.arquivo, { capture: 'fullPage' })
         cy.on('window:confirm', (str) => {
             expect(str).to.eq('Confirma a impressão da carteirinha?')
         })
 
-        cy.get('#avancar').click();
+        cy.get(elem.botaoAvancar).click();
     }
 
     avancarTelaReceita() {
-        cy.get('#carteirinhaPdf').screenshot(print.docReceita+print.arquivo, { capture: 'fullPage' })
+        cy.get(elem.divCarteirinha).screenshot(print.docReceita+print.arquivo, { capture: 'fullPage' })
         cy.on('window:confirm', (str) => {
             expect(str).to.eq('Confirma a impressão da carteirinha?')
         })
 
-        cy.get('#avancar').click();
+        cy.get(elem.botaoAvancar).click();
     }
 }
 

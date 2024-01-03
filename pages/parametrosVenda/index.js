@@ -1,4 +1,5 @@
 const elem = require('./elements').ELEMENTS;
+import lStorage from '../localStorage/'
 
 class ParamsVenda {
 
@@ -9,11 +10,11 @@ class ParamsVenda {
     cy.get(elem.configuracoesVenda).should('be.visible').click()
     cy.get(elem.parametrosVenda).should('be.visible').click()
     cy.contains('Parâmetros de vendas').should('be.visible');
+    cy.wait(1000);
   }
 
   acessarTelaViaEnderecoComTicket() {
-    var jsonBenef = window.localStorage.getItem('ticket');
-    var ticketPortal = JSON.parse(jsonBenef);
+    var ticketPortal = lStorage.obterTicket();
     let site = Cypress.env('urlParametrosVenda')
     cy.visit(`${site}${ticketPortal}&menuAcesso=35`);
     
@@ -38,14 +39,6 @@ class ParamsVenda {
       .find(elem.botaoSalvar).click();
   }
 
-  obterTicketArmazenar() {
-    cy.iframe(elem.iframe)
-      .find(elem.ticket)
-      .invoke('attr', 'value').then($ticket => {
-        var jsonAux = JSON.stringify($ticket);
-        localStorage.setItem('ticket', jsonAux);
-      })
-  }
   checarReceitaSemIframe() {
     cy.get(elem.naoReceitaSemIframe,).check({ force: true }).should('be.checked');
   }

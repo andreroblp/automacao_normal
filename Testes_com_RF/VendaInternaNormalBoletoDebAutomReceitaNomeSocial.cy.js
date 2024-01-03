@@ -14,6 +14,7 @@ import assinatura from '../pages/assinaturaDigital';
 import carteirinha from '../pages/impressaoCarteirinha';
 import pagamento from '../pages/pagamento';
 import printDaTela from '../pages/parametrosPrints';
+import home from '../pages/homePortal/';
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
     + '/ Com Débito Automático / Com Nome Social / Com Receita Federal',
@@ -31,7 +32,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
 
             it('ENTÃO \n o acesso é concedido para a tela principal', () => {
                 login.validarAcessoRealizado();
-                parametrosVenda.obterTicketArmazenar();
+                home.ArmazenarTicketLocalStorage();
             })
         })
 

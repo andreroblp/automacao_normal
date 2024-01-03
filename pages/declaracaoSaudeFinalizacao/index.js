@@ -1,4 +1,5 @@
 const elem = require('./elements').ELEMENTS;
+import homePortal from '../homePortal';
 
 class DeclaracaoSaudeFinalizacao {
 
@@ -11,8 +12,7 @@ class DeclaracaoSaudeFinalizacao {
     }
 
     confirmarFinalizacaoCorretora(){
-        cy.get(elem.elemPainel).contains(elem.tituloPainel).should('be.visible');
-        cy.clearCookies();
+        homePortal.validarAcesso();
     }
 }
 
