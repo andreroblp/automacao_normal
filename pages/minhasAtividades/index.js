@@ -17,7 +17,7 @@ class MinhasAtividades{
         cy.get(elem.seletorQuantidade).select('100')
         cy.get(elem.seletorQuantidade + ' option:selected').invoke('text')
         .should('eq', '100');
-        cy.get(`tr[id="${id}"]`,).should('be.visible')
+        cy.get(`tr[id="${id}"]`).should('be.visible')
         cy.wait(2000)
         cy.get(`tr[id="${id}"]`).click()
     }

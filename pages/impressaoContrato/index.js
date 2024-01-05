@@ -89,22 +89,11 @@ class ImpressaoContrato {
         cy.get(elem.mensagemErroBotaoFechar).click();
     }
 
-    clicarBotaoContratoNormal(n) {
+    clicarBotaoContrato(directory) {
         cy.get(elem.botaoContrato).should('be.visible').click();
         cy.get(elem.classeModal).should('be.visible');
         cy.wait(5000)
-        printDaTela.docNormal(n);
-        cy.get(elem.idPreBenef).invoke('attr', 'value').then($id => {
-            var jsonAux = JSON.stringify($id);
-            window.localStorage.setItem('id', jsonAux);
-        })
-    }
-
-    clicarBotaoContratoReceita() {
-        cy.get(elem.botaoContrato).should('be.visible').click();
-        cy.get(elem.classeModal).should('be.visible');
-        cy.wait(5000)
-        printDaTela.docReceita();
+        printDaTela.documentos(directory);
         cy.get(elem.idPreBenef).invoke('attr', 'value').then($id => {
             var jsonAux = JSON.stringify($id);
             window.localStorage.setItem('id', jsonAux);

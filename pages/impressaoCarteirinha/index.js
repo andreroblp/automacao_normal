@@ -36,17 +36,8 @@ class ImpressaoCarteirinha {
             .should('eq', elem.MensagemSucesso)
     }
 
-    avancarTelaNormal(n) {
-        cy.get(elem.divCarteirinha).screenshot(print.docNormal+n+print.arquivo, { capture: 'fullPage' })
-        cy.on('window:confirm', (str) => {
-            expect(str).to.eq('Confirma a impressão da carteirinha?')
-        })
-
-        cy.get(elem.botaoAvancar).click();
-    }
-
-    avancarTelaReceita() {
-        cy.get(elem.divCarteirinha).screenshot(print.docReceita+print.arquivo, { capture: 'fullPage' })
+    avancarTela(directory) {
+        cy.get(elem.divCarteirinha).screenshot(print[`${directory}`] + print.docNormal + print.arquivo, { capture: 'fullPage' });
         cy.on('window:confirm', (str) => {
             expect(str).to.eq('Confirma a impressão da carteirinha?')
         })
@@ -54,6 +45,7 @@ class ImpressaoCarteirinha {
         cy.get(elem.botaoAvancar).click();
     }
 }
+
 
 export default new ImpressaoCarteirinha();
 

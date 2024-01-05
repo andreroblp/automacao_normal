@@ -6,6 +6,14 @@ class AgendamentoAssinatura{
         cy.contains(elem.titulo).should('be.visible');
     }
 
+    validarAcessoCorretora(){
+        cy.contains(elem.tituloCorretora).should('be.visible');
+    }
+
+    selecionarArrastarDataAssinatura(){
+        cy.get(elem.elementoAssinatura).click();
+    }
+
     validarOpcaoSelecionada(){
         cy.get(elem.contratoDropMenu + ' option:selected').invoke('text').then(($opcao) => {
             if($opcao.match('Agendar assinatura')){
@@ -21,6 +29,10 @@ class AgendamentoAssinatura{
 
     salvarAvancar(){
         cy.get(elem.botaoSalvar).click();
+    }
+
+    salvarAvancarCorretora(){
+        cy.get(elem.botaoSalvarCorretora).click();
     }
 }
 

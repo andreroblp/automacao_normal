@@ -1,23 +1,24 @@
-import login from '../pages/login/';
-import parametrosVenda from '../pages/parametrosVenda/';
-import novaVenda from '../pages/novaVenda/';
-import formulario from '../pages/formularioContato/';
-import preCadastro from '../pages/preCadastro/';
-import dadosBeneficiario from '../pages/dadosBeneficiario/'
-import envioArquivo from '../pages/envioArquivo/';
-import declaracao from '../pages/declaracaoSaude/';
-import agendamento from '../pages/agendamentoAssinatura/';
-import conferencia from '../pages/conferencia/';
-import revisao from '../pages/revisao/';
-import impressaoContrato from '../pages/impressaoContrato/';
-import assinatura from '../pages/assinaturaDigital/';
-import carteirinha from '../pages/impressaoCarteirinha/';
-import pagamento from '../pages/pagamento/';
-import printDaTela from '../pages/parametrosPrints/';
-import home from '../pages/homePortal/';
+import login from '../pages/login';
+import parametrosVenda from '../pages/parametrosVenda';
+import novaVenda from '../pages/novaVenda';
+import formulario from '../pages/formularioContato';
+import preCadastro from '../pages/preCadastro';
+import dadosBeneficiario from '../pages/dadosBeneficiario'
+import envioArquivo from '../pages/envioArquivo';
+import declaracao from '../pages/declaracaoSaude';
+import agendamento from '../pages/agendamentoAssinatura';
+import conferencia from '../pages/conferencia';
+import revisao from '../pages/revisao';
+import impressaoContrato from '../pages/impressaoContrato';
+import assinatura from '../pages/assinaturaDigital';
+import carteirinha from '../pages/impressaoCarteirinha';
+import pagamento from '../pages/pagamento';
+import printDaTela from '../pages/parametrosPrints';
+import home from '../pages/homePortal';
+const directory = Cypress.spec.name.replace('.cy.js', '')
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
-    + '/ Com Débito Automático / Sem Nome Social / Sem Receita Federal',
+    + '/ Com Débito Automático / Sem Nome Social / Com Receita Federal',
     () => {
 
         context('Cenário: Logar no Sistema da Prevent Senior.', () => {
@@ -31,7 +32,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             })
 
             it('ENTÃO \n o acesso é concedido para a tela principal', () => {
-                home.validarAcessoRealizado();
+                login.validarAcessoRealizado();
                 home.ArmazenarTicketLocalStorage();
             })
         })
@@ -51,8 +52,8 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 parametrosVenda.checarDebitoSemIframe();
             })
 
-            it('E \n o usuário checar para "Não" o item "Pode consultar pessoa fisica receita federal?"', () => {
-                parametrosVenda.checarReceitaSemIframe();
+            it('E \n o usuário checar para "Sim" o item "Pode consultar pessoa fisica receita federal?"', () => {
+                parametrosVenda.checarReceitaSemIframeSim();
             })
 
             it('ENTÃO \ndeve salvar as configurações estabelecidas', () => {
@@ -63,14 +64,13 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 parametrosVenda.exibirMensagemSucesso();
             })
         })
-        Cypress._.times(2, (n) => {
-            let contagem = (n+1)
-            context('Cenário: Tela Nova Venda  ## Venda '+ (contagem), () => {
+            context('Cenário: Tela Nova Venda', () => {
                 it('DADO \n o início do fluxo pela tela Nova Venda', () => {
                     novaVenda.acessarNovaVenda();
                 })
                 it('QUANDO \n o usuário inserir o nome no campo "Nome ou CPF" e clicar no botão "Pesquisar"', () => {
                     novaVenda.escreverNome();
+
                 })
                 it('E \n clicar no botão "Pesquisar"', () => {
                     novaVenda.pesquisar();
@@ -100,32 +100,35 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
 
             context('Cenário: Preencher a tela Pré Cadastro', () => {
                 it('DADO \n o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"', () => {
-
                     preCadastro.validarNomeEntrada();
+                    const CPF = 'zero';
+                    preCadastro.consultarReceitaFederal(CPF);
                 })
 
-                it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
-                    preCadastro.armazenarLocalStorage(0,false, false);
-                    preCadastro.reescreverNome();
-                })
+                it('QUANDO \n inserir o CPF do Beneficiário', () => {
+                    preCadastro.armazenarLocalStorage(0,false,false);
+                    preCadastro.preencherCPFReceita();
+                }), 
 
                 it('E \n preencher os demais campos da tela', () => {
-                    preCadastro.preencherDados();
                     preCadastro.preencherDadosGeral();
                 })
 
-                it('ENTÃO \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
-                    printDaTela.internaNormalDebAutom(contagem);
+                it('ENTÃO \n Nome e Data de Nascimento deverão ter sido preenchidos automaticamente', () => {
+                    preCadastro.validarNomeDataNascimentoReceita();
+                })
+                it('E \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
+                    printDaTela.printarTela(directory)
                     preCadastro.avancarParaDadosBeneficiario();
                 })
             })
             context('Cenário: Preencher os Dados do Beneficiario', () => {
-                it('DADO \n o acesso a tela "Dados do Beneficiario" com o Nome, CPF e data de nascimento já preenchidos', () => {
+                it('DADO \n o acesso a tela "Dados do Beneficiario" com o Nome, CPF, data de nascimento E Nome da Mãe já preenchidos da RF', () => {
                     dadosBeneficiario.validarAcessoNaPaginaEDadosBeneficiario();
-                    dadosBeneficiario.validarDadosNotRF();
+                    dadosBeneficiario.validarDadosReceita();
                 })
                 it('QUANDO \n preencher os dados do beneficiário', () => {
-                    dadosBeneficiario.preencherSexoMaeNotRF();
+                    dadosBeneficiario.preencherSexoReceita();
                     dadosBeneficiario.preencherDadosBeneficiarioGeral();
                 })
 
@@ -142,7 +145,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('AND \n a tela permitirá avançar para o "Envio do documento"', () => {
-                    printDaTela.internaNormalDebAutom(contagem);
+                    printDaTela.printarTela(directory)
                     dadosBeneficiario.avancarParaEnvioArquivo();
                 })
 
@@ -218,7 +221,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('ENTÃO \n as informações do Beneficiário preenchida em telas anteriores deverão ser validadas', () => {
-                    conferencia.validarDadosNotRF();
+                    conferencia.validarDadosReceita();
                     conferencia.validarDadosBeneficiario();
                 })
 
@@ -227,7 +230,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
-                    conferencia.validarDebAutomNomeCPFNotRF();
+                    conferencia.validarDebAutomNomeCPFReceita();
                     conferencia.validarDadosDebitoAutomatico();
                 })
 
@@ -236,7 +239,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
-                    printDaTela.internaNormalDebAutom(contagem);
+                    printDaTela.printarTela(directory)
                     conferencia.botaoSalvar();
                 })
             })
@@ -246,7 +249,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n os dados do Proponente deverão ser validados', () => {
-                    revisao.validarDadosNotRF();
+                    revisao.validarDadosReceita();
                     revisao.validarDadosBeneficiario();
                 })
 
@@ -266,7 +269,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     revisao.validarPagamentoMensalidade();
                 })
                 it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
-                    revisao.validarNomeCPFDebAutomNotRF();
+                    revisao.validarNomeCPFDebAutomReceita();
                     revisao.validarDadosDebitoAutomatico();
                 })
                 it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
@@ -274,17 +277,17 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('ENTÃO \n permitirá o avanço para a tela "Impressão do Contrato"', () => {
-                    printDaTela.internaNormalDebAutom(contagem);
+                    printDaTela.printarTela(directory)
                     revisao.botaoSalvar();
                 })
             })
             context('Cenário: Validar as Informações exibidas na Tela e gerar Contrato', () => {
                 it('DADO \n o acesso a tela "Impressão do Contrato"', () => {
-                    printDaTela.internaNormalDebAutom(contagem);
+                    printDaTela.printarTela(directory)
                     impressaoContrato.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    impressaoContrato.validarDadosBeneficiarioNotRFSemNomeSocial();
+                    impressaoContrato.validarDadosBeneficiarioReceitaSemNomeSocial();
                     impressaoContrato.validarDadosBeneficiarioSemNomeSocial();
                 })
                 it('E \n a impossibilidade de Avançar sem gerar o contrato', () => {
@@ -292,7 +295,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n clicar no botão para Gerar Contrato', () => {
-                    impressaoContrato.clicarBotaoContratoNormal(contagem);
+                    impressaoContrato.clicarBotaoContrato(directory);
                 })
 
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
@@ -307,7 +310,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     assinatura.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    assinatura.validarDadosBeneficiarioNotRFSemNomeSocial();
+                    assinatura.validarDadosBeneficiarioReceitaSemNomeSocial();
                     assinatura.validarDadosBeneficiarioSemNomeSocial();
                 })
                 it('E \n o status da Assinatura Digital em "Pendente de Envio"', () => {
@@ -334,10 +337,10 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n o botão de Gerar Boleto deverá ser exibido gerando um boleto', () => {
-                    assinatura.gerarBoletoNormal(contagem);
+                    assinatura.gerarBoleto(directory);
                 })
                 it('E \n permitirá avançar para a tela "Impressão da Carteirinha" sem exibir mensagem de erro', () => {
-                    printDaTela.internaNormalDebAutom(contagem);
+                    printDaTela.printarTela(directory)
                     assinatura.botaoAvancar();
                     assinatura.mensagemErroOculta();
                 })
@@ -363,18 +366,18 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n permitirá avançar para a tela "Pagamento"', () => {
-                   carteirinha.avancarTelaNormal(contagem);
+                   carteirinha.avancarTela(directory);
                 })
             })
             context('Cenário: Validar e Finalizar a Venda', () => {
                 it('DADO \n  o acesso a tela "Pagamento"', () => {
-                    printDaTela.internaNormalDebAutom(contagem);
+                    printDaTela.printarTela(directory)
                     pagamento.validarAcesso();
                 })
                 it('QUANDO \n validar as informações', () => {
-                    pagamento.validarDadosNotRFSemNomeSocial();
+                    pagamento.validarDadosReceitaSemNomeSocial();
                     pagamento.validarDadosBeneficiarioSemNomeSocial();
-                    pagamento.validarNomeDebAutomNotRF();
+                    pagamento.validarNomeReceitaDebAutom();
                     pagamento.validarDebAutomatico();
                     pagamento.validarDemaisInfos();
                 })
@@ -387,4 +390,3 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
             })
         })
-    })

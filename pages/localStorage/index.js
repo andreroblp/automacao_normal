@@ -13,6 +13,12 @@ class LocalStorage{
         var ticketPortal = JSON.parse(jsonBenef); 
         return ticketPortal;
     }
+
+    obterPessoaPreBenef() {
+        var jsonBenef = window.localStorage.getItem(elem.preBenef)
+        let benef = JSON.parse(jsonBenef);
+        return benef
+    }
 }
 
 export default new LocalStorage();

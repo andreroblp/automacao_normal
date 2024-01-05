@@ -15,6 +15,7 @@ import carteirinha from '../pages/impressaoCarteirinha';
 import pagamento from '../pages/pagamento';
 import printDaTela from '../pages/parametrosPrints';
 import home from '../pages/homePortal/';
+const directory = Cypress.spec.name.replace('.cy.js', '')
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
     + '/ Com Débito Automático / Com Nome Social / Sem Receita Federal',

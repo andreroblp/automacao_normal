@@ -62,8 +62,7 @@ Scenario: Selecionar Arquivo
 @DeclaracaoSaude
 Scenario: Acessar e Responder uma pergunta na tela "Declaração de Saúde"
     Given o acesso a tela "Declaração de Saúde"
-    When marcar "Sim" para uma pergunta
-    And responder a justificativa da Pergunta marcada como "Sim"
+    When Não preencher a declaração e validar todos os campos em branco
     Then permitirá o avanço para a tela "Agendamento de Assinatura"
 
 @DeclaracaoSaudeFinalização
@@ -93,7 +92,7 @@ Scenario: Validar as Informações preenchidas nas telas Anteriores
     Then as informações do Beneficiário preenchida em telas anteriores deverão ser validadas
     And O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"
     AND as informações referente ao Débito Automático deverão ser validadas
-    AND a justificativa da declaração de Saúde deverá ser validada
+    AND todas as justificativas deverão estar em branco
     AND permitirá o avanço para a tela "Revisão"
 
 @EndereçoItinerário

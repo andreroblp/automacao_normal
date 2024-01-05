@@ -5,6 +5,7 @@ class Login {
 
   acessarValidarTelaLogin() {
     localStorage.clear();
+    cy.clearCookies();
     cy.visit(Cypress.env('site'));
     cy.get(elem.username).should('be.visible')
   }

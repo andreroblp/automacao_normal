@@ -1,5 +1,7 @@
 const elem = require('./elements').ELEMENTS;
 import preCadastro from '../preCadastro';
+import lStorage from '../localStorage/'
+import gerarPessoa from '../../geradores/geradorPessoas';
 
 class Conferencia {
 
@@ -132,11 +134,23 @@ class Conferencia {
             .should('eq', Cypress.env('cc'))
     }
 
-
-
     validarJustificativaDeclaracaoSaude() {
         cy.get(elem.justificativa3).should('have.value', "Teste Justificativa Automação");
     }
+
+    validarJustificativaDeclaracaoSaudeVazia() {
+        let quantidadePerguntas = 0;
+        if(lStorage.obterPessoaPreBenef().sexo === "Feminino"){
+            quantidadePerguntas = 15;
+        } else{
+            quantidadePerguntas = 14
+        }
+        for(let x=1; x <= quantidadePerguntas; x++){
+        let pergunta = x
+        cy.get(elem['justificativa' + pergunta.toString()]).should('have.value', "");
+        console.log(quantidadePerguntas)
+    }
+}
 
     botaoSalvar() {
         cy.get(elem.botaoAvancar).click();

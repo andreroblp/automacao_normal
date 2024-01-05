@@ -123,7 +123,7 @@ class AssinaturaDigital {
             .should('eq', status);
     }
 
-    gerarBoletoNormal(n) {
+    gerarBoleto(directory) {
         cy.get(elem.botaoPrint).click();
         cy.get(elem.iframeBoleto).then(($iframe) => {
 
@@ -134,28 +134,7 @@ class AssinaturaDigital {
         cy.get('@printStub').should('not.be.called');
 
         cy.wait(4000);
-        printDaTela.docNormal(n);
-        cy.get(elem.elementoIframe)
-            .within(() => {
-                return cy.get(elem.subElementoIframe).should('have.class', elem.botaoFecharIframe)
-                    .last()
-                    .click();
-            })
-        cy.wait(2000);
-    }
-
-    gerarBoletoReceita() {
-        cy.get(elem.botaoPrint).click();
-        cy.get(elem.iframeBoleto).then(($iframe) => {
-
-            const iframe = $iframe.contents();
-            cy.stub(iframe[0].defaultView, 'print').as('printStub');
-        });
-
-        cy.get('@printStub').should('not.be.called');
-
-        cy.wait(4000)
-        printDaTela.docReceita();
+        printDaTela.documentos(directory);
         cy.get(elem.elementoIframe)
             .within(() => {
                 return cy.get(elem.subElementoIframe).should('have.class', elem.botaoFecharIframe)

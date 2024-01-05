@@ -1,4 +1,5 @@
 const elem = require('./elements').ELEMENTS
+import lStorage from '../localStorage/';
 
 class DeclaracaoSaude{
 
@@ -18,6 +19,21 @@ class DeclaracaoSaude{
     avancarParaAgendamento(){
         cy.get(elem.botaoAvancar).click();
     }
+
+    validarJustificativaDeclaracaoSaudeVazia() {
+        let quantidadePerguntas = 0;
+        if(lStorage.obterPessoaPreBenef().sexo === "Feminino"){
+            quantidadePerguntas = 15;
+        } else{
+            quantidadePerguntas = 14
+        }
+        for(let x=1; x <= quantidadePerguntas; x++){
+        let pergunta = x
+        cy.get(elem['justificativa' + pergunta.toString()]).should('have.value', "");
+        console.log(quantidadePerguntas)
+    }
+}
+
 
     obterIdBeneficiarioCorretora(){
         cy.get(elem.idBenef).invoke('attr', 'value').then($id =>{
