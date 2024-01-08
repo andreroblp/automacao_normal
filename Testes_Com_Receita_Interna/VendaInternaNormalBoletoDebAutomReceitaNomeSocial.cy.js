@@ -15,6 +15,8 @@ import carteirinha from '../pages/impressaoCarteirinha';
 import pagamento from '../pages/pagamento';
 import printDaTela from '../pages/parametrosPrints';
 import home from '../pages/homePortal/';
+import lStorage from '../pages/localStorage';
+import gerarPessoa from '../geradores/geradorPessoas';
 const directory = Cypress.spec.name.replace('.cy.js', '')
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
@@ -106,8 +108,8 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n inserir o CPF do Beneficiário', () => {
-                    preCadastro.armazenarLocalStorage(2,true,true);
-                    preCadastro.preencherCPFReceita();
+                    lStorage.armazenarLocalStorage(gerarPessoa(0, true, true), 'preBenef')
+                    preCadastro.preencherCPFDataNasc(false, 'receita');
                 }), 
 
                 it('E \n preencher os demais campos da tela', () => {
@@ -125,8 +127,8 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             })
             context('Cenário: Preencher os Dados do Beneficiario', () => {
                 it('DADO \n o acesso a tela "Dados do Beneficiario" com o Nome, CPF, data de nascimento E Nome da Mãe já preenchidos da RF', () => {
-                    dadosBeneficiario.validarAcessoNaPaginaEDadosBeneficiario();
-                    dadosBeneficiario.validarDadosReceita();
+                    dadosBeneficiario.validarAcessoNaPagina();
+                    dadosBeneficiario.validarDados('receita');
                 })
 
                 it('E \n  Nome Social já preenchido', () => {
@@ -134,8 +136,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n preencher os dados do beneficiário', () => {
-                    dadosBeneficiario.preencherSexoReceita();
-                    dadosBeneficiario.preencherDadosBeneficiarioGeral();
+                    dadosBeneficiario.preencherDadosBeneficiario('receita');
                 })
 
                 it('E \n  preencher o Gênero Social', () => {
@@ -227,14 +228,12 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('ENTÃO \n as informações do Beneficiário preenchida em telas anteriores deverão ser validadas', () => {
-                    conferencia.validarDadosReceita();
-                    conferencia.validarDadosBeneficiario();
+                    conferencia.validarDadosBeneficiario('receita');
                     conferencia.validarNomeGeneroSocial();
                 })
 
                 it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
-                    conferencia.validarDebAutomNomeCPFReceita();
-                    conferencia.validarDadosDebitoAutomatico();
+                    conferencia.validarDadosDebitoAutomatico('receita');
                 })
 
                 it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
@@ -252,8 +251,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('QUANDO \n os dados do Proponente deverão ser validados', () => {
-                    revisao.validarDadosReceita();
-                    revisao.validarDadosBeneficiario();
+                    revisao.validarDadosBeneficiario('receita');
                     revisao.validarNomeGeneroSocial();
                 })
 
@@ -269,8 +267,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     revisao.validarPagamentoMensalidade();
                 })
                 it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
-                    revisao.validarNomeCPFDebAutomReceita();
-                    revisao.validarDadosDebitoAutomatico();
+                    revisao.validarDadosDebitoAutomatico('receita');
                 })
                 it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
                     revisao.validarJustificativaDeclaracaoSaude();
@@ -287,8 +284,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     impressaoContrato.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    impressaoContrato.validarDadosBeneficiarioReceita();
-                    impressaoContrato.validarDadosBeneficiario();
+                    impressaoContrato.validarDadosBeneficiario('receita')
                 })
                 it('E \n a impossibilidade de Avançar sem gerar o contrato', () => {
                     impressaoContrato.validarExibirMensagemErro();
@@ -310,8 +306,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     assinatura.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    assinatura.validarDadosBeneficiarioReceita();
-                    assinatura.validarDadosBeneficiario();
+                    assinatura.validarDadosBeneficiario('receita');
                 })
                 it('E \n o status da Assinatura Digital em "Pendente de Envio"', () => {
                     assinatura.validarStatusPendente();
@@ -375,10 +370,8 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     pagamento.validarAcesso();
                 })
                 it('QUANDO \n validar as informações', () => {
-                    pagamento.validarDadosReceita();
-                    pagamento.validarDadosBeneficiario();
-                    pagamento.validarNomeReceitaDebAutom();
-                    pagamento.validarDebAutomatico();
+                    pagamento.validarDadosBeneficiario('receita');
+                    pagamento.validarDebAutomatico('receita');
                     pagamento.validarDemaisInfos();
                 })
                 it('E \n clicar em "Finalizar Pagamento"', () => {

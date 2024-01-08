@@ -1,65 +1,44 @@
 const elem = require('../preCadastro/elements').ELEMENTS;
-const elemNovaVenda = require('../novaVenda/elements.js').ELEMENTS;
-import gerarPessoa from '../../geradores/geradorPessoas.js';
+const elemNovaVenda = require('../novaVenda/elements').ELEMENTS;
+import lStorage from '../localStorage'
 
 class PreCadastro {
 
     consultarReceitaFederal(cpf) {
-        if (this.obterReceitaLocalStorage() === null) {
             const parte1 = Cypress.env('parte1RF');
             const parte2 = Cypress.env('parte2RF');
             cy.request({ method: 'GET', url: parte1 + cpf + parte2, failStatusCode: false, }).should(({ body }) => {
-                var jsonAux = JSON.stringify(body);
-                localStorage.setItem('receita', jsonAux);
+                lStorage.armazenarLocalStorage(body, 'receita');
             })
-        }
-    }
-
-    armazenarLocalStorage(tipoPessoa, temNomeSocial, temGeneroSocial) {
-        let objetoPreBenef = gerarPessoa(tipoPessoa, temNomeSocial, temGeneroSocial);
-        var jsonAux = JSON.stringify(objetoPreBenef);
-        localStorage.setItem('pre_benef', jsonAux);
     }
 
     validarNomeEntrada() {
         cy.get(elem.nome).should('have.value', elemNovaVenda.nomeEntrada.toUpperCase())
     }
 
-    obterObjetoLocalStorage() {
-        var jsonBenef = window.localStorage.getItem('pre_benef')
-        let benef = JSON.parse(jsonBenef);
-        return benef
-    }
-
-    obterReceitaLocalStorage() {
-        var jsonBenef = window.localStorage.getItem('receita')
-        let rf = JSON.parse(jsonBenef);
-        return rf
-    }
-
     reescreverNome() {
-        cy.get(elem.nome).clear().type(this.obterObjetoLocalStorage().nome)
-            .should('have.value', this.obterObjetoLocalStorage()
+        cy.get(elem.nome).clear().type(lStorage.obterObjetoLocalStorage('preBenef').nome)
+            .should('have.value', lStorage.obterObjetoLocalStorage('preBenef')
                 .nome);
     }
 
     validarNomeDataNascimentoReceita() {
-        cy.get(elem.nome).should('have.value', this.obterReceitaLocalStorage().nome);
-        cy.get(elem.dataNascimento).should('have.value', this.obterReceitaLocalStorage().dataNascimento);
+        cy.get(elem.nome).should('have.value', lStorage.obterObjetoLocalStorage('receita').nome);
+        cy.get(elem.dataNascimento).should('have.value', lStorage.obterObjetoLocalStorage('receita').dataNascimento);
     }
 
-    preencherCPFReceita() {
-        cy.get(elem.cpf).type(this.obterReceitaLocalStorage().documento)
-            .should('have.value', this.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"))
+    preencherCPFDataNasc(isCorretora, item) {
+        cy.get(elem.cpf).type(lStorage.obterObjetoLocalStorage(item).documento)
+            .should('have.value', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"))
+        if(isCorretora === false){
         cy.get(elem.recemNascidoMenu).select('Sim')
         cy.get(elem.recemNascidoMenu).select('Não')
     }
-
-    preencherDados() {
-        cy.get(elem.cpf).type(this.obterObjetoLocalStorage().cpf.semMascara)
-            .should('have.value', this.obterObjetoLocalStorage().cpf.comMascara)
-        cy.get(elem.dataNascimento).type(elem.dtNasc).should('have.value', elem.dtNasc);
+    if(item === 'preBenef'){
+        cy.get(elem.dataNascimento).type(lStorage.obterObjetoLocalStorage(item).dataNascimento)
+        .should('have.value', lStorage.obterObjetoLocalStorage(item).dataNascimento);
     }
+}
 
     preencherDadosGeral() {
         cy.get(elem.parceriaVenda).select(elem.opcaoParceria)
@@ -72,8 +51,8 @@ class PreCadastro {
         cy.get(elem.prestadorServico).select(elem.opcaoPrestadorServico)
         cy.get(elem.prestadorServico + ' option:selected').invoke('text')
             .should('eq', elem.opcaoPrestadorServico);
-        cy.get(elem.celular).clear().type(this.obterObjetoLocalStorage().cel)
-            .should('have.value', this.obterObjetoLocalStorage().cel)
+        cy.get(elem.celular).clear().type(lStorage.obterObjetoLocalStorage('preBenef').cel)
+            .should('have.value', lStorage.obterObjetoLocalStorage('preBenef').cel)
     }
 
     preencherDadosGeralCorretora() {
@@ -81,14 +60,14 @@ class PreCadastro {
         cy.get(elem.radioPlano).invoke('show').check(elem.valuePlano1002Enfermaria)
         cy.get(elem.radioPlano).invoke('hide')
         cy.get(elem.labelPlano1002Enfermaria).click();
-        cy.get(elem.celular).clear().type(this.obterObjetoLocalStorage().cel)
-            .should('have.value', this.obterObjetoLocalStorage().cel)
+        cy.get(elem.celular).clear().type(lStorage.obterObjetoLocalStorage('preBenef').cel)
+            .should('have.value', lStorage.obterObjetoLocalStorage('preBenef').cel)
     }
 
     preencherNomeGeneroSocial() {
-        if (this.obterObjetoLocalStorage().nomeSocial !== '') {
-            cy.get(elem.nomeSocial).type(this.obterObjetoLocalStorage().nomeSocial)
-                .should('have.value', this.obterObjetoLocalStorage().nomeSocial);
+        if (lStorage.obterObjetoLocalStorage('preBenef').nomeSocial !== '') {
+            cy.get(elem.nomeSocial).type(lStorage.obterObjetoLocalStorage('preBenef').nomeSocial)
+                .should('have.value', lStorage.obterObjetoLocalStorage('preBenef').nomeSocial);
         }
     }
 

@@ -14,10 +14,9 @@ class ParamsVenda {
   }
 
   acessarTelaViaEnderecoComTicket() {
-    var ticketPortal = lStorage.obterTicket();
+    var ticketPortal = lStorage.obterObjetoLocalStorage('ticket');
     let site = Cypress.env('urlParametrosVenda')
     cy.visit(`${site}${ticketPortal}&menuAcesso=35`);
-    
   }
 
   checarReceita() {
@@ -25,6 +24,13 @@ class ParamsVenda {
       .find(elem.naoReceita).should('be.visible').click();
     cy.iframe(elem.iframe)
       .find(elem.naoReceitarChecar).should('be.checked')
+  }
+
+  checarReceitaSim() {
+    cy.iframe(elem.iframe)
+      .find(elem.simReceita).should('be.visible').click();
+    cy.iframe(elem.iframe)
+      .find(elem.simReceitarChecar).should('be.checked')
   }
 
   checarDebito() {

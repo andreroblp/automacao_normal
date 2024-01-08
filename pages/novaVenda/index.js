@@ -5,7 +5,7 @@ class NovaVenda{
 
     acessarNovaVenda(){
       localStorage.removeItem('pre_benef');
-      let ticket = lStorage.obterTicket();
+      let ticket = lStorage.obterObjetoLocalStorage('ticket');
       let site = Cypress.env('urlNovaVenda');
       cy.visit(`${site}${ticket}&menuAcesso=29`);
       cy.contains(elem.nomeCabecalho).should('be.visible');

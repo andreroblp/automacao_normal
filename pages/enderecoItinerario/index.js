@@ -12,7 +12,7 @@ class EnderecoItinerario{
         let mes = ("0" + (hoje.getMonth() + 1)).slice(-2)
         let ano = hoje.getFullYear();
         let dataCompleta = dia + mes + ano.toString();
-        cy.get(elem.dataItinerario).type( '{home}')
+        cy.get(elem.dataItinerario).clear().type( '{home}')
         cy.get(elem.dataItinerario).type(dataCompleta).should('have.value',
         dataCompleta.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3'))
     }

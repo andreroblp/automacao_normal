@@ -3,8 +3,8 @@ function diaAtual(){
     let diaFormatado = ('0' + hoje.getDate()).slice(-2);
     let mes = ('0' + hoje.getMonth()+1).slice(-2);
     let ano = hoje.getFullYear();
-    let hour = hoje.getHours();
-    let minute = hoje.getMinutes();
+    let hour = ('0' + hoje.getHours()).slice(-2);
+    let minute = ('0' + hoje.getMinutes()).slice(-2);
 
       return diaFormatado+mes+ano+'_'+hour+minute;
    
@@ -22,6 +22,11 @@ export const ADRESS_PRINT = {
     VendaInternaNormalBoletoDebAutom : '../../../VendaInterna_DebAutom ' + diaAtual(),
     VendaInternaNormalBoletoDebAutomApenasGeneroSocial : '../../../VendaInterna_DebAutom_ApenasGênero ' + diaAtual(),
     VendaInternaNormalBoletoDebAutomNomeSocial : '../../../VendaInterna_DebAutom_NomeGeneroSocial ' + diaAtual(),
+    CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceita : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed ' + diaAtual(),
+    CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceitaGeneroSocial : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed_GeneroSocial ' + diaAtual(),
+    CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceitaNomeGeneroSocial : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed_NomeGeneroSocial ' + diaAtual(),
+    CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceitaNomeSocial : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed_ApenasNome_Social ' + diaAtual(),
+    CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceitaNomeGeneroSocial : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed_Nome e GeneroSocial ' + diaAtual(),
     arquivo : '/teste',
     docNormal : '/docNormal',
 }

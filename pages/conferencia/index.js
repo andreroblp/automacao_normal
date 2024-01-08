@@ -1,7 +1,5 @@
 const elem = require('./elements').ELEMENTS;
-import preCadastro from '../preCadastro';
 import lStorage from '../localStorage/'
-import gerarPessoa from '../../geradores/geradorPessoas';
 
 class Conferencia {
 
@@ -49,60 +47,39 @@ class Conferencia {
     }
 
     validarNomeGeneroSocial() {
-        cy.get(elem.nomeSocial).should('have.value', preCadastro.obterObjetoLocalStorage().nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase())
+        cy.get(elem.nomeSocial).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase())
         cy.get(elem.generoSocial + ' option:selected').invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().generoSocial);
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').generoSocial);
     }
 
-    validarDadosReceita() {
-        cy.get(elem.nome).should('have.value', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.get(elem.dataNascimento).should('have.value', preCadastro.obterReceitaLocalStorage().dataNascimento);
-        cy.get(elem.cpf).should('have.value', preCadastro.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"))
-        cy.get(elem.nomeMae).should('have.value', preCadastro.obterReceitaLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+    validarDadosBeneficiario(item) {
+        cy.get(elem.nome).should('have.value', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.get(elem.dataNascimento).should('have.value', lStorage.obterObjetoLocalStorage(item).dataNascimento);
+        cy.get(elem.cpf).should('have.value', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"))
+        cy.get(elem.nomeMae).should('have.value', lStorage.obterObjetoLocalStorage(item).nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
         cy.get(elem.sexo + ' option:selected').invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().sexo);
-    }
-
-    validarDadosNotRF() {
-        cy.get(elem.nome).should('have.value', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.get(elem.cpf).should('have.value', preCadastro.obterObjetoLocalStorage().cpf.comMascara);
-        cy.get(elem.dataNascimento).should('have.value', Cypress.env('dtNasc'));
-        cy.get(elem.nomeMae).should('have.value', preCadastro.obterObjetoLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.get(elem.sexo + ' option:selected').invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().sexo);
-    }
-
-    validarDadosBeneficiario() {
+            .should('eq', lStorage.obterObjetoLocalStorage(item).sexo);
         cy.get(elem.rg).should('have.value', Cypress.env('rg'));
         cy.get(elem.cep).should('have.value', Cypress.env('cep'));
         cy.get(elem.orgaoEmissor + ' option:selected').invoke('text')
             .should('eq', elem.orgaoEmissorText);
         cy.get(elem.ufOrgaoEmissor + ' option:selected').invoke('text')
             .should('eq', elem.ufOrgaoEmissorValueText);
-        cy.get(elem.cns).should('have.value', preCadastro.obterObjetoLocalStorage().cns);
-        cy.get(elem.telCelular).should('have.value', preCadastro.obterObjetoLocalStorage().cel);
+        cy.get(elem.cns).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').cns);
+        cy.get(elem.telCelular).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').cel);
         cy.get(elem.email).should('have.value', Cypress.env('emailAndre'));
         cy.get(elem.estadoCivil + ' option:selected').invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().estadoCivil);
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').estadoCivil);
         cy.get(elem.cepCorrespondencia).should('have.value', Cypress.env('cep'));
         cy.get(elem.cuidadoAnterior + ' option:selected').invoke('text')
             .should('eq', elem.cuidadoAnteriorText);
     }
 
-    validarDebAutomNomeCPFNotRF() {
+    validarDadosDebitoAutomatico(item) {
         cy.xpath(elem.xpathNomeDebAutom).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathCPFDebAutom).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().cpf.comMascara);
-    }
-
-    validarDebAutomNomeCPFReceita() {
-        cy.xpath(elem.xpathNomeDebAutom).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathCPFDebAutom).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
-    }
-    validarDadosDebitoAutomatico() {
+        .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+    cy.xpath(elem.xpathCPFDebAutom).invoke('text')
+        .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
         cy.xpath(elem.xpathBancoDebAutom).invoke('text')
             .should('eq', elem.bancoDebito);
         cy.xpath(elem.xpathAgenciaDebAutom).invoke('text')
@@ -111,21 +88,11 @@ class Conferencia {
             .should('eq', Cypress.env('cc'))
     }
 
-    validarDebAutomNomeCPFNotRFCorretora() {
+    validarDadosDebitoAutomaticoCorretora(item) {
         cy.xpath(elem.xpathNomeDebAutomCorretora).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathCPFDebAutomCorretora).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().cpf.comMascara);
-    }
-
-    validarDebAutomNomeCPFReceitaCorretora() {
-        cy.xpath(elem.xpathNomeDebAutomCorretora).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathCPFDebAutomCorretora).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
-    }
-
-    validarDadosDebitoAutomaticoCorretora() {
+        .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+    cy.xpath(elem.xpathCPFDebAutomCorretora).invoke('text')
+        .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
         cy.xpath(elem.xpathBancoDebAutomCorretora).invoke('text')
             .should('eq', elem.bancoDebito);
         cy.xpath(elem.xpathAgenciaDebAutomCorretora).invoke('text')
@@ -138,9 +105,9 @@ class Conferencia {
         cy.get(elem.justificativa3).should('have.value', "Teste Justificativa Automação");
     }
 
-    validarJustificativaDeclaracaoSaudeVazia() {
+    validarJustificativaDeclaracaoSaudeVazia(item) {
         let quantidadePerguntas = 0;
-        if(lStorage.obterPessoaPreBenef().sexo === "Feminino"){
+        if(lStorage.obterObjetoLocalStorage(item).sexo === "Feminino"){
             quantidadePerguntas = 15;
         } else{
             quantidadePerguntas = 14

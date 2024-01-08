@@ -1,7 +1,6 @@
 const elem = require('./elements').ELEMENTS;
-const print = require('../parametrosPrints/elements').ADRESS_PRINT;
 import printDaTela from '../parametrosPrints/';
-import preCadastro from '../preCadastro';
+import lStorage from '../localStorage';
 
 class ImpressaoContrato {
 
@@ -9,75 +8,31 @@ class ImpressaoContrato {
         cy.contains(elem.titulo).should('be.visible');
     }
 
-    validarDadosBeneficiarioNotRF() {
-        cy.xpath(elem.xpathNomeBenef).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathNomeMae).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathDataNasc).invoke('text')
-            .should('eq', Cypress.env('dtNasc'));
-        cy.xpath(elem.xpathCPF).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().cpf.comMascara);
-    }
-
-    validarDadosBeneficiarioNotRFSemNomeSocial() {
-        cy.xpath(elem.xpathNomeBenefSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathNomeMaeSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathDataNascSemNomeSocial).invoke('text')
-            .should('eq', Cypress.env('dtNasc'));
-        cy.xpath(elem.xpathCPFSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().cpf.comMascara);
-    }
-
-    validarDadosBeneficiario() {
+    validarDadosBeneficiario(item) {
+        let ext = '';
+        if(lStorage.obterObjetoLocalStorage('preBenef').nomeSocial !== ""){
         cy.xpath(elem.xpathNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathRG).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        } else{
+            ext = 'SemNomeSocial';
+        }
+            cy.xpath(elem['xpathNomeBenef'+ext]).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem['xpathNomeMae'+ext]).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage(item).nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem['xpathDataNasc'+ext]).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage(item).dataNascimento);
+        cy.xpath(elem['xpathCPF'+ext]).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
+        cy.xpath(elem['xpathRG'+ext]).invoke('text')
             .should('eq', Cypress.env('rg'));
-        cy.xpath(elem.xpathEmail).invoke('text')
+        cy.xpath(elem['xpathEmail'+ext]).invoke('text')
             .should('eq', Cypress.env('emailAndre'));
-        cy.xpath(elem.xpathCelular).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().cel);
-        cy.xpath(elem.xpathAdesao).invoke('text')
+        cy.xpath(elem['xpathCelular'+ext]).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').cel);
+        cy.xpath(elem['xpathAdesao'+ext]).invoke('text')
             .should('eq', 'Boleto - (envio automático por e-mail)');
-        cy.xpath(elem.xpathMensal).invoke('text')
-            .should('eq', 'Débito automático');
-    }
-
-    validarDadosBeneficiarioReceita() {
-        cy.xpath(elem.xpathNomeBenef).invoke('text')
-        .should('eq', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-    cy.xpath(elem.xpathNomeMae).invoke('text')
-        .should('eq', preCadastro.obterReceitaLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-    cy.xpath(elem.xpathDataNasc).invoke('text')
-        .should('eq', preCadastro.obterReceitaLocalStorage().dataNascimento);
-    cy.xpath(elem.xpathCPF).invoke('text')
-        .should('eq', preCadastro.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
-    }
-
-    validarDadosBeneficiarioReceitaSemNomeSocial() {
-        cy.xpath(elem.xpathNomeBenefSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathNomeMaeSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathDataNascSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().dataNascimento);
-        cy.xpath(elem.xpathCPFSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterReceitaLocalStorage().documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
-    }
-
-    validarDadosBeneficiarioSemNomeSocial() {
-        cy.xpath(elem.xpathRGSemNomeSocial).invoke('text')
-            .should('eq', Cypress.env('rg'));
-        cy.xpath(elem.xpathEmailSemNomeSocial).invoke('text')
-            .should('eq', Cypress.env('emailAndre'));
-        cy.xpath(elem.xpathCelularSemNomeSocial).invoke('text')
-            .should('eq', preCadastro.obterObjetoLocalStorage().cel);
-        cy.xpath(elem.xpathAdesaoSemNomeSocial).invoke('text')
-            .should('eq', 'Boleto - (envio automático por e-mail)');
-        cy.xpath(elem.xpathMensalSemNomeSocial).invoke('text')
+        cy.xpath(elem['xpathMensal'+ext]).invoke('text')
             .should('eq', 'Débito automático');
     }
 
@@ -95,8 +50,7 @@ class ImpressaoContrato {
         cy.wait(5000)
         printDaTela.documentos(directory);
         cy.get(elem.idPreBenef).invoke('attr', 'value').then($id => {
-            var jsonAux = JSON.stringify($id);
-            window.localStorage.setItem('id', jsonAux);
+            lStorage.armazenarLocalStorage($id, 'idPreBenef')
         })
     }
 

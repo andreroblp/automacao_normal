@@ -12,8 +12,7 @@ export default function gerarCPF() {
     numeros[9] = primeiroDV();
     numeros[10] = segundoDV();
 
-   return {"semMascara" : gerarCPFSemMascara(),
-            "comMascara" : gerarCPFComMascara()}
+   return gerarCPFSemMascara()
 }
 
 function gerarNumeros() {

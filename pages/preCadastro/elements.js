@@ -16,7 +16,6 @@ export const ELEMENTS = {
     generoSocial : '#genero-social-beneficiario',
     prestadorServico : '#tipo-prestador-servico',
     opcaoPrestadorServico : 'Nenhum',
-    dtNasc : Cypress.env('dtNasc'),
     celular : '[name="preBeneficiario.telefoneCelular.numero"]',
     recemNascidoMenu: '#recem-nascido',
 }

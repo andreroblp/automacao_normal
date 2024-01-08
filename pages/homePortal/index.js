@@ -1,5 +1,6 @@
 const elem = require('./elements').ELEMENTS;
 import excecao from '../excecao';
+import lStorage from '../localStorage'
 
 class HomePortal {
 
@@ -7,16 +8,15 @@ class HomePortal {
         cy.iframe(elem.iframe)
             .find(elem.ticket)
             .invoke('attr', 'value').then($ticket => {
-                var jsonAux = JSON.stringify($ticket);
-                localStorage.setItem('ticket', jsonAux);
+                lStorage.armazenarLocalStorage($ticket, 'ticket')
             })
     }
 
-    validarAcesso(){
+    validarAcesso() {
         cy.get(elem.elemPainel).contains(elem.tituloPainel).should('be.visible');
     }
 
-    validarMensagemFinalizacaoVenda(){
+    validarMensagemFinalizacaoVenda() {
         cy.get(elem.mensagemSucesso).should('be.visible')
         cy.get(elem.mensagemSucesso).invoke('text')
             .should('eq', elem.mensagemSucessoTexto)
@@ -24,9 +24,9 @@ class HomePortal {
 
     validarAcessoRealizado() {
         excecao.tratarExcecao();
-        cy.get(elem.validarAcesso).should('be.visible');
+        cy.iframe(elem.iframe).find(elem.botao3Pontos).should('be.visible')
         cy.wait(4000);
-      }
+    }
 }
 
 export default new HomePortal();

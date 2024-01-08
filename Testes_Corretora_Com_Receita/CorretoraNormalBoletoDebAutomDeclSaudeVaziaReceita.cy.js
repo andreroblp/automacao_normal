@@ -6,24 +6,27 @@ import preCadastro from '../pages/preCadastro';
 import dadosBeneficiario from '../pages/dadosBeneficiario'
 import envioArquivo from '../pages/envioArquivo';
 import declaracao from '../pages/declaracaoSaude';
+import declFinalizacao from '../pages/declaracaoSaudeFinalizacao';
 import agendamento from '../pages/agendamentoAssinatura';
 import conferencia from '../pages/conferencia';
-import revisao from '../pages/revisao';
 import impressaoContrato from '../pages/impressaoContrato';
 import assinatura from '../pages/assinaturaDigital';
 import carteirinha from '../pages/impressaoCarteirinha';
 import pagamento from '../pages/pagamento';
 import printDaTela from '../pages/parametrosPrints';
+import home from '../pages/homePortal';
+import minhasAtividades from '../pages/minhasAtividades';
+import enderecoItinerario from '../pages/enderecoItinerario';
+import revisaoDesconto from '../pages/revisaoDesconto';
 import lStorage from '../pages/localStorage';
 import gerarPessoa from '../geradores/geradorPessoas';
 const directory = Cypress.spec.name.replace('.cy.js', '')
 
-
-describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor Interno'
-    + '/ Com Débito Automático / Com Nome Social / Com Receita Federal',
+describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETORA'
+    + '/ Com Débito Automático / Sem Nome Social / Com Receita Federal',
     () => {
 
-        context('Cenário: Logar no Sistema da Prevent Senior.', () => {
+        context('Cenário: Logar no Sistema Como Analista.', () => {
 
             it('DADO \n o acesso para a tela principal do Portal Web em Homologação', () => {
                 login.acessarValidarTelaLogin();
@@ -34,8 +37,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             })
 
             it('ENTÃO \n o acesso é concedido para a tela principal', () => {
-                login.validarAcessoRealizado();
-                parametrosVenda.obterTicketArmazenar();
+                home.validarAcessoRealizado();
             })
         })
 
@@ -47,32 +49,48 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     openMode: 3,
                 },
             }, () => {
-                parametrosVenda.acessarTelaViaEnderecoComTicket();
+                parametrosVenda.acessarTelaViaMenu();
             })
 
             it('QUANDO \n o usuário checar para "Sim" o item "Habilitar débito automático como forma de pagamento das mensalidades?"', () => {
-                parametrosVenda.checarDebitoSemIframe();
+                parametrosVenda.checarDebito();
             })
 
             it('E \n o usuário checar para "Sim" o item "Pode consultar pessoa fisica receita federal?"', () => {
-                parametrosVenda.checarReceitaSemIframeSim();
+                parametrosVenda.checarReceitaSim();
             })
 
             it('ENTÃO \ndeve salvar as configurações estabelecidas', () => {
-                parametrosVenda.salvarMudancasSemIframe();
+                parametrosVenda.salvarMudancas();
             })
 
-            it('E exibir a mensagem de Sucesso "Parâmetro(s) alterado(s) com sucesso."', () => {
-                parametrosVenda.exibirMensagemSucesso();
+            it('E realizar Logout."', () => {
+                login.realizarLogout();
             })
         })
-            context('Cenário: Tela Nova Venda', () => {
+        context('Cenário: Logar no Sistema Como Corretora.', () => {
+
+            it('DADO \n o acesso para a tela principal do Portal Web em Homologação', () => {
+                login.acessarValidarTelaLogin();
+            })
+
+            it('QUANDO \n o usuário insere o usuário e a senha da Corretora', () => {
+                login.realizarLoginCorretora();
+            })
+
+            it('ENTÃO \n o acesso é concedido para a tela principal', () => {
+                home.validarAcessoRealizado();
+                home.ArmazenarTicketLocalStorage();
+            })
+        })
+        Cypress._.times(1, (n) => {
+            let contagem = (n + 1)
+            context('Cenário: Tela Nova Venda  ## Venda ' + (contagem), () => {
                 it('DADO \n o início do fluxo pela tela Nova Venda', () => {
                     novaVenda.acessarNovaVenda();
                 })
                 it('QUANDO \n o usuário inserir o nome no campo "Nome ou CPF" e clicar no botão "Pesquisar"', () => {
                     novaVenda.escreverNome();
-
                 })
                 it('E \n clicar no botão "Pesquisar"', () => {
                     novaVenda.pesquisar();
@@ -91,7 +109,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     formulario.verificarCampoNome();
                 })
                 it('QUANDO \n o usuário preencher todos os demais campos', () => {
-                    formulario.preencherDados();
+                    formulario.preencherDadosCorretora();
                 })
 
                 it('ENTÃO \n a tela permitirá avançar para o "Pré-Cadastro"', () => {
@@ -103,25 +121,24 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             context('Cenário: Preencher a tela Pré Cadastro', () => {
                 it('DADO \n o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"', () => {
                     preCadastro.validarNomeEntrada();
-                    const CPF = 'vazio';
+                    const CPF = '87072394753';
                     preCadastro.consultarReceitaFederal(CPF);
                 })
 
                 it('QUANDO \n inserir o CPF do Beneficiário', () => {
-                    lStorage.armazenarLocalStorage(gerarPessoa(0,false, true), 'preBenef')
-                    preCadastro.preencherCPFDataNasc('receita');
-                }), 
+                    lStorage.armazenarLocalStorage(gerarPessoa(0, false, false), 'preBenef')
+                    preCadastro.preencherCPFDataNasc(true, 'receita');
+                })
 
                 it('E \n preencher os demais campos da tela', () => {
-                    preCadastro.preencherDadosGeral(false, 'receita');
-                    preCadastro.preencherNomeGeneroSocial();
+                    preCadastro.preencherDadosGeralCorretora();
                 })
 
                 it('ENTÃO \n Nome e Data de Nascimento deverão ter sido preenchidos automaticamente', () => {
                     preCadastro.validarNomeDataNascimentoReceita();
                 })
                 it('E \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
-                    printDaTela.printarTela(directory);
+                    printDaTela.printarTela(directory)
                     preCadastro.avancarParaDadosBeneficiario();
                 })
             })
@@ -130,33 +147,28 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     dadosBeneficiario.validarAcessoNaPagina();
                     dadosBeneficiario.validarDados('receita');
                 })
-
-                it('E \n  Nome Social já preenchido', () => {
-                    dadosBeneficiario.validarNomeGeneroSocial();
-                })
-
                 it('QUANDO \n preencher os dados do beneficiário', () => {
-                    dadosBeneficiario.preencherDadosBeneficiario('receita')
+                    dadosBeneficiario.preencherDadosBeneficiario('receita');
                 })
 
-                it('E \n  preencher o Gênero Social', () => {
-                    dadosBeneficiario.preencherGeneroSocial();
+                it('E \n O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"', () => {
+                    dadosBeneficiario.nomeGeneroSocialVazio();
                 })
 
                 it('E \n preencher os dados do débito automático', () => {
                     dadosBeneficiario.preencherDebitoAutomatico();
                 })
 
-                it('ENTÃO \n validar regras do Débito Automático', () => {
-                    dadosBeneficiario.validarRegrasDebitoAutomatico();
+                it('ENTÃO \n validar aviso do Débito Automático', () => {
+                    dadosBeneficiario.validarAvisoDebitoAutomaticoCorretora();
                 })
 
-                it('E \n a tela permitirá avançar para o "Envio do documento"', () => {
-                    printDaTela.printarTela(directory);
+                it('AND \n a tela permitirá avançar para o "Envio do documento"', () => {
+                    printDaTela.printarTela(directory)
                     dadosBeneficiario.avancarParaEnvioArquivo();
                 })
 
-                it('E \n não exibirá o alerta de obrigatoriedade de preenchimento', () => {
+                it('AND \n não exibirá o alerta de obrigatoriedade de preenchimento', () => {
                     dadosBeneficiario.naoExibirAlertaObrigatoriedade();
                 })
             })
@@ -180,43 +192,72 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 it('DADO \n o acesso a tela "Declaração de Saúde"', () => {
                     declaracao.validarAcesso();
                 })
-                it('QUANDO \n  marcar "Sim" para uma pergunta', () => {
-                    declaracao.marcarUmaPerguntaComoSim();
+                it('QUANDO \n Não preencher a declaração e validar todos os campos em branco', () => {
+                    declaracao.validarJustificativaDeclaracaoSaudeVazia('receita');
+                    declaracao.obterIdBeneficiarioCorretora();
                 })
-
-                it('E \n responder a justificativa da Pergunta marcada como "Sim"', () => {
-                    declaracao.responderJustificativa();
-                })
-
                 it('ENTÃO \n permitirá o avanço para a tela "Agendamento de Assinatura"', () => {
                     declaracao.avancarParaAgendamento();
                 })
             })
-            context('Cenário: Acessar o Agendamento de Assinatura e selecionar o dia do Vencimento', () => {
-                it('DADO \n o acesso a tela "Agendamento de Assinatura"', () => {
-                    agendamento.validarAcesso();
+
+            context('Cenário: Finalizar o Fluxo da Corretora', () => {
+                it('DADO \n o passo para a última dela do fluxo da Corretora', () => {
+                    declFinalizacao.validarAcesso();
+                })
+                it('QUANDO \n  clicar no botão "Avançar"', () => {
+                    declFinalizacao.finalizar();
                 })
 
-                it('QUANDO \n E validar a opção "Assinatura no Local da Venda" selecionada', () => {
-                    agendamento.validarOpcaoSelecionada();
-                })
-
-                it('E \n  selecionar um dia para o vencimento', () => {
-                    agendamento.selecionarDiaVencimento();
-                })
-
-                it('ENTÃO \n permitirá o avanço para a tela "Conferência"', () => {
-                    agendamento.salvarAvancar();
+                it('ENTÃO \n será redirecionado para a tela principal', () => {
+                    declFinalizacao.confirmarFinalizacaoCorretora();
                 })
             })
+
+            context('Cenário: Logar no Sistema Como Analista.', () => {
+
+                it('DADO \n o acesso para a tela principal do Portal Web em Homologação', () => {
+                    login.acessarLoginNovamenteAnalista();
+                })
+
+                it('QUANDO \n o usuário insere o usuário e a senha do Vendedor', {
+                    retries: {
+                        runMode: 3,
+                        openMode: 3,
+                    },
+                }, () => {
+                    login.realizarLoginSegundaVez();
+                })
+
+                it('ENTÃO \n o acesso é concedido para a tela principal', () => {
+                    home.validarAcessoRealizado();
+                    home.ArmazenarTicketLocalStorage();
+                })
+            })
+
+            context('Cenário: Acessar a tela "Minhas Atividades" para reabrir a atividade', () => {
+                it('DADO \n o acesso para a tela Minhas Atividades', () => {
+                    minhasAtividades.validarAcesso();
+                })
+
+                it('QUANDO \n Validar a existência da venda realizada pela Corretora', () => {
+                    minhasAtividades.localizarVendaCorretora();
+                })
+
+                it('ENTÃO \n deverá acessá-la', () => {
+                    minhasAtividades.abrirAtividade();
+                })
+            })
+
             context('Cenário: Validar as Informações preenchidas nas telas Anteriores', () => {
                 it('DADO \n o acesso a tela "Conferência de Arquivos"', () => {
-                    conferencia.validarAcesso();
-                })
+                    conferencia.validarAcessoCorretora();
+                })  
 
                 it('QUANDO \n preencher a "Parceria da Venda" e Assinatura Digital como "sim"', () => {
                     conferencia.preencherParceriaVenda();
                     conferencia.preencherAssinaturaDigital();
+                    conferencia.comoConheceuCorretora();
                 })
 
                 it('E \n preencher a forma de pagamento da Adesão como Boleto', () => {
@@ -228,64 +269,93 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('ENTÃO \n as informações do Beneficiário preenchida em telas anteriores deverão ser validadas', () => {
-                    conferencia.validarDadosBeneficiario('receita')
-                    conferencia.validarNomeGeneroSocial();
+                    conferencia.validarDadosBeneficiario('receita');
+                })
+
+                it('E \n O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"', () => {
+                    conferencia.nomeGeneroSocialVazio();
                 })
 
                 it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
-                    conferencia.validarDadosDebitoAutomatico('receita');
+                    conferencia.validarDadosDebitoAutomaticoCorretora('receita');
                 })
 
-                it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
-                    conferencia.validarJustificativaDeclaracaoSaude();
+                it('E \n todas as justificativas deverão estar em branco', () => {
+                    conferencia.validarJustificativaDeclaracaoSaudeVazia('receita');
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
-                    printDaTela.printarTela(directory);
+                    printDaTela.printarTela(directory)
                     conferencia.botaoSalvar();
                 })
             })
-            context('Cenário: Validar as Informações preenchidas nas telas Anteriores, incluindo Conferência', () => {
-                it('DADO \n o acesso a tela "Revisão do beneficiário"', () => {
-                    revisao.validarAcesso();
+
+            context('Cenário: Acessar a tela Endereço Itinerário para preenchimento da Data e Confirmação do Endereço', () => {
+                it('DADO \n o acesso a tela "Endereço do Itinerário"', () => {
+                    enderecoItinerario.validarAcesso();
                 })
 
-                it('QUANDO \n os dados do Proponente deverão ser validados', () => {
-                    revisao.validarDadosBeneficiario('receita');
-                    revisao.validarNomeGeneroSocial();
+                it('QUANDO \n inserir a data Itinerário', {
+                    retries: {
+                        runMode: 5,
+                        openMode: 5,
+                    },
+                }, () => {
+                    enderecoItinerario.inserirData();
                 })
 
-                it('E \n o Termo Aditivo deverá ser validado', () => {
-                    revisao.validarTermoAditivo();
+                it('E \n clicar no checkbox para preenchimento automático do endereço', () => {
+                    enderecoItinerario.carregarEndereco();
                 })
 
-                it('E \n a Assinatuta Digital deverá ser validada', () => {
-                    revisao.validarAssinaturaDigital();
-                })
-                it('E \n a Forma de Pagamento da Adesão e Mensalidade deverão ser validadas', () => {
-                    revisao.validarPagamentoAdesao();
-                    revisao.validarPagamentoMensalidade();
-                })
-                it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
-                    revisao.validarNomeCPFDebAutomReceita();
-                    revisao.validarDadosDebitoAutomatico();
-                })
-                it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
-                    revisao.validarJustificativaDeclaracaoSaude();
+                it('E \n selecionar a Zona do Endereço', () => {
+                    enderecoItinerario.selecionarZona();
                 })
 
-                it('ENTÃO \n permitirá o avanço para a tela "Impressão do Contrato"', () => {
-                    printDaTela.printarTela(directory);
-                    revisao.botaoSalvar();
+                it('ENTÃO \n permitirá o avanço para a tela "Agendamento da Assinatura"', () => {
+                    enderecoItinerario.clicarBotaoAvancar();
                 })
             })
+
+            context('Cenário: Acessar o Agendamento de Assinatura e selecionar o dia do Vencimento', () => {
+                it('DADO \n o acesso a tela "Agendamento de Assinatura"', () => {
+                    agendamento.validarAcessoCorretora();
+                })
+
+                it('QUANDO \n selecionar a data da assinatura', () => {
+                    agendamento.selecionarArrastarDataAssinatura();
+                })
+
+                it('E \n  selecionar um dia para o vencimento', () => {
+                    agendamento.selecionarDiaVencimento();
+                })
+
+                it('ENTÃO \n permitirá o avanço para a tela "Conferência"', () => {
+                    agendamento.salvarAvancarCorretora();
+                })
+            })
+
+            context('Cenário: Validar os descontos Concedidos na tela "Revisão do Desconto"', () => {
+                it('DADO \n o acesso para a tela "Revisão do Desconto"', () => {
+                    revisaoDesconto.validarAcesso();
+                })
+
+                it('QUANDO \n validar nenhum desconto concedido', () => {
+                    revisaoDesconto.revisarDesconto()
+                })
+
+                it('ENTÃO \n deverá acessar a Impressão do Contrato', () => {
+                    revisaoDesconto.botaoSalvar();
+                })
+            })
+
             context('Cenário: Validar as Informações exibidas na Tela e gerar Contrato', () => {
                 it('DADO \n o acesso a tela "Impressão do Contrato"', () => {
-                    printDaTela.printarTela(directory);
+                    printDaTela.printarTela(directory)
                     impressaoContrato.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    impressaoContrato.validarDadosBeneficiario('receita');
+                    impressaoContrato.validarDadosBeneficiario('receita')
                 })
                 it('E \n a impossibilidade de Avançar sem gerar o contrato', () => {
                     impressaoContrato.validarExibirMensagemErro();
@@ -307,7 +377,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     assinatura.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    assinatura.validarDadosBeneficiarioSemNomeSocial('receita');
+                    assinatura.validarDadosBeneficiarioSemNomeSocial('receita')
                 })
                 it('E \n o status da Assinatura Digital em "Pendente de Envio"', () => {
                     assinatura.validarStatusPendenteSemNomeSocial();
@@ -353,16 +423,16 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
                 it('E \n cliclar em "Avançar" deverá exibir mensagem de erro referente ao Kit.', () => {
                     carteirinha.exibirMensagemErroKit();
-                 })
+                })
                 it('E \n clicar em "ENVIAR KIT"', () => {
-                   carteirinha.clicarGerarKit();
+                    carteirinha.clicarGerarKit();
                 })
                 it('ENTÃO \n exibirá Mensagem de Sucesso no Envio do Kit ', () => {
                     carteirinha.validarMensagemSucesso();
                 })
 
                 it('E \n permitirá avançar para a tela "Pagamento"', () => {
-                   carteirinha.avancarTela(directory);
+                    carteirinha.avancarTela(directory);
                 })
             })
             context('Cenário: Validar e Finalizar a Venda', () => {
@@ -376,11 +446,12 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     pagamento.validarDemaisInfos();
                 })
                 it('E \n clicar em "Finalizar Pagamento"', () => {
-                   pagamento.finalizarVenda();
+                    pagamento.finalizarVenda();
                 })
-               
+
                 it('ENTÃO \n a venda será concluída', () => {
                     pagamento.validarSucessoEncerramento();
                 })
             })
         })
+    })

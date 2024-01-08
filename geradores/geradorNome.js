@@ -1,9 +1,7 @@
 import gerarNumero from './geradorNumero.js';
 
-export default function gerarNome(temNome, sexo, nomeSocial) {
-    if (temNome === false) {
-        return '';
-    } else {
+export default function gerarNome(sexo, nomeSocial) {
+
         if (sexo === "M" && nomeSocial === true) {
             return nomeMasculinoSocial();
         } else if (sexo === "M" && nomeSocial === false) {
@@ -13,8 +11,6 @@ export default function gerarNome(temNome, sexo, nomeSocial) {
         } else {
             return NomeFeminino();
         }
-    }
-
 
     function nomeMasculinoSocial() {
         return nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)];
@@ -26,7 +22,7 @@ export default function gerarNome(temNome, sexo, nomeSocial) {
 
     function NomeFemininoSocial() {
 
-        nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)];
+        return nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)];
     }
     function NomeFeminino() {
         return nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)];

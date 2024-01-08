@@ -20,9 +20,9 @@ class DeclaracaoSaude{
         cy.get(elem.botaoAvancar).click();
     }
 
-    validarJustificativaDeclaracaoSaudeVazia() {
+    validarJustificativaDeclaracaoSaudeVazia(item) {
         let quantidadePerguntas = 0;
-        if(lStorage.obterPessoaPreBenef().sexo === "Feminino"){
+        if(lStorage.obterObjetoLocalStorage(item).sexo === "Feminino"){
             quantidadePerguntas = 15;
         } else{
             quantidadePerguntas = 14
@@ -37,8 +37,7 @@ class DeclaracaoSaude{
 
     obterIdBeneficiarioCorretora(){
         cy.get(elem.idBenef).invoke('attr', 'value').then($id =>{
-            var jsonAux = JSON.stringify($id);
-            window.localStorage.setItem('id', jsonAux);
+            lStorage.armazenarLocalStorage($id, 'idPreBenef')
         })
     }
 }

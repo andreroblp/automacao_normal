@@ -18,6 +18,8 @@ import home from '../pages/homePortal';
 import minhasAtividades from '../pages/minhasAtividades';
 import enderecoItinerario from '../pages/enderecoItinerario';
 import revisaoDesconto from '../pages/revisaoDesconto';
+import lStorage from '../pages/localStorage';
+import geradorPessoa from '../geradores/geradorPessoas'
 const directory = Cypress.spec.name.replace('.cy.js', '')
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETORA'
@@ -220,8 +222,13 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     login.acessarLoginNovamenteAnalista();
                 })
 
-                it('QUANDO \n o usuário insere o usuário e a senha do Vendedor', () => {
-                    login.realizarLogin();
+                it('QUANDO \n o usuário insere o usuário e a senha do Vendedor', {
+                    retries: {
+                        runMode: 3,
+                        openMode: 3,
+                    },
+                }, () => {
+                    login.realizarLoginSegundaVez();
                 })
 
                 it('ENTÃO \n o acesso é concedido para a tela principal', () => {
@@ -289,7 +296,12 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     enderecoItinerario.validarAcesso();
                 })
 
-                it('QUANDO \n inserir a data Itinerário', () => {
+                it('QUANDO \n inserir a data Itinerário',  {
+                    retries: {
+                        runMode: 3,
+                        openMode: 3,
+                    },
+                },  () => {
                    enderecoItinerario.inserirData();
                 })
 
@@ -423,7 +435,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('E \n permitirá avançar para a tela "Pagamento"', () => {
-                    carteirinha.avancarTelaNormal(contagem);
+                    carteirinha.avancarTela(contagem);
                 })
             })
             context('Cenário: Validar e Finalizar a Venda', () => {

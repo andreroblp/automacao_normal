@@ -6,4 +6,5 @@ export const ELEMENTS = {
     mensagemSucesso : '.noty_text',
     mensagemSucessoTexto : 'Processo finalizado com sucesso.',
     validarAcesso : '[unselectable="on"]',
+    botao3Pontos : '[class="fa fa-ellipsis-h"]',
 }

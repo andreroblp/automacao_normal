@@ -1,23 +1,28 @@
 const elem = require('./elements').ELEMENTS;
 
-class LocalStorage{
+class LocalStorage {
 
-    ObterIdPreBenef() {
-        var jsonBenef = window.localStorage.getItem(elem.idPreBenef);
-        var idUsuario = JSON.parse(jsonBenef);
-        return idUsuario;
+    obterObjetoLocalStorage(item) {
+        var jsonBenef = window.localStorage.getItem(elem[item]);
+        return  JSON.parse(jsonBenef);
     }
 
-    obterTicket(){
-        var jsonBenef = window.localStorage.getItem(elem.ticket)
-        var ticketPortal = JSON.parse(jsonBenef); 
-        return ticketPortal;
-    }
+    armazenarLocalStorage(objeto, item) {
+        const sim = "Sim";
+        const nao = "Não";
+        let objetoPreBenef = objeto;
+        var jsonAux = JSON.stringify(objetoPreBenef);
+        localStorage.setItem(elem[item], jsonAux);
 
-    obterPessoaPreBenef() {
-        var jsonBenef = window.localStorage.getItem(elem.preBenef)
-        let benef = JSON.parse(jsonBenef);
-        return benef
+        if(objeto.nomeSocial !== ""){
+            let objetoSim = sim;
+            var jsonAux = JSON.stringify(objetoSim);
+            localStorage.setItem('temNomeSocial', jsonAux);
+        } else{
+            let objetoNao = nao;
+            var jsonAux = JSON.stringify(objetoNao);
+            localStorage.setItem('temNomeSocial', jsonAux);
+        }
     }
 }
 

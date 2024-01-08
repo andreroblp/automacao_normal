@@ -4,3 +4,5 @@ index.html
 app.js
 teste2.cy.js
 teste2.js
+testes de comando/automacaoNormalComDebAutomatico.cy.js
+testes de comando/automacaoNormalSemDebAutomatico.cy.js
