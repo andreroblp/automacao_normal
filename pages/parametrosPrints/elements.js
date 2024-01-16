@@ -27,6 +27,9 @@ export const ADRESS_PRINT = {
     CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceitaNomeGeneroSocial : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed_NomeGeneroSocial ' + diaAtual(),
     CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceitaNomeSocial : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed_ApenasNome_Social ' + diaAtual(),
     CorretoraNormalBoletoDebAutomDeclSaudeVaziaReceitaNomeGeneroSocial : '../../../Corretora_DebAutom_DeclSaudeVazia_ReceitaFed_Nome e GeneroSocial ' + diaAtual(),
+    testeAvulso : '../../../testes avulsos',
     arquivo : '/teste',
     docNormal : '/docNormal',
+    contrato: '/contratoAdesao/',
+    downloadArquivo: 'cypress/Downloads'
 }

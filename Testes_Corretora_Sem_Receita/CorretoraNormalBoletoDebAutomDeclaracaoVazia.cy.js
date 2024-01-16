@@ -189,7 +189,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     declaracao.validarAcesso();
                 })
                 it('QUANDO \n  Não preencher a declaração e validar todos os campos em branco', () => {
-                    declaracao.validarJustificativaDeclaracaoSaudeVazia();
+                    declaracao.validarJustificativaDeclaracaoSaudeVazia('preBenef');
                     declaracao.obterIdBeneficiarioCorretora();
                 })
 
@@ -278,7 +278,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('E \n todas as justificativas deverão estar em branco', () => {
-                    conferencia.validarJustificativaDeclaracaoSaudeVazia();
+                    conferencia.validarJustificativaDeclaracaoSaudeVazia('preBenef');
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
@@ -365,6 +365,9 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
                     impressaoContrato.exibirContrato();
                 })
+                it('E \n o Contrato será salvo como evidência', () => {
+                    impressaoContrato.salvarPDFContrato();
+                })
                 it('E \n o botão Avançar liberado para Assinatura Digital', () => {
                     impressaoContrato.clicarAvancar();
                 })
@@ -374,10 +377,10 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     assinatura.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    assinatura.validarDadosBeneficiarioSemNomeSocial('preBenef');
+                    assinatura.validarDadosBeneficiario('preBenef');
                 })
                 it('E \n o status da Assinatura Digital em "Pendente de Envio"', () => {
-                    assinatura.validarStatusPendenteSemNomeSocial();
+                    assinatura.validarStatusPendente();
                 })
                 it('E \n exibir a Mensagem de Erro ao tentar Avançar sem realizar Assinatura Digital', () => {
                     assinatura.mensagemErroPendenteEnvio();
@@ -388,11 +391,11 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('ENTÃO \n exibir Mensagem de Erro ao tentar Avançar com Status "Enviado"', () => {
-                    assinatura.mensagemErroStatusEnviadoSemNomeSocial();
+                    assinatura.mensagemErroStatusEnviado();
                 })
 
                 it('E \n o status deverá ser trocado de "ENVIADO" para "CONCLUIDO"', () => {
-                    assinatura.trocarStatusSemNomeSocial();
+                    assinatura.trocarStatus();
                 })
 
                 it('E \n exibir Mensagem de Erro ao tentar Avançar sem gerar o Boleto', () => {
@@ -438,7 +441,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     pagamento.validarAcesso();
                 })
                 it('QUANDO \n validar as informações', () => {
-                    pagamento.validarDadosBeneficiarioSemNomeSocial('preBenef');
+                    pagamento.validarDadosBeneficiario('preBenef');
                     pagamento.validarDebAutomatico('preBenef');
                     pagamento.validarDemaisInfos();
                 })

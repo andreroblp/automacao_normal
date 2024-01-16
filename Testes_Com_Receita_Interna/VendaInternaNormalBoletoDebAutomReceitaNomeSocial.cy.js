@@ -297,6 +297,9 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
                     impressaoContrato.exibirContrato();
                 })
+                it('E \n o Contrato será salvo como evidência', () => {
+                    impressaoContrato.salvarPDFContrato();
+                })
                 it('E \n o botão Avançar liberado para Assinatura Digital', () => {
                     impressaoContrato.clicarAvancar();
                 })

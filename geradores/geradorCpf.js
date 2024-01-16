@@ -1,4 +1,4 @@
-
+import gerarNumero from "./geradorNumero";
 var numeros = [];
 
 export default function gerarCPF() {
@@ -17,7 +17,7 @@ export default function gerarCPF() {
 
 function gerarNumeros() {
     for (var x = 0; x < 9; x++) {
-        numeros[x] = Math.floor(Math.random() * 10);
+        numeros[x] = gerarNumero(0,9)
     }
 }
 

@@ -124,32 +124,31 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
-                    preCadastro.armazenarLocalStorage(0, true, false);
+                    lStorage.armazenarLocalStorage(geradorPessoa(0, true, true), 'preBenef');
                     preCadastro.reescreverNome();
                 })
 
                 it('E \n preencher os demais campos da tela', () => {
-                    preCadastro.preencherDados();
+                    preCadastro.preencherCPFDataNasc(true, 'preBenef');
                     preCadastro.preencherDadosGeralCorretora();
                     preCadastro.preencherNomeGeneroSocial();
                 })
 
                 it('ENTÃO \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
-                    printDaTela.corretoraNormalDebAutomNomeSocial(contagem);
+                    printDaTela.printarTela(directory);
                     preCadastro.avancarParaDadosBeneficiario();
                 })
             })
             context('Cenário: Preencher os Dados do Beneficiario', () => {
                 it('DADO \n o acesso a tela "Dados do Beneficiario" com o Nome, CPF e data de nascimento já preenchidos', () => {
-                    dadosBeneficiario.validarAcessoNaPaginaEDadosBeneficiario();
-                    dadosBeneficiario.validarDadosNotRF();
+                    dadosBeneficiario.validarAcessoNaPagina('preBenef');
+                    dadosBeneficiario.validarDados('preBenef');
                 })
                 it('E \n  Nome Social já preenchido', () => {
                     dadosBeneficiario.validarNomeGeneroSocial();
                 })
                 it('QUANDO \n preencher os dados do beneficiário', () => {
-                    dadosBeneficiario.preencherSexoMaeNotRF();
-                    dadosBeneficiario.preencherDadosBeneficiarioGeral();
+                    dadosBeneficiario.preencherDadosBeneficiario('preBenef');
                 })
 
                 it('E \n  preencher o Gênero Social', () => {
@@ -165,7 +164,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('AND \n a tela permitirá avançar para o "Envio do documento"', () => {
-                    printDaTela.corretoraNormalDebAutomNomeSocial(contagem);
+                    printDaTela.printarTela(directory);
                     dadosBeneficiario.avancarParaEnvioArquivo();
                 })
 
@@ -194,7 +193,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     declaracao.validarAcesso();
                 })
                 it('QUANDO \n  Não preencher a declaração e validar todos os campos em branco', () => {
-                    declaracao.validarJustificativaDeclaracaoSaudeVazia();
+                    declaracao.validarJustificativaDeclaracaoSaudeVazia('preBenef');
                     declaracao.obterIdBeneficiarioCorretora();
                 })
 
@@ -271,22 +270,20 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('ENTÃO \n as informações do Beneficiário preenchida em telas anteriores deverão ser validadas', () => {
-                    conferencia.validarDadosNotRF();
-                    conferencia.validarDadosBeneficiario();
+                    conferencia.validarDadosBeneficiario('preBenef');
                     conferencia.validarNomeGeneroSocial();
                 })
 
                 it('E \n as informações referente ao Débito Automático deverão ser validadas', () => {
-                    conferencia.validarDebAutomNomeCPFNotRFCorretora();
-                    conferencia.validarDadosDebitoAutomaticoCorretora();
+                    conferencia.validarDadosDebitoAutomaticoCorretora('preBenef');
                 })
 
                 it('E \n todas as justificativas deverão estar em branco', () => {
-                    conferencia.validarJustificativaDeclaracaoSaudeVazia();
+                    conferencia.validarJustificativaDeclaracaoSaudeVazia('preBenef');
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
-                    printDaTela.corretoraNormalDebAutomNomeSocial(contagem);
+                    printDaTela.printarTela(directory);
                     conferencia.botaoSalvar();
                 })
             })
@@ -352,23 +349,25 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
 
             context('Cenário: Validar as Informações exibidas na Tela e gerar Contrato', () => {
                 it('DADO \n o acesso a tela "Impressão do Contrato"', () => {
-                    printDaTela.corretoraNormalDebAutomNomeSocial(contagem);
+                    printDaTela.printarTela(directory);
                     impressaoContrato.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    impressaoContrato.validarDadosBeneficiarioNotRF();
-                    impressaoContrato.validarDadosBeneficiario();
+                    impressaoContrato.validarDadosBeneficiario('preBenef');
                 })
                 it('E \n a impossibilidade de Avançar sem gerar o contrato', () => {
                     impressaoContrato.validarExibirMensagemErro();
                 })
 
                 it('QUANDO \n clicar no botão para Gerar Contrato', () => {
-                    impressaoContrato.clicarBotaoContratoNormal(contagem);
+                    impressaoContrato.clicarBotaoContrato(directory);
                 })
 
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
                     impressaoContrato.exibirContrato();
+                })
+                it('E \n o Contrato será salvo como evidência', () => {
+                    impressaoContrato.salvarPDFContrato();
                 })
                 it('E \n o botão Avançar liberado para Assinatura Digital', () => {
                     impressaoContrato.clicarAvancar();
@@ -379,8 +378,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     assinatura.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
-                    assinatura.validarDadosBeneficiarioNotRF();
-                    assinatura.validarDadosBeneficiario();
+                    assinatura.validarDadosBeneficiario('preBenef');
                 })
                 it('E \n o status da Assinatura Digital em "Pendente de Envio"', () => {
                     assinatura.validarStatusPendente();
@@ -406,10 +404,10 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('E \n o botão de Gerar Boleto deverá ser exibido gerando um boleto', () => {
-                    assinatura.gerarBoletoNormal(contagem);
+                    assinatura.gerarBoleto('preBenef');
                 })
                 it('E \n permitirá avançar para a tela "Impressão da Carteirinha" sem exibir mensagem de erro', () => {
-                    printDaTela.corretoraNormalDebAutomNomeSocial(contagem);
+                    printDaTela.printarTela(directory);
                     assinatura.botaoAvancar();
                     assinatura.mensagemErroOculta();
                 })
@@ -440,14 +438,12 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
             })
             context('Cenário: Validar e Finalizar a Venda', () => {
                 it('DADO \n  o acesso a tela "Pagamento"', () => {
-                    printDaTela.corretoraNormalDebAutomNomeSocial(contagem);
+                    printDaTela.printarTela(directory);
                     pagamento.validarAcesso();
                 })
                 it('QUANDO \n validar as informações', () => {
-                    pagamento.validarDadosNotRF();
-                    pagamento.validarDadosBeneficiario();
-                    pagamento.validarNomeDebAutomNotRF();
-                    pagamento.validarDebAutomatico();
+                    pagamento.validarDadosBeneficiario('preBenef');
+                    pagamento.validarDebAutomatico('preBenef');
                     pagamento.validarDemaisInfos();
                 })
                 it('E \n clicar em "Finalizar Pagamento"', () => {

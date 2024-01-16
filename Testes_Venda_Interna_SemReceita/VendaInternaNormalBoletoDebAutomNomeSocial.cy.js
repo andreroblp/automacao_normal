@@ -148,7 +148,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n a tela permitirá avançar para o "Envio do documento"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     dadosBeneficiario.avancarParaEnvioArquivo();
                 })
 
@@ -237,7 +237,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     conferencia.botaoSalvar();
                 })
             })
@@ -276,7 +276,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             })
             context('Cenário: Validar as Informações exibidas na Tela e gerar Contrato', () => {
                 it('DADO \n o acesso a tela "Impressão do Contrato"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     impressaoContrato.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
@@ -292,6 +292,9 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
 
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
                     impressaoContrato.exibirContrato();
+                })
+                it('E \n o Contrato será salvo como evidência', () => {
+                    impressaoContrato.salvarPDFContrato();
                 })
                 it('E \n o botão Avançar liberado para Assinatura Digital', () => {
                     impressaoContrato.clicarAvancar();
@@ -331,7 +334,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     assinatura.gerarBoleto(directory);
                 })
                 it('E \n permitirá avançar para a tela "Impressão da Carteirinha" sem exibir mensagem de erro', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     assinatura.botaoAvancar();
                     assinatura.mensagemErroOculta();
                 })
@@ -362,7 +365,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
             })
             context('Cenário: Validar e Finalizar a Venda', () => {
                 it('DADO \n  o acesso a tela "Pagamento"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     pagamento.validarAcesso();
                 })
                 it('QUANDO \n validar as informações', () => {

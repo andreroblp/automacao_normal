@@ -1,3 +1,5 @@
+import gerarNumero from "./geradorNumero";
+
 var numero = [];
 
 export default function gerarCelular(){
@@ -6,12 +8,8 @@ export default function gerarCelular(){
     return criarMascaraCelular();
 }
 
-function gerarNumero(min){
-    return Math.floor(Math.random() * 9 + min)
-}
-
 function gerarDDD(){
-    numero[0] = gerarNumero(1);
+    numero[0] = gerarNumero(1,9);
     numero[1] = '1';
     numero[2] = '9';
 }
@@ -19,7 +17,7 @@ function gerarDDD(){
 function gerarNumeroCelular(){
     let numeroString = "";
     for(var x=3; x<11; x++){
-      numero[x] =  gerarNumero(0);
+      numero[x] =  gerarNumero(0, 9);
     }
     for(var y=0; y<11; y++){
         numeroString += numero[y]

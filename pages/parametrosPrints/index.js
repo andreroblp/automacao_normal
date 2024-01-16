@@ -14,6 +14,10 @@ class ParametroPrint {
         cy.get('.footer').invoke('show')
     }
 
+    downloadPDF(idBenef, response){
+        cy.writeFile(print.downloadArquivo+print.contrato+idBenef+'.pdf', response.body, 'binary');
+    }
+
 }
 
 export default new ParametroPrint();

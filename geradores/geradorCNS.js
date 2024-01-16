@@ -1,3 +1,4 @@
+import gerarNumero from "./geradorNumero";
 var numeros = [];
 var resto = 0;
 
@@ -17,12 +18,12 @@ export default function gerarCNS() {
 
 function escolherPrimeiroDigito() {
     var digitosAceitos = [1, 2, 7, 8, 9];
-    return digitosAceitos[Math.floor(Math.random() * 5)];
+    return digitosAceitos[gerarNumero(0,4)];
 }
 
 function gerarNumeros() {
     for (var x = 1; x < 11; x++) {
-        numeros[x] = (Math.floor(Math.random() * 10))
+        numeros[x] = gerarNumero(0,9)
     }
 }
 

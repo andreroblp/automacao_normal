@@ -10,24 +10,20 @@ class Pagamento {
 
 
     validarDadosBeneficiario(item) {
-        cy.xpath(elem.xpathNomeBenef).invoke('text')
+        let ext = ""
+        if(lStorage.obterObjetoLocalStorage('preBenef').nomeSocial !== ""){
+            cy.xpath(elem.xpathNomeSocial).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        } else{
+            ext = 'SemNomeSocial';
+        }
+        cy.xpath(elem['xpathNomeBenef' + ext]).invoke('text')
             .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
         cy.get(elem.datNasc).should('have.value', lStorage.obterObjetoLocalStorage(item).dataNascimento);
-        cy.xpath(elem.xpathNomeSocial).invoke('text')
-            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').nomeSocial.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-        cy.xpath(elem.xpathAdesao).invoke('text')
+        
+        cy.xpath(elem['xpathAdesao' + ext]).invoke('text')
             .should('eq', 'Boleto - (deve ser encaminhado junto com o contrato)');
-        cy.xpath(elem.xpathMensal).invoke('text')
-            .should('eq', 'Débito automático');
-    }
-
-    validarDadosBeneficiarioSemNomeSocial(item) {
-        cy.xpath(elem.xpathNomeBenefSemNomeSocial).invoke('text')
-        .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-    cy.get(elem.datNasc).should('have.value', lStorage.obterObjetoLocalStorage(item).dataNascimento);
-        cy.xpath(elem.xpathAdesaoSemNomeSocial).invoke('text')
-            .should('eq', 'Boleto - (deve ser encaminhado junto com o contrato)');
-        cy.xpath(elem.xpathMensalSemNomeSocial).invoke('text')
+        cy.xpath(elem['xpathMensal' + ext]).invoke('text')
             .should('eq', 'Débito automático');
     }
 

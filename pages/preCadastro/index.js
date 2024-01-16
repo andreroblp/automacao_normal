@@ -16,7 +16,7 @@ class PreCadastro {
         cy.get(elem.nome).should('have.value', elemNovaVenda.nomeEntrada.toUpperCase())
     }
 
-    reescreverNome() {
+   reescreverNome() {
         cy.get(elem.nome).clear().type(lStorage.obterObjetoLocalStorage('preBenef').nome)
             .should('have.value', lStorage.obterObjetoLocalStorage('preBenef')
                 .nome);

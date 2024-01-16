@@ -3,9 +3,12 @@ import cns  from './geradorCNS.js'
 import cel  from './geradorCelular.js'
 import nome from  './geradorNome.js'
 import estCivil from './gerarEstadoCivil.js'
+import gerarNumero from './geradorNumero.js'
 import {GENEROS} from './genero.js'
+import gerarDadosBancarios from './geradorDadosBancario.js'
 
-function gerarDadosPessoa(sexo,temNomeSocial, temGeneroSocial) {
+async function gerarDadosPessoa(sexo,temNomeSocial, temGeneroSocial) {
+    let teste = await gerarDadosBancarios();
     return {
         "nome": (sexo === GENEROS.MASCULINO) ? nome("M", false) : nome("F", false),
         "sexo": (sexo === GENEROS.MASCULINO) ? "Masculino" : "Feminino",
@@ -17,12 +20,13 @@ function gerarDadosPessoa(sexo,temNomeSocial, temGeneroSocial) {
         "nomeSocial" : (temNomeSocial === false) ? "" : (sexo === GENEROS.FEMININO) ? nome("M", true) : nome("F", true),
         "generoSocial" : (temGeneroSocial === false) ? "Nenhum" : (sexo === GENEROS.FEMININO) ? "Masculino" : "Feminino",
         "dataNascimento" : '16/09/1951',
+        "Dados" : teste,
     };
 }
 
-export default function gerarPessoa(tipoPessoa, temNomeSocial, temGeneroSocial) {
+export default async function gerarPessoa(tipoPessoa, temNomeSocial, temGeneroSocial) {
     if (tipoPessoa === GENEROS.ESCOLHER) {
-        tipoPessoa = Math.floor(Math.random() * 2) + 1;
+        tipoPessoa = gerarNumero(1,2)
     }
-    return gerarDadosPessoa(tipoPessoa, temNomeSocial, temGeneroSocial)
+    return await gerarDadosPessoa(tipoPessoa, temNomeSocial, temGeneroSocial)
 }

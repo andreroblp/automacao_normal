@@ -7,7 +7,7 @@ class LocalStorage {
         return  JSON.parse(jsonBenef);
     }
 
-    armazenarLocalStorage(objeto, item) {
+    async armazenarLocalStorage(objeto, item) {
         const sim = "Sim";
         const nao = "Não";
         let objetoPreBenef = objeto;

@@ -13,19 +13,19 @@ export default function gerarNome(sexo, nomeSocial) {
         }
 
     function nomeMasculinoSocial() {
-        return nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)];
+        return nomesMasculinos[gerarNumero(0,9)][gerarNumero(0,9)] + " " + nomeMeio[gerarNumero(0,9)][gerarNumero(0,9)];
     }
 
     function NomeMasculino() {
-        return nomesMasculinos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)];
+        return nomesMasculinos[gerarNumero(0,9)][gerarNumero(0,9)] + " " + nomeMeio[gerarNumero(0,9)][gerarNumero(0,9)] + " " + sobrenome[gerarNumero(0,99)][gerarNumero(0,9)];
     }
 
     function NomeFemininoSocial() {
 
-        return nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)];
+        return nomesFemininos[gerarNumero(0,9)][gerarNumero(0,9)] + " " + nomeMeio[gerarNumero(0,9)][gerarNumero(0,9)];
     }
     function NomeFeminino() {
-        return nomesFemininos[gerarNumero(9)][gerarNumero(9)] + " " + nomeMeio[gerarNumero(9)][gerarNumero(9)] + " " + sobrenome[gerarNumero(99)][gerarNumero(9)];
+        return nomesFemininos[gerarNumero(0,9)][gerarNumero(0,9)] + " " + nomeMeio[gerarNumero(0,9)][gerarNumero(0,9)] + " " + sobrenome[gerarNumero(0,99)][gerarNumero(0,9)];
     }
 
 }

@@ -1,9 +1,4 @@
-export default function gerarNumero(num) {
-    return Math.floor(Math.random() * (num + 1))
+export default function gerarNumero(min, max) {
+    return Math.floor(Math.random() * (max - min +1)) + min
 }
 
-function gerarNumeros() {
-    for (let x = 0; x < 100; x++) {
-        console.log(gerarNumero(9))
-    }
-}

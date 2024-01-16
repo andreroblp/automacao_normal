@@ -139,7 +139,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     preCadastro.validarNomeDataNascimentoReceita();
                 })
                 it('E \n a tela permitirá avançar para a tela "Dados do Beneficiário"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     preCadastro.avancarParaDadosBeneficiario();
                 })
             })
@@ -168,7 +168,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('AND \n a tela permitirá avançar para o "Envio do documento"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     dadosBeneficiario.avancarParaEnvioArquivo();
                 })
 
@@ -286,7 +286,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     conferencia.botaoSalvar();
                 })
             })
@@ -352,7 +352,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
 
             context('Cenário: Validar as Informações exibidas na Tela e gerar Contrato', () => {
                 it('DADO \n o acesso a tela "Impressão do Contrato"', () => {
-                    printDaTela.printarTela(directory)
+                    printDaTela.printarTela(directory);
                     impressaoContrato.validarAcesso();
                 })
                 it('E \n as informações do beneficiário exibidas em tela', () => {
@@ -368,6 +368,9 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
 
                 it('ENTÃO \n o Contrato deverá ser exibido', () => {
                     impressaoContrato.exibirContrato();
+                })
+                it('E \n o Contrato será salvo como evidência', () => {
+                    impressaoContrato.salvarPDFContrato();
                 })
                 it('E \n o botão Avançar liberado para Assinatura Digital', () => {
                     impressaoContrato.clicarAvancar();

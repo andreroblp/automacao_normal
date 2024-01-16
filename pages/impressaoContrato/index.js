@@ -54,6 +54,22 @@ class ImpressaoContrato {
         })
     }
 
+    salvarPDFContrato() {
+        let idBenef = lStorage.obterObjetoLocalStorage('idPreBenef')
+        cy.request({
+            url: 'https://portalweb-hom.preventsenior.com.br/vendas/contrato/'+idBenef+'/viaProponente/view/',
+            encoding: 'binary', // Importante para lidar com o conteúdo binário do PDF
+            headers: {
+              'Content-Type': 'application/pdf',
+            },
+          }).then((response) => {
+            // Verifica se a resposta tem o status 200 OK
+            expect(response.status).to.eq(200);
+            // Agora você pode manipular o conteúdo do PDF, por exemplo, salvar como arquivo
+            printDaTela.downloadPDF(idBenef, response);
+    })
+}
+
     exibirContrato() {
         cy.get(elem.classeModal).should('be.visible');
         cy.get(elem.classeModal)
