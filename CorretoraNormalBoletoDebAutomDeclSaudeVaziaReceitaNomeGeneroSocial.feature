@@ -38,6 +38,7 @@ Scenario: Preencher as informações do Formulario de Contato
 @PreCadastro
 Scenario: Preencher as informações da Tela Pré Cadastro
     Given o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"
+    And Um pré-beneficiário gerado
     When inserir o CPF do Beneficiário
     And preencher os demais campos da tela
     Then a tela permitirá avançar para a tela "Dados do Beneficiário"
@@ -47,6 +48,7 @@ Scenario: Preencher os Dados do Beneficiario
     Given o acesso a tela "Dados do Beneficiario" com o Nome, CPF, data de nascimento E Nome da Mãe já preenchidos da RF
     And Nome Social vazio
     When preencher os dados do beneficiário
+    And preencher o campo dos Cuidados Anteriores
     And preencher o Gênero Social'
     And preencher os dados do débito automático
     Then validar aviso do Débito Automático

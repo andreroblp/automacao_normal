@@ -133,6 +133,10 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     dadosBeneficiario.preencherDadosBeneficiario('preBenef');
                 })
 
+                it('E \n preencher o campo dos Cuidados Anteriores', () =>{
+                    dadosBeneficiario.cuidadoAnteriorParticular();
+                })
+
                 it('E \n O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"', () =>{
                     dadosBeneficiario.nomeGeneroSocialVazio();
                 })
@@ -235,6 +239,11 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
 
                 it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
                     conferencia.validarJustificativaDeclaracaoSaude();
+                })
+
+                it('E \n a validação do Endereço', () => {
+                    conferencia.validarEndereco();
+                    conferencia.validarAcessoCorretora();
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {

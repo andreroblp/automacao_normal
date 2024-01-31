@@ -11,10 +11,10 @@ class Conferencia {
         cy.contains(elem.tituloCorretora).should('be.visible');
     }
 
-    comoConheceuCorretora(){
+    comoConheceuCorretora() {
         cy.get(elem.comoConheceu).select(elem.opcaoConheceu);
         cy.get(elem.comoConheceu + ' option:selected').invoke('text')
-        .should('eq', elem.opcaoConheceu)
+            .should('eq', elem.opcaoConheceu)
     }
 
     preencherParceriaVenda() {
@@ -59,46 +59,66 @@ class Conferencia {
         cy.get(elem.nomeMae).should('have.value', lStorage.obterObjetoLocalStorage(item).nomeMae.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
         cy.get(elem.sexo + ' option:selected').invoke('text')
             .should('eq', lStorage.obterObjetoLocalStorage(item).sexo);
-        cy.get(elem.rg).should('have.value', Cypress.env('rg'));
-        cy.get(elem.cep).should('have.value', Cypress.env('cep'));
+        cy.get(elem.rg).should('have.value', lStorage.obterObjetoLocalStorage(item).rg.numero);
         cy.get(elem.orgaoEmissor + ' option:selected').invoke('text')
-            .should('eq', elem.orgaoEmissorText);
+            .should('eq', lStorage.obterObjetoLocalStorage(item).rg.orgaoEmissor);
         cy.get(elem.ufOrgaoEmissor + ' option:selected').invoke('text')
-            .should('eq', elem.ufOrgaoEmissorValueText);
+            .should('eq', lStorage.obterObjetoLocalStorage(item).rg.ufEmissor);
         cy.get(elem.cns).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').cns);
         cy.get(elem.telCelular).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').cel);
         cy.get(elem.email).should('have.value', Cypress.env('emailAndre'));
+        cy.get(elem.profissaoCampo + ' option:selected').invoke('text')
+            .should('eq', elem.profissao)
         cy.get(elem.estadoCivil + ' option:selected').invoke('text')
             .should('eq', lStorage.obterObjetoLocalStorage('preBenef').estadoCivil);
-        cy.get(elem.cepCorrespondencia).should('have.value', Cypress.env('cep'));
+        cy.get(elem.cep).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.cep);
+        cy.get(elem.tipoLogradouro + ' option:selected').invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').endereco.tipoL)
+        cy.get(elem.logradouro).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro, lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouroInteiro])
+        cy.get(elem.numeroEnd).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.numero);
+        cy.get(elem.complemento).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.complemento);
+        cy.get(elem.bairro).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.bairro, lStorage.obterObjetoLocalStorage('preBenef').endereco.bairroInteiro])
+        cy.get(elem.cidade).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.cidade, lStorage.obterObjetoLocalStorage('preBenef').endereco.cidadeInteiro])
+        cy.get(elem.UF).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.uf)
+        cy.get(elem.ibge).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.ibge)
+        cy.get(elem.cepCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.cep);
+        cy.get(elem.tipoLogradouroCorrespondencia + ' option:selected').invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').endereco.tipoL)
+        cy.get(elem.logradouroCorrespondencia).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro, lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouroInteiro])
+        cy.get(elem.numeroEndCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.numero);
+        cy.get(elem.complementoCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.complemento);
+        cy.get(elem.bairro).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.bairro, lStorage.obterObjetoLocalStorage('preBenef').endereco.bairroInteiro])
+        cy.get(elem.cidade).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.cidade, lStorage.obterObjetoLocalStorage('preBenef').endereco.cidadeInteiro])
+        cy.get(elem.UFCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.uf)
+        cy.get(elem.ibgeCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.ibge)
         cy.get(elem.cuidadoAnterior + ' option:selected').invoke('text')
             .should('eq', elem.cuidadoAnteriorText);
     }
 
     validarDadosDebitoAutomatico(item) {
         cy.xpath(elem.xpathNomeDebAutom).invoke('text')
-        .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-    cy.xpath(elem.xpathCPFDebAutom).invoke('text')
-        .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
+            .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem.xpathCPFDebAutom).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
         cy.xpath(elem.xpathBancoDebAutom).invoke('text')
-            .should('eq', elem.bancoDebito);
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.banco + ' - ' + lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.nome);
         cy.xpath(elem.xpathAgenciaDebAutom).invoke('text')
-            .should('eq', Cypress.env('agencia'))
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.agencia);
         cy.xpath(elem.xpathContaCDebAutom).invoke('text')
-            .should('eq', Cypress.env('cc'))
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.contaCorrente)
     }
 
     validarDadosDebitoAutomaticoCorretora(item) {
         cy.xpath(elem.xpathNomeDebAutomCorretora).invoke('text')
-        .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
-    cy.xpath(elem.xpathCPFDebAutomCorretora).invoke('text')
-        .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
+            .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        cy.xpath(elem.xpathCPFDebAutomCorretora).invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
         cy.xpath(elem.xpathBancoDebAutomCorretora).invoke('text')
-            .should('eq', elem.bancoDebito);
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.banco + ' - ' + lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.nome);
         cy.xpath(elem.xpathAgenciaDebAutomCorretora).invoke('text')
-            .should('eq', Cypress.env('agencia'))
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.agencia);
         cy.xpath(elem.xpathContaCDebAutomCorretora).invoke('text')
-            .should('eq', Cypress.env('cc'))
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.contaCorrente)
     }
 
     validarJustificativaDeclaracaoSaude() {
@@ -107,17 +127,59 @@ class Conferencia {
 
     validarJustificativaDeclaracaoSaudeVazia(item) {
         let quantidadePerguntas = 0;
-        if(lStorage.obterObjetoLocalStorage(item).sexo === "Feminino"){
+        if (lStorage.obterObjetoLocalStorage(item).sexo === "Feminino") {
             quantidadePerguntas = 15;
-        } else{
+        } else {
             quantidadePerguntas = 14
         }
-        for(let x=1; x <= quantidadePerguntas; x++){
-        let pergunta = x
-        cy.get(elem['justificativa' + pergunta.toString()]).should('have.value', "");
-        console.log(quantidadePerguntas)
+        for (let x = 1; x <= quantidadePerguntas; x++) {
+            let pergunta = x
+            cy.get(elem['justificativa' + pergunta.toString()]).should('have.value', "");
+            console.log(quantidadePerguntas)
+        }
     }
-}
+
+    verificarEndereco() {
+        let contador = 0;
+
+        cy.get(elem.contadorEndereco).invoke('attr', 'val').then($contador => {
+            if ($contador > 40) {
+                cy.get(elem.logradouro).clear().type(lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro)
+            }
+        })
+
+        cy.get(elem.contadorEndereco).invoke('attr', 'val').then($contador => {
+            contador = $contador
+        })
+
+        while (contador > 40) {
+            cy.get(elem.logradouro).type({ backspace })
+            cy.get(elem.contadorEndereco).invoke('attr', 'val').then($contador => {
+                contador = $contador
+            })
+        }
+    }
+
+    verificarEnderecoCorrespondencia() {
+        let contador = 0;
+
+        cy.get(elem.contadorCorrespondencia).invoke('attr', 'val').then($contador => {
+            if ($contador > 38) {
+                cy.get(elem.logradouroCorrespondencia).clear().type(lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro)
+            }
+        })
+
+        cy.get(elem.contadorCorrespondencia).invoke('attr', 'val').then($contador => {
+            contador = $contador
+        })
+
+        while (contador > 38) {
+            cy.get(elem.logradouroCorrespondencia).type({ backspace })
+            cy.get(elem.contadorCorrespondencia).invoke('attr', 'val').then($contador => {
+                contador = $contador
+            })
+        }
+    }
 
     botaoSalvar() {
         cy.get(elem.botaoAvancar).click();

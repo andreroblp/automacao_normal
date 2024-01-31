@@ -11,5 +11,6 @@ export const ELEMENTS = {
     opcaoParentesco : 'Eu sou o futuro beneficiário',
     opcaoComoConheceu: 'Shopping Pátio Paulista',
     valueParentesco : '1',
-    valueConheceu : '2870'
+    valueConheceu : '2870',
+    textoHistorico : 'Teste realizado via automação pelo Cypress'
 }

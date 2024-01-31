@@ -122,9 +122,11 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 it('DADO \n o acesso a tela "Pré-Cadastro" com o nome do contato já preenchido no campo "Nome"', () => {
                     preCadastro.validarNomeEntrada();
                 })
+                it('E \n Um pré-beneficiário gerado', async ()=>{
+                    await lStorage.armazenarLocalStorage(await geradorPessoa(0,false,false), 'preBenef');
+                })
 
                 it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
-                    lStorage.armazenarLocalStorage(geradorPessoa(0, false, true), 'preBenef')
                     preCadastro.reescreverNome();
                 })
 
@@ -149,6 +151,10 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
                 it('QUANDO \n preencher os dados do beneficiário', () => {
                     dadosBeneficiario.preencherDadosBeneficiario('preBenef');
+                })
+
+                it('E \n preencher o campo dos Cuidados Anteriores', () =>{
+                    dadosBeneficiario.cuidadoAnteriorParticular();
                 })
 
                 it('E \n  preencher o Gênero Social', () => {

@@ -26,8 +26,8 @@ class DadosBeneficiario {
     }
 
     preencherDadosBeneficiario(item) {
-        if(item === 'preBenef'){
-        cy.get(elem.nomeMae).type(lStorage.obterObjetoLocalStorage('preBenef').nomeMae).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').nomeMae);
+        if (item === 'preBenef') {
+            cy.get(elem.nomeMae).type(lStorage.obterObjetoLocalStorage('preBenef').nomeMae).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').nomeMae);
         }
         cy.get(elem.sexo).select(lStorage.obterObjetoLocalStorage(item).sexo);
         cy.get(elem.sexo + ' option:selected').invoke('text')
@@ -35,9 +35,11 @@ class DadosBeneficiario {
         cy.get(elem.estadoCivil).select(lStorage.obterObjetoLocalStorage('preBenef').estadoCivil);
         cy.get(elem.estadoCivil + ' option:selected').invoke('text')
             .should('eq', lStorage.obterObjetoLocalStorage('preBenef').estadoCivil);
-        cy.get(elem.rg).type(Cypress.env('rg')).should('have.value', Cypress.env('rg'));
+        cy.get(elem.rg).type(lStorage.obterObjetoLocalStorage('preBenef').rg.numero).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').rg.numero);
         cy.get(elem.cns).type(lStorage.obterObjetoLocalStorage('preBenef').cns).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').cns);
-        cy.get(elem.orgaoEmissor).select(elem.orgaoEmissorText).should('have.value', elem.orgaoEmissorValue)
+        cy.get(elem.orgaoEmissor).select(lStorage.obterObjetoLocalStorage('preBenef').rg.orgaoEmissor)
+        cy.get(elem.orgaoEmissor + ' option:selected').invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').rg.orgaoEmissor)
         cy.get(elem.elementoProfissao).invoke("show");
         cy.get(elem.classeProfissao)
             .within(() => {
@@ -45,24 +47,49 @@ class DadosBeneficiario {
                     .first()
                     .click().type("ACESSOR {enter}")
             })
-        cy.get(elem.ufOrgaoEmissor).select(elem.ufOrgaoEmissorValueText);
+        cy.get(elem.ufOrgaoEmissor).select(lStorage.obterObjetoLocalStorage('preBenef').rg.ufEmissor);
         cy.get(elem.email).type(Cypress.env('emailAndre')).should('have.value', Cypress.env('emailAndre'));
-        cy.get(elem.cep).type(Cypress.env('cep')).should('have.value', Cypress.env('cep'));
-        cy.get(elem.logradouro).invoke('val').should('not.be.empty')
-        cy.get(elem.numeroEnd).type("67");
+        cy.get(elem.cep).type(lStorage.obterObjetoLocalStorage('preBenef').endereco.cep).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.cep);
+        cy.get(elem.tipoLogradouro + ' option:selected').invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').endereco.tipoL)
+        cy.get(elem.logradouro).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro, lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouroInteiro])
+        cy.get(elem.numeroEnd).type(lStorage.obterObjetoLocalStorage('preBenef').endereco.numero).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.numero);
+
+        if (lStorage.obterObjetoLocalStorage('preBenef').endereco.complemento !== '') {
+            cy.get(elem.complemento).type(lStorage.obterObjetoLocalStorage('preBenef').endereco.complemento).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.complemento);
+        }
+
+        cy.get(elem.bairro).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.bairro, lStorage.obterObjetoLocalStorage('preBenef').endereco.bairroInteiro])
+        cy.get(elem.cidade).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.cidade, lStorage.obterObjetoLocalStorage('preBenef').endereco.cidadeInteiro])
+        cy.get(elem.UF).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.uf)
+        cy.get(elem.ibge).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.ibge)
+        cy.wait(2000)
         cy.get(elem.checkboxEnd).click({ force: true }).should('be.checked');
-        cy.get(elem.cepCorrespondencia).should('have.value', Cypress.env('cep'));
+        cy.get(elem.cepCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.cep);
+        cy.get(elem.tipoLogradouroCorrespondencia + ' option:selected').invoke('text')
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').endereco.tipoL)
+        cy.get(elem.logradouroCorrespondencia).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro, lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouroInteiro])
+        cy.get(elem.numeroEndCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.numero);
+        cy.get(elem.complementoCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.complemento);
+        cy.get(elem.bairro).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.bairro, lStorage.obterObjetoLocalStorage('preBenef').endereco.bairroInteiro])
+        cy.get(elem.cidade).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.cidade, lStorage.obterObjetoLocalStorage('preBenef').endereco.cidadeInteiro])
+        cy.get(elem.UFCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.uf)
+        cy.get(elem.ibgeCorrespondencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.ibge)
+
+    }
+
+    cuidadoAnteriorParticular() {
         cy.get(elem.cuidadoAnterior).select(elem.cuidadoAnteriorText).should('have.value', elem.cuidadoAnteriorValue)
     }
 
     preencherDebitoAutomatico() {
         cy.get(elem.radioDebitoAuomaticoSim).invoke('show').check('true').should('be.checked');
         cy.get(elem.debAutomDadosBenefCheckbox).invoke('show').check().should('be.checked');
-        cy.get(elem.banco).select('341');
+        cy.get(elem.banco).select(lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.banco);
         cy.get(elem.banco + ' option:selected').invoke('text')
-            .should('eq', elem.bancoText);
-        cy.get(elem.agencia).type(Cypress.env('agencia')).should('have.value', Cypress.env('agencia'));
-        cy.get(elem.cc).type(Cypress.env('cc')).should('have.value', Cypress.env('cc'))
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.nome);
+        cy.get(elem.agencia).type(lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.agencia).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.agencia);
+        cy.get(elem.cc).type(lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.contaCorrente).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.contaCorrente)
     }
 
     validarAvisoDebitoAutomaticoCorretora() {

@@ -107,10 +107,13 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     preCadastro.consultarReceitaFederal(CPF);
                 })
 
-                it('QUANDO \n inserir o CPF do Beneficiário', () => {
-                    lStorage.armazenarLocalStorage(geradorPessoa(0, false, false));
-                    preCadastro.preencherCPFDataNasc(false, 'receita');
-                }), 
+                it('E \n Um pré-beneficiário gerado', async ()=>{
+                    await lStorage.armazenarLocalStorage(await geradorPessoa(0,false,false), 'receita');
+                })
+
+                it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
+                    preCadastro.reescreverNome();
+                })
 
                 it('E \n preencher os demais campos da tela', () => {
                     preCadastro.preencherDadosGeral();
@@ -131,6 +134,10 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
                 it('QUANDO \n preencher os dados do beneficiário', () => {
                     dadosBeneficiario.preencherDadosBeneficiario('receita');
+                })
+
+                it('E \n preencher o campo dos Cuidados Anteriores', () =>{
+                    dadosBeneficiario.cuidadoAnteriorParticular();
                 })
 
                 it('E \n O campos"Nome Social" deverá ficar vazio e o Gênero Social como "Nenhum"', () =>{

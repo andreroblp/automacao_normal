@@ -2,6 +2,7 @@ import geradorNumero from './geradorNumero'
 
 var agencia = '';
 var banco = '';
+var nome = ';'
 
 export default async function gerarDadosBancarios() {
     await gerarBancoAgencia();
@@ -9,18 +10,20 @@ export default async function gerarDadosBancarios() {
         "agencia" : agencia,
         "banco" : banco,
         "contaCorrente": gerarContaCorrente(),
+        "nome" : nome,
     }
 }
 
 async function gerarBancoAgencia() {
     const $teste = await cy.task('executeDbStatement', {
-        statement: `SELECT * FROM (SELECT AGENCIA, BANCO FROM CORPORATIVO.AGENCIA_DEBITO_AUTOMATICO ada INNER JOIN CORPORATIVO.BANCO_DEBITO_AUTOMATICO bda ON 
+        statement: `SELECT * FROM (SELECT AGENCIA, BANCO, NOME FROM CORPORATIVO.AGENCIA_DEBITO_AUTOMATICO ada INNER JOIN CORPORATIVO.BANCO_DEBITO_AUTOMATICO bda ON 
           bda.id = ada.id_banco
           ORDER BY dbms_random.value) 
           where ROWNUM <= 1`,
     });
     agencia = $teste.rows[0].AGENCIA;
     banco = $teste.rows[0].BANCO;
+    nome = $teste.rows[0].NOME;
 }
 
 function gerarContaCorrente() {

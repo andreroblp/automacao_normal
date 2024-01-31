@@ -19,7 +19,7 @@ class Formulario {
         cy.get(elem.propaganda).invoke('show').check('1');
         cy.get(elem.propaganda)
             .invoke('hide');
-        cy.get(elem.historico).type('Teste');
+        cy.get(elem.historico).type(elem.textoHistorico).should('have.value', elem.textoHistorico);
     }
 
     preencherDadosCorretora(){

@@ -6,9 +6,12 @@ import estCivil from './gerarEstadoCivil.js'
 import gerarNumero from './geradorNumero.js'
 import {GENEROS} from './genero.js'
 import gerarDadosBancarios from './geradorDadosBancario.js'
+import gerarEndereco from './geradorEndereco.js'
+import gerarDataNascimento from './geradorNascimento.js'
+import gerarRG from './geradorRG.js'
 
 async function gerarDadosPessoa(sexo,temNomeSocial, temGeneroSocial) {
-    let teste = await gerarDadosBancarios();
+ 
     return {
         "nome": (sexo === GENEROS.MASCULINO) ? nome("M", false) : nome("F", false),
         "sexo": (sexo === GENEROS.MASCULINO) ? "Masculino" : "Feminino",
@@ -19,8 +22,10 @@ async function gerarDadosPessoa(sexo,temNomeSocial, temGeneroSocial) {
         "nomeMae": nome(true, "F", false),
         "nomeSocial" : (temNomeSocial === false) ? "" : (sexo === GENEROS.FEMININO) ? nome("M", true) : nome("F", true),
         "generoSocial" : (temGeneroSocial === false) ? "Nenhum" : (sexo === GENEROS.FEMININO) ? "Masculino" : "Feminino",
-        "dataNascimento" : '16/09/1951',
-        "Dados" : teste,
+        "dataNascimento" : gerarDataNascimento(),
+        "dadosBanco" : await gerarDadosBancarios(),
+        "endereco" : await gerarEndereco(),
+        "rg" : gerarRG()
     };
 }
 
