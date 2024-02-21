@@ -13,7 +13,7 @@ class HomePortal {
     }
 
     validarAcesso() {
-        cy.get(elem.elemPainel).contains(elem.tituloPainel).should('be.visible');
+        cy.get(elem.elemPainel).invoke('text').should('be.oneOf', [elem.tituloPainel, elem.tituloPainel2]);
     }
 
     validarMensagemFinalizacaoVenda() {

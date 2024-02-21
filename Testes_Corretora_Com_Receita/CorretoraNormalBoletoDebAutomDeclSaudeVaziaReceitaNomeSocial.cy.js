@@ -126,7 +126,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                 })
 
                 it('E \n Um pré-beneficiário gerado', async ()=>{
-                    await lStorage.armazenarLocalStorage(await geradorPessoa(0,false,false), 'receita');
+                    await lStorage.armazenarLocalStorage(await geradorPessoa(0,true,true), 'receita');
                 })
 
                 it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
@@ -290,6 +290,16 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
 
                 it('E \n todas as justificativas deverão estar em branco', () => {
                     conferencia.validarJustificativaDeclaracaoSaudeVazia('receita');
+                })
+
+                it('E \n o campo Logradouro deverá ser ajustado conforme quantidade de caracteres ', () => {
+                    conferencia.verificarEndereco();
+                    conferencia.verificarEnderecoCorrespondencia();
+                })
+    
+                it('E \n os Logradouros deverão ser validados novamente', () => {
+                    conferencia.validarNovamenteEndereco();
+                    conferencia.validarNovamenteEnderecoCorrespondencia();
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {

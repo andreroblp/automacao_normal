@@ -1,7 +1,8 @@
 export const ELEMENTS = {
     iframe : '[class="child-page atual"]',
     elemPainel : '[class="painel-name"]',
-    tituloPainel : 'Painel de vendas',
+    tituloPainel : 'Painel personalizado',
+    tituloPainel2 : 'Painel de vendas',
     ticket : '#uTicket',
     mensagemSucesso : '.noty_text',
     mensagemSucessoTexto : 'Processo finalizado com sucesso.',

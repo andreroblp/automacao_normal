@@ -108,7 +108,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
 
                 it('E \n Um pré-beneficiário gerado', async ()=>{
-                    await lStorage.armazenarLocalStorage(await geradorPessoa(0,false,false), 'preBenef');
+                    await lStorage.armazenarLocalStorage(await geradorPessoa(0,false,true), 'preBenef');
                 })
 
                 it('QUANDO \n o usuário vai trocar o nome gerado pela automação', () => {
@@ -241,6 +241,16 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
 
                 it('E \n a justificativa da declaração de Saúde deverá ser validada', () => {
                     conferencia.validarJustificativaDeclaracaoSaude();
+                })
+
+                it('E \n o campo Logradouro deverá ser ajustado conforme quantidade de caracteres ', () => {
+                    conferencia.verificarEndereco();
+                    conferencia.verificarEnderecoCorrespondencia();
+                })
+    
+                it('E \n os Logradouros deverão ser validados novamente', () => {
+                    conferencia.validarNovamenteEndereco();
+                    conferencia.validarNovamenteEnderecoCorrespondencia();
                 })
 
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
@@ -377,7 +387,7 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                 })
                 it('QUANDO \n validar as informações', () => {
                     pagamento.validarDadosBeneficiario('preBenef');
-                    pagamento.validarDebAutomatico();
+                    pagamento.validarDebAutomatico('preBenef');
                     pagamento.validarDemaisInfos();
                 })
                 it('E \n clicar em "Finalizar Pagamento"', () => {

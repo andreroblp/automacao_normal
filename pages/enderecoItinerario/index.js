@@ -1,4 +1,5 @@
 const elem = require('./elements').ELEMENTS;
+import lStorage from '../localStorage'
 
 class EnderecoItinerario{
 
@@ -20,7 +21,7 @@ class EnderecoItinerario{
     carregarEndereco(){
         cy.get(elem.cep).should('be.empty');
         cy.get(elem.checkBoxEnd).check({force: true});
-        cy.get(elem.cep).should('have.value', Cypress.env('cep'))
+        cy.get(elem.cep).should('have.value', lStorage.obterObjetoLocalStorage('preBenef').endereco.cep)
     }
 
     selecionarZona(){

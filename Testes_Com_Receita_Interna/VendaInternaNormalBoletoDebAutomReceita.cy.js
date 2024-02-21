@@ -244,6 +244,16 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / Vendedor
                     conferencia.validarJustificativaDeclaracaoSaude();
                 })
 
+                it('E \n o campo Logradouro deverá ser ajustado conforme quantidade de caracteres ', () => {
+                    conferencia.verificarEndereco();
+                    conferencia.verificarEnderecoCorrespondencia();
+                })
+    
+                it('E \n os Logradouros deverão ser validados novamente', () => {
+                    conferencia.validarNovamenteEndereco();
+                    conferencia.validarNovamenteEnderecoCorrespondencia();
+                })
+
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
                     printDaTela.printarTela(directory);
                     conferencia.botaoSalvar();

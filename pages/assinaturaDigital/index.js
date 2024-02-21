@@ -26,7 +26,7 @@ class AssinaturaDigital {
         cy.xpath(elem['xpathCPF' + ext]).invoke('text')
             .should('eq', lStorage.obterObjetoLocalStorage(item).documento.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
         cy.xpath(elem['xpathRG' + ext]).invoke('text')
-            .should('eq', Cypress.env('rg'));
+            .should('eq', lStorage.obterObjetoLocalStorage(item).rg.numero);
         cy.xpath(elem['xpathEmail' + ext]).invoke('text')
             .should('eq', Cypress.env('emailAndre'));
         cy.xpath(elem['xpathCelular' + ext]).invoke('text')

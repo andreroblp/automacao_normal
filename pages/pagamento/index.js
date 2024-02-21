@@ -31,11 +31,11 @@ class Pagamento {
         cy.xpath(elem.xpathNomeDebAutom).invoke('text')
         .should('eq', lStorage.obterObjetoLocalStorage(item).nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
         cy.xpath(elem.xpathBancoDebAutom).invoke('text')
-            .should('eq', Cypress.env('banco'));
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.banco + ' - ' + lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.nome);
         cy.xpath(elem.xpathAgenciaDebAutom).invoke('text')
-            .should('eq', Cypress.env('agencia'));
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.agencia);
         cy.xpath(elem.xpathCCDebAutom).invoke('text')
-            .should('eq', Cypress.env('cc'));
+            .should('eq', lStorage.obterObjetoLocalStorage('preBenef').dadosBanco.contaCorrente);
     }
 
     validarDemaisInfos() {

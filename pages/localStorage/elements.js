@@ -4,4 +4,6 @@ export const ELEMENTS = {
     preBenef : 'pre_benef',
     receita : 'receita',
     temNomeSocial : 'temNomeSocial',
+    logradouroMod : 'logradouroMod',
+    logradouroCorrMod : 'logradouroCorrMod'
 }

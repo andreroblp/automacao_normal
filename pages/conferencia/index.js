@@ -1,5 +1,6 @@
 const elem = require('./elements').ELEMENTS;
 import lStorage from '../localStorage/'
+let enderecoModificado = false;
 
 class Conferencia {
 
@@ -140,45 +141,32 @@ class Conferencia {
     }
 
     verificarEndereco() {
-        let contador = 0;
-
-        cy.get(elem.contadorEndereco).invoke('attr', 'val').then($contador => {
+        enderecoModificado = false;
+        cy.get(elem.contadorEndereco).invoke('text').then($contador => {
             if ($contador > 40) {
                 cy.get(elem.logradouro).clear().type(lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro)
+                diminuirEndereco(false);
             }
         })
+    }
 
-        cy.get(elem.contadorEndereco).invoke('attr', 'val').then($contador => {
-            contador = $contador
-        })
+    validarNovamenteEndereco(){
+        console.log( lStorage.obterObjetoLocalStorage('logradouroMod'))
+        cy.get(elem.logradouro).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro, lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouroInteiro, lStorage.obterObjetoLocalStorage('logradouroMod')])
+    }
 
-        while (contador > 40) {
-            cy.get(elem.logradouro).type({ backspace })
-            cy.get(elem.contadorEndereco).invoke('attr', 'val').then($contador => {
-                contador = $contador
-            })
-        }
+    validarNovamenteEnderecoCorrespondencia(){
+        cy.get(elem.logradouroCorrespondencia).invoke('val').should('be.oneOf', [lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro, lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouroInteiro,lStorage.obterObjetoLocalStorage('logradouroCorrMod')])
     }
 
     verificarEnderecoCorrespondencia() {
-        let contador = 0;
-
-        cy.get(elem.contadorCorrespondencia).invoke('attr', 'val').then($contador => {
+        enderecoModificado = false;
+        cy.get(elem.contadorCorrespondencia).invoke('text').then($contador => {
             if ($contador > 38) {
-                cy.get(elem.logradouroCorrespondencia).clear().type(lStorage.obterObjetoLocalStorage('preBenef').endereco.logradouro)
+                cy.get(elem.checkEnd).check({ force: true });
+                diminuirEndereco(true);
             }
         })
-
-        cy.get(elem.contadorCorrespondencia).invoke('attr', 'val').then($contador => {
-            contador = $contador
-        })
-
-        while (contador > 38) {
-            cy.get(elem.logradouroCorrespondencia).type({ backspace })
-            cy.get(elem.contadorCorrespondencia).invoke('attr', 'val').then($contador => {
-                contador = $contador
-            })
-        }
     }
 
     botaoSalvar() {
@@ -186,4 +174,29 @@ class Conferencia {
     }
 }
 
+function diminuirEndereco(isCorrespondencia) {
+    let ext = '';
+    let caracteres = 40;
+    let contador = 'Endereco'
+    let armazenar = 'logradouroMod'
+    if (isCorrespondencia) {
+        ext = 'Correspondencia'
+        caracteres = 38;
+        contador = 'Correspondencia'
+        armazenar = 'logradouroCorrMod'
+    }
+    cy.get(elem['contador' + contador]).invoke('text').then($contador => {
+        if ($contador > caracteres) {
+            cy.get(elem['logradouro' + ext]).type('{end}{backspace}')
+            enderecoModificado = true;
+            diminuirEndereco(isCorrespondencia);
+        } 
+        if(enderecoModificado){
+            cy.get(elem['logradouro' + ext]).invoke('val').then($endereco => {
+                lStorage.armazenarLocalStorage($endereco, armazenar)
+            })
+            
+        }
+    })
+}
 export default new Conferencia();

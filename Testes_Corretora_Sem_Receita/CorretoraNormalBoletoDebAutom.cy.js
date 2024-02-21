@@ -19,7 +19,7 @@ import minhasAtividades from '../pages/minhasAtividades';
 import enderecoItinerario from '../pages/enderecoItinerario';
 import revisaoDesconto from '../pages/revisaoDesconto/';
 import lStorage from '../pages/localStorage';
-import gerarPessoa from '../geradores/geradorPessoas';
+import geradorPessoa from '../geradores/geradorPessoas';
 const directory = Cypress.spec.name.replace('.cy.js', '')
 
 describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETORA'
@@ -291,6 +291,16 @@ describe('Venda Normal / Assinatura Digital (s/ assinatura com Unico) / CORRETOR
                     conferencia.validarJustificativaDeclaracaoSaude();
                 })
 
+                it('E \n o campo Logradouro deverá ser ajustado conforme quantidade de caracteres ', () => {
+                    conferencia.verificarEndereco();
+                    conferencia.verificarEnderecoCorrespondencia();
+                })
+    
+                it('E \n os Logradouros deverão ser validados novamente', () => {
+                    conferencia.validarNovamenteEndereco();
+                    conferencia.validarNovamenteEnderecoCorrespondencia();
+                })
+                
                 it('E \n permitirá o avanço para a tela "Revisão"', () => {
                     printDaTela.printarTela(directory);
                     conferencia.botaoSalvar();

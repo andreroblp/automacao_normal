@@ -15,7 +15,7 @@ function verificarDiaSomar() {
 function diaAtual(){
 let hoje = new Date();
 let diaFormatado = ('0' + hoje.getDate()).slice(-2);
-let mes = ('0' + hoje.getMonth()+1).slice(-2);
+let mes = ('0' + (hoje.getMonth()+1)).slice(-2);
 let ano = hoje.getFullYear();
   return ano + '-' + mes + '-' + diaFormatado;
 }
